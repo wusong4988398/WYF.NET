@@ -1,0 +1,27 @@
+﻿using WYF.Bos.DataEntity;
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace WYF.Bos.Orm.datamanager
+{
+    public class QuickDataSet
+    {
+        public QuickDataTableCollection Tables = new QuickDataTableCollection();
+
+        public int FindIndex(QuickDataTable table)
+        {
+            QuickDataTableCollection tables = this.Tables;
+            for (int i = 0; i < tables.Count; i++)
+            {
+                if (tables[i] == table)
+                    return i;
+            }
+            throw new ORMDesignException("100001","从QuickDataSet表结构中查找表[{0}]失败，表[{0}]不存在！");
+        }
+
+    }
+}
