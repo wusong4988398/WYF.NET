@@ -1,5 +1,5 @@
 ﻿using WYF.Bos.algo;
-using WYF.Bos.DataEntity.Metadata;
+using WYF.DataEntity.Metadata;
 using WYF.Bos.db;
 using WYF.Bos.Orm.impl;
 using WYF.Bos.Orm.query.optimize;

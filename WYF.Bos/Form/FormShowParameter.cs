@@ -1,4 +1,4 @@
-﻿using WYF.Bos.DataEntity.Entity;
+﻿using WYF.DataEntity.Entity;
 using WYF.Bos.Mvc.Form;
 using JNPF.Form;
 using JNPF.Form.DataEntity;

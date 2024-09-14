@@ -1,5 +1,5 @@
 ﻿using Antlr4.Runtime.Misc;
-using WYF.Bos.DataEntity.Entity;
+using WYF.DataEntity.Entity;
 using System;
 using System.Collections.Generic;
 using System.Linq;

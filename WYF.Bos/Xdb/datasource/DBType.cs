@@ -6,15 +6,17 @@ using System.Threading.Tasks;
 
 namespace WYF.Bos.xdb.datasource
 {
-    public  enum DBType
+    public enum DBType
     {
-        mysql,
-        oracle,
-        dm,
-        postgresql,
-        gs,
-        gs100,
-        sqlserver
-
+        MySQL,
+        Oracle,
+        DM,
+        PostgreSQL,
+        GS,
+        GS100,
+        Derby,
+        OpenGauss,
+        SQLServer,
+        KingBase
     }
 }

@@ -1,5 +1,5 @@
 ﻿
-using WYF.Bos.DataEntity.Metadata.Clr;
+using WYF.DataEntity.Metadata.Clr;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 using System;
@@ -8,7 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WYF.Bos.DataEntity.Metadata.Dynamicobject
+namespace WYF.DataEntity.Metadata.Dynamicobject
 {
     /// <summary>
     /// 实体的属性集合

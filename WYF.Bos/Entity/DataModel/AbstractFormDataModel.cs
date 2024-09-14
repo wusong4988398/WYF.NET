@@ -1,7 +1,7 @@
-﻿using WYF.Bos.DataEntity.Entity;
-using WYF.Bos.DataEntity.Metadata;
-using WYF.Bos.DataEntity.Metadata.Clr;
-using WYF.Bos.DataEntity.Metadata.Dynamicobject;
+﻿using WYF.DataEntity.Entity;
+using WYF.DataEntity.Metadata;
+using WYF.DataEntity.Metadata.Clr;
+using WYF.DataEntity.Metadata.Dynamicobject;
 using WYF.Bos.Entity.DataModel.Events;
 using WYF.Bos.Entity.property;
 using WYF.Bos.Form.control.events;

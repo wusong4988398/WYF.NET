@@ -1,6 +1,6 @@
 ﻿using Antlr4.Runtime.Misc;
-using WYF.Bos.DataEntity.Metadata;
-using WYF.Bos.DataEntity.Metadata.Clr;
+using WYF.DataEntity.Metadata;
+using WYF.DataEntity.Metadata.Clr;
 using WYF.Bos.Orm.impl;
 using WYF.Bos.Orm.query.crud.read;
 using WYF.Bos.Orm.query.oql.g.expr;

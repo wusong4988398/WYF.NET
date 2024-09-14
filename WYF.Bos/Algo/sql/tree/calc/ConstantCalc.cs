@@ -8,8 +8,8 @@ namespace WYF.Bos.algo.sql.tree.calc
 {
     public class ConstantCalc : Calc
     {
-        private object _value;
-        public object Value { get { return _value; } }
+       private object _value;
+       public object Value { get { return _value; } }
 
        public ConstantCalc(object value)
         {

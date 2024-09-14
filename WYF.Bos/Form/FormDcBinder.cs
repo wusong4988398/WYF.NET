@@ -1,6 +1,6 @@
-﻿using WYF.Bos.DataEntity.Metadata;
-using JNPF.Form.DataEntity.Serialization;
-using JNPF.Form.DataEntity.Utils;
+﻿using WYF.DataEntity.Metadata;
+using WYF.DataEntity.Serialization;
+using WYF.DataEntity.Utils;
 using JNPF.Form.DataEntity;
 using System;
 using System.Collections.Generic;

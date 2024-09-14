@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WYF.Bos.DataEntity.Metadata.database
+namespace WYF.DataEntity.Metadata.database
 {
     public abstract class DataEntityMetadataMapBase<T> where T : IMetadata
     {

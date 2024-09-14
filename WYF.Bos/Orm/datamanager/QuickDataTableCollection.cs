@@ -1,4 +1,4 @@
-﻿using WYF.Bos.DataEntity.Collections;
+﻿using WYF.DataEntity.Collections;
 using System;
 using System.Collections.Generic;
 using System.Linq;

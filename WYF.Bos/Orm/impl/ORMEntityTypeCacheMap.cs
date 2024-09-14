@@ -1,4 +1,4 @@
-﻿using WYF.Bos.DataEntity.Metadata;
+﻿using WYF.DataEntity.Metadata;
 using System;
 using System.Collections;
 using System.Collections.Generic;

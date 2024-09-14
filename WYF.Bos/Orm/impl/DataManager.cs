@@ -1,4 +1,4 @@
-﻿using WYF.Bos.DataEntity.Metadata;
+﻿using WYF.DataEntity.Metadata;
 using WYF.Bos.db;
 using WYF.Bos.Orm.dataentity;
 using WYF.Bos.Orm.DataManager;

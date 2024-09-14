@@ -1,4 +1,4 @@
-﻿using WYF.Bos.DataEntity.Metadata;
+﻿using WYF.DataEntity.Metadata;
 using WYF.Bos.Orm.Exceptions;
 using System;
 using System.Collections.Concurrent;
@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WYF.Bos.DataEntity.Entity
+namespace WYF.DataEntity.Entity
 {
     public class DataEntityReferenceList : List<DataEntityReference>
     {

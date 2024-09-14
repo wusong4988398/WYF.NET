@@ -1,11 +1,11 @@
-﻿using WYF.Bos.DataEntity.Metadata;
+﻿using WYF.DataEntity.Metadata;
 using WYF.Bos.Entity.plugin;
 using WYF.Bos.Form.container;
 using WYF.Bos.Form.control;
 using WYF.Bos.Form.field;
 using WYF.Bos.List;
-using JNPF.Form.DataEntity.Serialization;
-using JNPF.Form.DataEntity.Utils;
+using WYF.DataEntity.Serialization;
+using WYF.DataEntity.Utils;
 
 namespace WYF.Bos.Form
 {

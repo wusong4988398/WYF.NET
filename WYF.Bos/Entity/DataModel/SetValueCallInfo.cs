@@ -1,6 +1,6 @@
-﻿using WYF.Bos.DataEntity.Entity;
-using WYF.Bos.DataEntity.Metadata.Dynamicobject;
-using JNPF.Form.DataEntity.Utils;
+﻿using WYF.DataEntity.Entity;
+using WYF.DataEntity.Metadata.Dynamicobject;
+using WYF.DataEntity.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -1,5 +1,5 @@
-﻿using WYF.Bos.DataEntity.Metadata;
-using WYF.Bos.DataEntity.Metadata.Clr;
+﻿using WYF.DataEntity.Metadata;
+using WYF.DataEntity.Metadata.Clr;
 using WYF.Bos.Orm.impl;
 using System;
 using System.Collections.Generic;

@@ -1,7 +1,7 @@
 ﻿using Antlr4.Runtime.Misc;
 using WYF.Bos.DataEntity;
-using WYF.Bos.DataEntity.Entity;
-using WYF.Bos.DataEntity.Metadata;
+using WYF.DataEntity.Entity;
+using WYF.DataEntity.Metadata;
 using WYF.Bos.Orm.Exceptions;
 using WYF.Bos.Utils;
 using System;

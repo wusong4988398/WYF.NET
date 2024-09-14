@@ -1,5 +1,5 @@
 ﻿using WYF.Bos.Collections.Generic;
-using WYF.Bos.DataEntity.Metadata;
+using WYF.DataEntity.Metadata;
 using WYF.Bos.Orm.dataentity;
 using WYF.Bos.Orm.DataManager;
 using WYF.Bos.Orm.Drivers;
@@ -58,8 +58,7 @@ namespace WYF.Bos.Orm
             IDataManager manager = null;
             try
             {
-                manager = new DataManagerImplement();
-                //manager = (IDataManager)Activator.CreateInstance(Type.GetType("ws.bos.orm.dataentity.DataManagerImplement"));
+                manager = new DataManagerImplement(dt);
             }
             catch (Exception e)
             {

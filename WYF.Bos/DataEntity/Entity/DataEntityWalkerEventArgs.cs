@@ -1,8 +1,8 @@
-﻿using WYF.Bos.DataEntity.Metadata;
+﻿using WYF.DataEntity.Metadata;
 using WYF.Bos.Form.control.events;
 using WYF.Bos.Orm.Exceptions;
 
-namespace WYF.Bos.DataEntity.Entity
+namespace WYF.DataEntity.Entity
 {
     public class DataEntityWalkerEventArgs : EventObject
     {

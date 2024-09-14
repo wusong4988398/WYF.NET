@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WYF.Bos.DataEntity.Metadata.dynamicobject
+namespace WYF.DataEntity.Metadata.dynamicobject
 {
     /// <summary>
     /// 从一个动态实体定义中提取字段的选项 需要注意的是，未注册提取的实体类型将按源类型原封不动。 DynamicObjectType#Extract方法参数

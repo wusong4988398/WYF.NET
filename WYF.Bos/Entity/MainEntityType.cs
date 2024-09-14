@@ -1,6 +1,6 @@
-﻿using WYF.Bos.DataEntity.Entity;
-using WYF.Bos.DataEntity.Metadata;
-using WYF.Bos.DataEntity.Metadata.Dynamicobject;
+﻿using WYF.DataEntity.Entity;
+using WYF.DataEntity.Metadata;
+using WYF.DataEntity.Metadata.Dynamicobject;
 using WYF.Bos.Entity.property;
 using WYF.Bos.Utils;
 using System;

@@ -1,23 +1,46 @@
-﻿using WYF.Bos.DataEntity.Metadata;
+﻿using WYF.DataEntity.Metadata;
 using WYF.Bos.Entity.query;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Diagnostics;
+using WYF.Bos.Entity;
 
 namespace WYF.Bos.Orm.impl
 {
     public class ORMConfiguration
     {
-        private static Type _entryEntityTypeCls;
-
-        private static Type _subEntryEntityTypeCls;
-
-        private static Type _baseDataEntityTypeCls;
-
-        private static Type _entryPropCls;
+        //private static Type _multiLangTextPropType;
+        private static Type _entryPropType;
+        private static Type _entryEntityType;
+        private static Type _subEntryEntityType;
+        private static Type _baseDataEntityType;
+        private static Type _refEntityType;
         private static IORMEntityInvoker ormEntityInvoker=new ORMEntityInvokerImpl();
+
+
+        static ORMConfiguration()
+        {
+            try
+            {
+                //_multiLangTextPropType = Type.GetType("kd.bos.entity.property.MuliLangTextProp");
+                _entryPropType = Type.GetType("kd.bos.entity.property.EntryProp");
+                _entryEntityType = Type.GetType("kd.bos.entity.EntryType");
+                _subEntryEntityType = Type.GetType("kd.bos.entity.SubEntryType");
+                _baseDataEntityType = Type.GetType("kd.bos.entity.BasedataEntityType");
+                _refEntityType = Type.GetType("kd.bos.entity.RefEntityType");
+
+                ormEntityInvoker = (IORMEntityInvoker)Activator.CreateInstance(Type.GetType("kd.bos.entity.query.ORMEntityInvokerImpl"));
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine($"Failed to init ORMConfiguration: {e.Message}", e);
+            }
+
+   
+        }
 
         public static IDataEntityType InnerGetDataEntityType(string entityNamePath, Dictionary<string, IDataEntityType> entityTypeCache)
         {
@@ -102,11 +125,11 @@ namespace WYF.Bos.Orm.impl
 
         public static bool IsBasedata(IDataEntityType entityType)
         {
-            return _baseDataEntityTypeCls.IsAssignableFrom(entityType.GetType());
+            return _baseDataEntityType.IsAssignableFrom(entityType.GetType());
         }
         public static bool IsEntryProPropertyType(IDataEntityProperty peropertyType)
         {
-            return _entryPropCls.IsAssignableFrom(peropertyType.GetType());
+            return _entryPropType.IsAssignableFrom(peropertyType.GetType());
         }
         public static IDataEntityType InnerGetBaseDataEntityType(IComplexProperty basedataProperty, Dictionary<string, IDataEntityType> entityTypeCache)
         {
@@ -129,7 +152,7 @@ namespace WYF.Bos.Orm.impl
 
         public static bool IsEntryEntityType(IDataEntityType entityType)
         {
-            return (_entryEntityTypeCls.IsAssignableFrom(entityType.GetType()) || _subEntryEntityTypeCls
+            return (_entryEntityType.IsAssignableFrom(entityType.GetType()) || _subEntryEntityType
               .IsAssignableFrom(entityType.GetType()));
         }
     }

@@ -1,7 +1,7 @@
 ﻿using WYF.Bos.Orm.Metadata.DataEntity;
 
 
-namespace WYF.Bos.DataEntity.Metadata.database
+namespace WYF.DataEntity.Metadata.database
 {
     public class DbMetadataTable : DbMetadataBase
     {

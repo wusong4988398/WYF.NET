@@ -2,8 +2,8 @@
 
 
 using AspectCore.Extensions.Reflection;
-using WYF.Bos.DataEntity.Entity;
-using JNPF.Form.DataEntity.Utils;
+using WYF.DataEntity.Entity;
+using WYF.DataEntity.Utils;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -13,7 +13,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WYF.Bos.DataEntity.Metadata.Clr
+namespace WYF.DataEntity.Metadata.Clr
 {
     public sealed class SimpleProperty : DataEntityProperty, ISimpleProperty
     {

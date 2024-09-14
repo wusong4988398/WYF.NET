@@ -1,5 +1,5 @@
-﻿using WYF.Bos.DataEntity.Entity;
-using WYF.Bos.DataEntity.Metadata.Dynamicobject;
+﻿using WYF.DataEntity.Entity;
+using WYF.DataEntity.Metadata.Dynamicobject;
 using WYF.Bos.Entity.DataModel;
 
 using System;

@@ -1,5 +1,5 @@
-﻿using WYF.Bos.DataEntity.Metadata.database;
-using WYF.Bos.DataEntity.Metadata;
+﻿using WYF.DataEntity.Metadata.database;
+using WYF.DataEntity.Metadata;
 using System;
 using System.Collections.Generic;
 using System.Data;

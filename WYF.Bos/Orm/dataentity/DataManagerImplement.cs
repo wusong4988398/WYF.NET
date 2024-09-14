@@ -1,10 +1,10 @@
 ﻿using Antlr4.Runtime.Misc;
 using WYF.Bos.Collections.Generic;
 using WYF.Bos.DataEntity;
-using WYF.Bos.DataEntity.Entity;
-using WYF.Bos.DataEntity.Metadata;
-using WYF.Bos.DataEntity.Metadata.database;
-using WYF.Bos.DataEntity.Metadata.Dynamicobject;
+using WYF.DataEntity.Entity;
+using WYF.DataEntity.Metadata;
+using WYF.DataEntity.Metadata.database;
+using WYF.DataEntity.Metadata.Dynamicobject;
 using WYF.Bos.db;
 using WYF.Bos.Orm.datamanager;
 using WYF.Bos.Orm.DataManager;
@@ -43,6 +43,12 @@ namespace WYF.Bos.Orm.dataentity
         private DBRoute _dbRoute = null;
         private IDataEntityType _dataEntityType;
         private ObjectCache<IDataEntityType, Tuple<DataEntityTypeMap, DbMetadataDatabase>> _cache;
+
+
+        public DataManagerImplement(IDataEntityType dt):this(dt, null)
+        {
+           
+        }
 
         public DataManagerImplement(IDataEntityType dt, DBRoute dbRoute)
         {
@@ -493,6 +499,7 @@ namespace WYF.Bos.Orm.dataentity
 
         protected QuickDataSet ExecuteReader(Collection<DbMetadataTable> tablesSchema, DbMetadataTable rootTable, List<SelectSql> selectSqls, ReadWhere where)
         {
+            
             int idx = 0;
             QuickDataSet ds = new QuickDataSet();
             foreach (DbMetadataTable tableSchema in tablesSchema)

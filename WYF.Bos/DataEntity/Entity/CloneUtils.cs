@@ -1,10 +1,11 @@
-﻿using WYF.Bos.DataEntity.Metadata;
+﻿using WYF.DataEntity.Metadata;
 using WYF.Bos.Utils;
 using JNPF.Form.DataEntity;
 using System.Collections;
+using WYF.Bos.DataEntity;
 
 
-namespace WYF.Bos.DataEntity.Entity
+namespace WYF.DataEntity.Entity
 {
     public class CloneUtils
     {

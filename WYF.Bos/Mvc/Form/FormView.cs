@@ -8,7 +8,7 @@ using WYF.Bos.Form.plugin;
 using WYF.Bos.Mvc.cache;
 
 using JNPF.Form;
-using JNPF.Form.DataEntity.Serialization;
+using WYF.DataEntity.Serialization;
 using WYF;
 
 

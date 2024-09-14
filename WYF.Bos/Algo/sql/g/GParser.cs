@@ -7,8 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static WYF.Bos.algo.sql.g.GParser;
-using static WYF.Bos.algo.sql.g.GParser.LogicalNotContext;
+
 
 namespace WYF.Bos.algo.sql.g
 {

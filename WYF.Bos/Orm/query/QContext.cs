@@ -1,6 +1,6 @@
 ﻿
-using WYF.Bos.DataEntity.Metadata;
-using WYF.Bos.DataEntity.Metadata.Dynamicobject;
+using WYF.DataEntity.Metadata;
+using WYF.DataEntity.Metadata.Dynamicobject;
 using WYF.Bos.Orm.impl;
 using WYF.Bos.Orm.query.multi;
 using WYF.Bos.Orm.query.oql.g.expr;

@@ -18,7 +18,7 @@ using System.Threading.Tasks;
 using WYF.Bos.Orm.query;
 using WYF.Bos.ServiceHelper;
 
-using WYF.Bos.DataEntity.Entity;
+using WYF.DataEntity.Entity;
 using WYF;
 using WYF.Extension;
 

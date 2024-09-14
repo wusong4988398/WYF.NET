@@ -1,7 +1,7 @@
 ﻿using WYF.Bos.DataEntity;
-using WYF.Bos.DataEntity.Entity;
-using WYF.Bos.DataEntity.Metadata;
-using WYF.Bos.DataEntity.Metadata.database;
+using WYF.DataEntity.Entity;
+using WYF.DataEntity.Metadata;
+using WYF.DataEntity.Metadata.database;
 using System;
 using System.Collections.Generic;
 using System.Linq;

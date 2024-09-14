@@ -1,4 +1,4 @@
-﻿using WYF.Bos.DataEntity.Metadata.database;
+﻿using WYF.DataEntity.Metadata.database;
 using JNPF.Form.DataEntity;
 using System;
 using System.Collections.Generic;

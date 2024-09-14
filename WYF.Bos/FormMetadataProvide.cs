@@ -6,7 +6,7 @@
 using WYF.Bos.Entity;
 using WYF.Bos.Form;
 using WYF.Bos.Service.Metadata;
-using JNPF.Form.DataEntity.Serialization;
+using WYF.DataEntity.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Linq;

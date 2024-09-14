@@ -18,7 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\WYF\WYF.csproj" />
+    <ProjectReference Include="..\WFY.SqlSugar\WFY.SqlSugar.csproj" />
   </ItemGroup>
 
 </Project>

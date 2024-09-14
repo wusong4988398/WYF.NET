@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace JNPF.Form.DataEntity.Serialization
+namespace WYF.DataEntity.Serialization
 {
     internal static class SerializationUtils
     {

@@ -1,4 +1,4 @@
-﻿using WYF.Bos.DataEntity.Entity;
+﻿using WYF.DataEntity.Entity;
 using WYF.Bos.Entity.validate;
 using WYF.Bos.fulltext;
 using System;

@@ -1,6 +1,6 @@
 ﻿
-using WYF.Bos.DataEntity.Metadata;
-using WYF.Bos.DataEntity.Serialization;
+using WYF.DataEntity.Metadata;
+using WYF.DataEntity.Serialization;
 using WYF.Bos.Form;
 using System;
 using System.Collections.Generic;
@@ -10,7 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using WYF;
 
-namespace JNPF.Form.DataEntity.Serialization
+namespace WYF.DataEntity.Serialization
 {
     public class DcJsonSerializer : DcSerializer
     {

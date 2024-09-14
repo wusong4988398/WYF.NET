@@ -1,9 +1,9 @@
-﻿using WYF.Bos.DataEntity.Entity;
-using WYF.Bos.DataEntity.Metadata.Dynamicobject;
+﻿using WYF.DataEntity.Entity;
+using WYF.DataEntity.Metadata.Dynamicobject;
 using WYF.Bos.Orm.Exceptions;
 
 
-namespace WYF.Bos.DataEntity.Metadata.dynamicobject
+namespace WYF.DataEntity.Metadata.dynamicobject
 {
     [Serializable]
     public class DynamicComplexProperty : DynamicProperty, IComplexProperty

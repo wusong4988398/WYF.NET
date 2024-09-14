@@ -1,6 +1,6 @@
-﻿using WYF.Bos.DataEntity.Entity;
-using WYF.Bos.DataEntity.Metadata;
-using WYF.Bos.DataEntity.Metadata.Clr;
+﻿using WYF.DataEntity.Entity;
+using WYF.DataEntity.Metadata;
+using WYF.DataEntity.Metadata.Clr;
 using WYF.Bos.db;
 using WYF.Bos.Orm.query;
 using WYF.Bos.Orm.query.multi;

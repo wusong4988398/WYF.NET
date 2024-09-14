@@ -1,7 +1,7 @@
 ﻿using WYF.Bos.Data;
-using WYF.Bos.DataEntity.Entity;
-using WYF.Bos.DataEntity.Metadata;
-using WYF.Bos.DataEntity.Metadata.Dynamicobject;
+using WYF.DataEntity.Entity;
+using WYF.DataEntity.Metadata;
+using WYF.DataEntity.Metadata.Dynamicobject;
 using WYF.Bos.Entity;
 using WYF.Bos.Orm;
 using WYF.Bos.Orm.datamanager;

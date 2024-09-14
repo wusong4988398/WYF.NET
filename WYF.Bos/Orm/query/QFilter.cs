@@ -1,5 +1,5 @@
 ﻿using Antlr4.Runtime.Misc;
-using WYF.Bos.DataEntity.Metadata;
+using WYF.DataEntity.Metadata;
 using WYF.Bos.Orm.impl;
 using WYF.Bos.Orm.query.fulltext;
 using WYF.Bos.Orm.query.hugein;

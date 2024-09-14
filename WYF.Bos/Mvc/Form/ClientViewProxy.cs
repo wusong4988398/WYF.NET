@@ -1,5 +1,5 @@
 ﻿using WYF.Bos.Form;
-using JNPF.Form.DataEntity.Serialization;
+using WYF.DataEntity.Serialization;
 using System;
 using System.Collections;
 using System.Collections.Generic;

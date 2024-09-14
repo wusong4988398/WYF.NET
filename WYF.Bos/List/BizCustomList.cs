@@ -1,6 +1,6 @@
 ﻿using WYF.Bos.Form.container;
 using WYF.Bos.Form.control.events;
-using JNPF.Form.DataEntity.Serialization;
+using WYF.DataEntity.Serialization;
 using System;
 using System.Collections.Generic;
 using System.Linq;

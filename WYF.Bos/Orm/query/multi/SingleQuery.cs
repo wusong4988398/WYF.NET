@@ -1,6 +1,6 @@
 ﻿using Antlr4.Runtime.Misc;
 using WYF.Bos.algo;
-using WYF.Bos.DataEntity.Metadata;
+using WYF.DataEntity.Metadata;
 using WYF.Bos.db;
 using WYF.Bos.lang;
 using WYF.Bos.Orm.impl;

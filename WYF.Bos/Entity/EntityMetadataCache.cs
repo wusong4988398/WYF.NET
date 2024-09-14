@@ -1,4 +1,4 @@
-﻿using WYF.Bos.DataEntity.Metadata.Dynamicobject;
+﻿using WYF.DataEntity.Metadata.Dynamicobject;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;

@@ -1,8 +1,8 @@
 ﻿using Antlr4.Runtime.Misc;
-using WYF.Bos.DataEntity.Entity;
-using WYF.Bos.DataEntity.Metadata;
-using WYF.Bos.DataEntity.Metadata.dynamicobject;
-using WYF.Bos.DataEntity.Metadata.Dynamicobject;
+using WYF.DataEntity.Entity;
+using WYF.DataEntity.Metadata;
+using WYF.DataEntity.Metadata.dynamicobject;
+using WYF.DataEntity.Metadata.Dynamicobject;
 using WYF.Bos.Entity.property;
 using System.Text;
 

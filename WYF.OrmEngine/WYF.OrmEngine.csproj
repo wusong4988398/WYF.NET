@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\WYF.DataEntity\WYF.DataEntity.csproj" />
+    <ProjectReference Include="..\WYF.DbEngine\WYF.DbEngine.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Drivers\MySql\" />
+  </ItemGroup>
+
+</Project>

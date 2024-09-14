@@ -1,5 +1,5 @@
-﻿using WYF.Bos.DataEntity.Entity;
-using JNPF.Form.DataEntity.Utils;
+﻿using WYF.DataEntity.Entity;
+using WYF.DataEntity.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;

@@ -17,7 +17,5 @@ namespace WYF.Bos.Orm.query.multi
         multi_lang,
         [Description("基础资料表")]
         basedata
-
-
-}
+    }
 }

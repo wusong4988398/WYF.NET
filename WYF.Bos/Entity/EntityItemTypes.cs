@@ -1,9 +1,9 @@
 ﻿
-using WYF.Bos.DataEntity.Metadata;
-using WYF.Bos.DataEntity.Metadata.dynamicobject;
+using WYF.DataEntity.Metadata;
+using WYF.DataEntity.Metadata.dynamicobject;
 using WYF.Bos.Entity.property;
-using JNPF.Form.DataEntity.Serialization;
-using JNPF.Form.DataEntity.Utils;
+using WYF.DataEntity.Serialization;
+using WYF.DataEntity.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;

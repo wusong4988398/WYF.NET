@@ -1,7 +1,7 @@
 ﻿using Antlr4.Runtime.Misc;
-using WYF.Bos.DataEntity.Metadata;
-using WYF.Bos.DataEntity.Metadata.Clr;
-using WYF.Bos.DataEntity.Metadata.Dynamicobject;
+using WYF.DataEntity.Metadata;
+using WYF.DataEntity.Metadata.Clr;
+using WYF.DataEntity.Metadata.Dynamicobject;
 using WYF.Bos.Orm.impl;
 using System;
 using System.Collections.Generic;

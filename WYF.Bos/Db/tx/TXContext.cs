@@ -17,7 +17,7 @@ namespace WYF.Bos.db.tx
         private readonly string accountId;
         private readonly long id;
         private static readonly AtomicLong idseq = new AtomicLong();
-        private readonly Propagation propagation;
+        public  Propagation Propagation { get; set; }
         private readonly TXContext parent;
         private readonly TXContext transRootCtx;
         private bool isImplicitTX;
@@ -30,9 +30,9 @@ namespace WYF.Bos.db.tx
             this.tip = "跨库写的SQL，不能在一个事务中执行，请用事务隔离或用MQ异步处理：";
             this.accountId = RequestContextInfo.Get().AccountId;
             this.id = idseq.Increment();
-            if ((parent == null || parent.propagation == Propagation.NOT_SUPPORTED) && propagation == Propagation.REQUIRED)
-                propagation = Propagation.REQUIRES_NEW;
-            this.propagation = propagation;
+            //if ((parent == null || parent.propagation == Propagation.NOT_SUPPORTED) && propagation == Propagation.REQUIRED)
+            //    propagation = Propagation.REQUIRES_NEW;
+            //this.propagation = propagation;
             this.parent = parent;
             this.isImplicitTX = isImplicitTX;
             this.transRootCtx = PeekTMRoot();
@@ -69,12 +69,12 @@ namespace WYF.Bos.db.tx
             TXContext cur = this;
             while (cur.parent != null)
             {
-                switch (cur.propagation)
-                {
-                    case Propagation.REQUIRES_NEW:
-                    case Propagation.NOT_SUPPORTED:
-                        return cur;
-                }
+                //switch (cur.propagation)
+                //{
+                //    case Propagation.REQUIRES_NEW:
+                //    case Propagation.NOT_SUPPORTED:
+                //        return cur;
+                //}
                 cur = cur.parent;
             }
             return cur;
