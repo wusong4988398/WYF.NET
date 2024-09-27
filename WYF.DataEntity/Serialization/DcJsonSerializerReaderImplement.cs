@@ -17,11 +17,13 @@ namespace WYF.DataEntity.Serialization
     public sealed class DcJsonSerializerReaderImplement : DcSerializerReader
     {
         private static readonly string STRING = "??????";
+        private object? tempRef_findItem;
         private Dictionary<Type, Action<ISimpleProperty, object, object>> _setValueActionsCache = new Dictionary<Type, Action<ISimpleProperty, object, object>>();
     
         public DcJsonSerializerReaderImplement(DcBinder binder, bool isLocaleValueFull) : base(binder, isLocaleValueFull)
         {
-
+            this.tempRef_findItem = null ;
+            this._setValueActionsCache =new Dictionary<Type, Action<ISimpleProperty, object, object>>();
         }
         /// <summary>
         /// 为指定属性填充指定的值

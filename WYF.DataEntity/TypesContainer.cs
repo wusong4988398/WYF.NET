@@ -4,6 +4,7 @@ using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -41,7 +42,28 @@ namespace WYF.DataEntity
                 return null;
             }
 
-            return typesDict.GetOrAdd(typeName, tp => Type.GetType(tp));
+            return typesDict.GetOrAdd(typeName, tp => {
+
+
+
+
+                Type type= Type.GetType(tp);
+                if (type == null)
+                {
+                    // 加载 DLL
+
+
+                    string[] parts = tp.Split('.');
+                    string desiredPart = parts[0] + "." + parts[1]+".dll"; // "WYF.Form"
+
+                    Assembly assembly = Assembly.LoadFrom(desiredPart);
+                    type=assembly.GetType(tp);
+                }
+
+                return type;
+
+
+            });
 
         }
 

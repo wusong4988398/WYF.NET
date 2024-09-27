@@ -29,11 +29,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WYF.Entity", "WYF.Entity\WY
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WYF.ServiceHelper", "WYF.ServiceHelper\WYF.ServiceHelper.csproj", "{539AC65E-0D3C-401A-B215-CEF9329A3EC5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WYF.Business.Dao", "WYF.Business.Dao\WYF.Business.Dao.csproj", "{CB120EE5-392F-4B42-A69B-341BA2CC2F50}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WYF.Business.Dao", "WYF.Business.Dao\WYF.Business.Dao.csproj", "{CB120EE5-392F-4B42-A69B-341BA2CC2F50}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WYF.KSQL", "WYF.KSQL\WYF.KSQL.csproj", "{450480DD-B8C4-4AE8-9F2E-2511C7B8D44E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WYF.Form", "WYF.Form\WYF.Form.csproj", "{51AA4BF4-1650-43C3-A31A-52EE8041D283}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WYF.Form", "WYF.Form\WYF.Form.csproj", "{51AA4BF4-1650-43C3-A31A-52EE8041D283}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WYF.Metadata", "WYF.Metadata\WYF.Metadata.csproj", "{04C1C384-B0D4-4209-BB0D-E500237AC103}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -233,6 +235,18 @@ Global
 		{51AA4BF4-1650-43C3-A31A-52EE8041D283}.Release|x64.Build.0 = Release|Any CPU
 		{51AA4BF4-1650-43C3-A31A-52EE8041D283}.Release|x86.ActiveCfg = Release|Any CPU
 		{51AA4BF4-1650-43C3-A31A-52EE8041D283}.Release|x86.Build.0 = Release|Any CPU
+		{04C1C384-B0D4-4209-BB0D-E500237AC103}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{04C1C384-B0D4-4209-BB0D-E500237AC103}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{04C1C384-B0D4-4209-BB0D-E500237AC103}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{04C1C384-B0D4-4209-BB0D-E500237AC103}.Debug|x64.Build.0 = Debug|Any CPU
+		{04C1C384-B0D4-4209-BB0D-E500237AC103}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{04C1C384-B0D4-4209-BB0D-E500237AC103}.Debug|x86.Build.0 = Debug|Any CPU
+		{04C1C384-B0D4-4209-BB0D-E500237AC103}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{04C1C384-B0D4-4209-BB0D-E500237AC103}.Release|Any CPU.Build.0 = Release|Any CPU
+		{04C1C384-B0D4-4209-BB0D-E500237AC103}.Release|x64.ActiveCfg = Release|Any CPU
+		{04C1C384-B0D4-4209-BB0D-E500237AC103}.Release|x64.Build.0 = Release|Any CPU
+		{04C1C384-B0D4-4209-BB0D-E500237AC103}.Release|x86.ActiveCfg = Release|Any CPU
+		{04C1C384-B0D4-4209-BB0D-E500237AC103}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

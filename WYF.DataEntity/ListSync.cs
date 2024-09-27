@@ -1,31 +1,61 @@
 ﻿
 
 using System.Collections;
+using WYF.DataEntity.Entity;
 
 
 namespace WYF.Bos.DataEntity
 {
+  
+
     public static class ListSync
     {
-        // Methods
-        private static void DefaultAdd<TargetT>(IEnumerable<TargetT> list, TargetT newItem)
+        public static void Sync<SourceT, TargetT>(ICollection<SourceT> sourceList, ICollection<TargetT> targetList, ListSyncFunction<SourceT, TargetT> syncFunction, bool callUpdateFuncWhenCreated)
         {
-            ((IList<TargetT>)list).Add(newItem);
-        }
+            if (sourceList == null)
+                throw new ArgumentException(nameof(sourceList));
+            if (targetList == null)
+                throw new ArgumentException(nameof(targetList));
 
-        private static void DefaultAdd(IEnumerable list, object newItem)
-        {
-            ((IList)list).Add(newItem);
-        }
+            TargetT[] targetArray = targetList.ToArray();
+            List<int> indexArray = new List<int>(targetList.Count);
+            for (int i = 0; i < targetList.Count; i++)
+                indexArray.Add(i);
 
-        private static void DefaultRemove<TargetT>(IEnumerable<TargetT> list, TargetT removeItem, int index)
-        {
-            ((IList<TargetT>)list).RemoveAt(index);
-        }
+            foreach (SourceT sourceItem in sourceList)
+            {
+                bool found = false;
+                for (int j = 0; j < targetArray.Length; j++)
+                {
+                    TargetT targetItem = targetArray[j];
+                    if (syncFunction.EqualsFunc(sourceItem, targetItem))
+                    {
+                      
+                        syncFunction.UpdateFunc(sourceItem, targetItem);
+                        if (indexArray.Contains(j))
+                        {
+                            found = true;
+                            indexArray.Remove(j);
+                            break;
+                        }
+                    }
+                }
+                if (!found)
+                {
+                    TargetT targetItem = syncFunction.CreateFunc(sourceItem);
+                    if (targetItem != null)
+                    {
+                        if (callUpdateFuncWhenCreated)
+                            syncFunction.UpdateFunc(sourceItem, targetItem);
+                        syncFunction.AddFunc(targetList, targetItem);
+                    }
+                }
+            }
 
-        private static void DefaultRemove(IEnumerable list, object removeItem, int index)
-        {
-            ((IList)list).RemoveAt(index);
+            foreach (int index in indexArray)
+            {
+                syncFunction.RemoveFunc(targetList, targetArray[index], index);
+            }
         }
 
         public static void Sync<SourceT, TargetT>(IEnumerable<SourceT> sourceList, IEnumerable<TargetT> targetList, Func<SourceT, TargetT, bool> equatable, Action<SourceT, TargetT> updateFunc, Func<SourceT, TargetT> createFunc, Action<IEnumerable<TargetT>, TargetT> addFunc = null, Action<IEnumerable<TargetT>, TargetT, int> removeFunc = null, bool callUpdateFuncWhenCreated = true)
@@ -89,8 +119,5 @@ namespace WYF.Bos.DataEntity
 
         }
 
-     
     }
-
-
 }

@@ -12,7 +12,14 @@ namespace ConsoleApp2
     {
         public static void TestMethod1()
         {
-            DynamicObjectCollection dynamicObjects= QueryServiceHelper.Query("t_user", "FID,FName", null, "", 10);
+
+
+
+
+
+
+
+            DynamicObjectCollection dynamicObjects= QueryServiceHelper.Query("bos_user", "id,phone", null, "", 10);
             
             Console.WriteLine("执行完毕");
         }

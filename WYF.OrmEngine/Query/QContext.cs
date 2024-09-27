@@ -7,6 +7,7 @@ using WYF.DataEntity.Metadata;
 using WYF.DataEntity.Metadata.Dynamicobject;
 using WYF.OrmEngine.Impl;
 using WYF.OrmEngine.Query.Multi;
+using static IronPython.Modules.PythonIterTools;
 
 namespace WYF.OrmEngine.Query
 {
@@ -71,6 +72,50 @@ namespace WYF.OrmEngine.Query
                 this.EntityItem = allCtx.EntityItem;
                 this.innerJoinFilterEntityItemSet = allCtx.innerJoinFilterEntityItemSet;
             }
+
+            AddField2map(objectFullName, null, this.SelectFieldMap, true);
+            this.silenceHandleAllFilterAndOrderAndGroupBy = false;
+            for (int i = 0, n = fields.Count(); i < n; i++)
+            {
+                PropertyField field = fields[i];
+                PutField(field, true, false);
+            }
+            this.silenceHandleAllFilterAndOrderAndGroupBy = silenceHandleAllFilterAndOrderAndGroupBy;
+
+        }
+
+
+        public void AddField2map(string fullObjectName, PropertyField field, Dictionary<string, List<PropertyField>> map, bool add2CurrentSelectObject)
+        {
+            if (add2CurrentSelectObject)
+            {
+                bool ignore = false;
+                if (field == null || field.Field == null)
+                {
+                    if (ignoreNoneSelectObject)
+                        ignore = true;
+                }
+                if (!ignore)
+                    this.CurrentSelectObjectSet.Add(fullObjectName);
+            }
+
+            EntityItem ei = GetEntityItem(fullObjectName);
+            if (ei == null || ORMConfiguration.IsEntryEntityType(ei.EntityType))
+                return;
+
+            List<PropertyField> list = null;
+            if (map.TryGetValue(fullObjectName, out list) == false)
+            {
+                list = new List<PropertyField>();
+                map[fullObjectName] = list;
+            }
+
+            if (field != null)
+                list.Add(field);
+
+            int dot = fullObjectName.LastIndexOf('.');
+            if (dot != -1)
+                AddField2map(fullObjectName.Substring(0, dot), null, map, false);
         }
 
         public PropertyField PutPerformJoinField(PropertyField field)

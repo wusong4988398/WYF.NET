@@ -25,7 +25,7 @@ namespace WYF.DataEntity.Entity
         private DynamicObjectType dt;
 
         private IDataStorage dataStorage;
-
+        //private Object[] values;
   
         private bool isQueryObj;
 
@@ -187,6 +187,22 @@ namespace WYF.DataEntity.Entity
             return obj;
         
         }
+        //public Object GetLocalValue(IDataEntityProperty property)
+        //{
+        //    int index = property.Ordinal;
+        //    if (index >= this.values.Count())
+        //    {
+        //        EnsureCapacity(property);
+        //    }
+               
+        //    return this.values[index];
+        //}
+
+        //private void EnsureCapacity(IDataEntityProperty property)
+        //{
+        //    int newSize = property.Ordinal;
+        //    Array.Resize(ref values, newSize + 1);
+        //}
 
         private object GetPropertyValue(object obj, string propertyName)
         {

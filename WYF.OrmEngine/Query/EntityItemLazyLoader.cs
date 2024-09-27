@@ -18,9 +18,9 @@ namespace WYF.OrmEngine.Query
 
         public EntityItemLazyLoader(ORMHint hint, QContext allCtx, Dictionary<string, IDataEntityType> entityTypeCache)
         {
-            //this.hint = hint;
+            this.hint = hint;
             //this.EntityItemMap = (allCtx == null) ? new Dictionary<string, EntityItem>() : allCtx.EntityItemLoader.entityItemMap;
-            //this.entityTypeCache = entityTypeCache;
+            this.entityTypeCache = entityTypeCache;
         }
         public EntityItem Load(IDataEntityType entityType, string asObjectName)
         {

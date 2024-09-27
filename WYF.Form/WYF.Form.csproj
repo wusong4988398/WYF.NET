@@ -8,6 +8,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\WYF.Common\WYF.Common.csproj" />
+    <ProjectReference Include="..\WYF.DbEngine\WYF.DbEngine.csproj" />
+    <ProjectReference Include="..\WYF.Metadata\WYF.Metadata.csproj" />
   </ItemGroup>
 
 </Project>

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using WYF.DataEntity.Metadata;
@@ -21,14 +22,20 @@ namespace WYF.OrmEngine.Impl
         {
             try
             {
+                Assembly assembly = Assembly.LoadFrom("WYF.Entity.dll");
                 //_multiLangTextPropType = Type.GetType("kd.bos.entity.property.MuliLangTextProp");
                 //_entryPropType = Type.GetType("kd.bos.entity.property.EntryProp");
                 //_entryEntityType = Type.GetType("kd.bos.entity.EntryType");
                 //_subEntryEntityType = Type.GetType("kd.bos.entity.SubEntryType");
                 //_baseDataEntityType = Type.GetType("kd.bos.entity.BasedataEntityType");
                 //_refEntityType = Type.GetType("kd.bos.entity.RefEntityType");
+           
+                Type type = assembly.GetType("WYF.Entity.ORMEntityInvokerImpl",true);
 
-                ormEntityInvoker = (IORMEntityInvoker)Activator.CreateInstance(Type.GetType("WYF.Entity.ORMEntityInvokerImpl"));
+                ormEntityInvoker = (IORMEntityInvoker)Activator.CreateInstance(type);
+                _entryEntityTypeCls = assembly.GetType("WYF.Entity.EntryType", true);
+                _subEntryEntityTypeCls = assembly.GetType("WYF.Entity.SubEntryType", true);
+                _entryPropCls = assembly.GetType("WYF.Entity.Property.EntryProp", true);
             }
             catch (Exception e)
             {

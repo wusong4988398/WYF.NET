@@ -84,9 +84,26 @@ namespace WYF.DataEntity.Metadata.Dynamicobject
              set { this._extendName = value; }
         }
         /// <summary>
-        /// 主键
+        /// 主键  this._primaryKey;
         /// </summary>
-        public ISimpleProperty PrimaryKey => this._primaryKey;
+        public ISimpleProperty PrimaryKey { 
+            get
+            {
+                if (this._primaryKey == null)
+                {
+                    foreach (IDataEntityProperty prop in this._properties)
+                    {
+                        if (prop is ISimpleProperty simpleProp && simpleProp.IsPrimaryKey)
+                        {
+                            this._primaryKey = simpleProp;
+                            break;
+                        }
+                    }
+                }
+
+                return this._primaryKey;
+            } 
+        }
         
         public Type ClrType { 
            get { 

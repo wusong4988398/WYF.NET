@@ -3,6 +3,7 @@
 using WYF.DataEntity;
 using WYF.DataEntity.Metadata;
 using WYF.DataEntity.Metadata.dynamicobject;
+using WYF.DataEntity.Metadata.Dynamicobject;
 using WYF.DataEntity.Serialization;
 using WYF.DataEntity.Utils;
 using WYF.Entity.Property;
@@ -47,7 +48,8 @@ namespace WYF.Entity
 
         static EntityItemTypes()
         {
-
+            
+            Register(typeof(DynamicObjectType));
             Register(typeof(MainEntityType));
             Register(typeof(BooleanProp));
             Register(typeof(LongProp));
@@ -68,9 +70,22 @@ namespace WYF.Entity
             Register(typeof(BasedataProp));
             Register(typeof(RefEntityType));
             Register(typeof(EntryProp));
+            Register(typeof(DateProp));
+            Register(typeof(VarcharProp));
+            Register(typeof(EntryType));
+            Register(typeof(TreeEntryType));
+            Register(typeof(ParentBasedataProp));
 
 
+            
 
+            Register(typeof(PictureProp));
+            Register(typeof(IntegerProp));
+            Register(typeof(MulBasedataProp));
+            Register(typeof(TreeEntryProp));
+            Register(typeof(CityProp));
+            Register(typeof(CurrencyProp));
+            Register(typeof(AdminDivisionProp));
             Register(typeof(OrgProp));
             Register(typeof(MuliLangTextProp));
         }

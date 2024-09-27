@@ -85,7 +85,8 @@ namespace WYF.DataEntity.Collections
                 {
                     return result;
                 }
-                throw new KeyNotFoundException();
+                return result;
+                //throw new KeyNotFoundException();
             }
         }
 

@@ -7,6 +7,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Collections.ObjectModel;
+using WYF.Bos.DataEntity;
 
 namespace WYF.DataEntity.Utils
 {
@@ -63,5 +65,10 @@ namespace WYF.DataEntity.Utils
             }
             return default(T);
         }
+        public static  void Sync<SourceT, TargetT>(ICollection<SourceT> sourceList, ICollection<TargetT> targetList, ListSyncFunction<SourceT, TargetT> syncFunction, bool callUpdateFuncWhenCreated)
+        {
+            ListSync.Sync(sourceList, targetList, syncFunction, callUpdateFuncWhenCreated);
+        }
+    
     }
 }

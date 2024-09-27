@@ -56,12 +56,18 @@ namespace WYF.Entity
             {
                 foreach (Dictionary<string, object> refPropType in refPropTypes)
                 {
-                    if (refPropType.ContainsKey("Master") && refPropType.GetValueOrDefault("Master") != null && (refPropType.GetValueOrDefault("Master")).ToBool())
-                        continue;
-                    refPropType.Remove("Props");
+           
+                    if (!refPropType.ContainsKey("MASTER") || refPropType["MASTER"] == null || !(bool)refPropType["MASTER"])
+                    {
+                        refPropType.Remove("Props");
+                    }
+
+
                 }
             }
-            return (RefEntityType)EntityItemTypes.FromDictionary(jsonMap);
+            RefEntityType refEntityType = (RefEntityType)EntityItemTypes.FromDictionary(jsonMap);
+
+            return refEntityType;
 
         }
     }

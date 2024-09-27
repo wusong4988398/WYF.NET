@@ -32,7 +32,15 @@ namespace WYF.DbEngine
         {
             return ExecuteReader(ctx, strSQL, paramList, cmdtype, CommandBehavior.KeyInfo, bNewCn);
         }
+        public static T ExecuteScalar<T>(Context ctx, string strSql, T defaultValue, params SqlParam[] paramList)
+        {
 
+            IDatabase database = DatabaseFactory.CreateDataBase(ctx);
+            using (DbCommand command = database.CreateCommandByCommandType(CommandType.Text, strSql, 0))
+            {
+                return DBReaderUtils.ConvertTo<T>(database.ExecuteScalar(command, paramList), null, defaultValue);
+            }
+        }
 
         public static DataSet ExecuteDataSet(Context ctx, CommandType commandType, string strSQL, List<SqlParam> paramList)
         {

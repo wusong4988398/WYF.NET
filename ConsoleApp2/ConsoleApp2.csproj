@@ -8,7 +8,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Senparc.Weixin.TenPayV3" Version="1.6.3" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\WYF.Algo\WYF.Algo.csproj" />
+    <ProjectReference Include="..\WYF.Entity\WYF.Entity.csproj" />
     <ProjectReference Include="..\WYF.OrmEngine\WYF.OrmEngine.csproj" />
     <ProjectReference Include="..\WYF.ServiceHelper\WYF.ServiceHelper.csproj" />
   </ItemGroup>

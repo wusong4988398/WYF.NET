@@ -49,7 +49,7 @@ namespace WYF.DataEntity.Metadata.Dynamicobject
         /// <summary>
         /// 父实体类型
         /// </summary>
-        public IDataEntityType Parent
+        public virtual IDataEntityType Parent
         {
             get { return _parent; }
             set { _parent = value; }
@@ -114,6 +114,7 @@ namespace WYF.DataEntity.Metadata.Dynamicobject
         }
 
         public DynamicProperty() { }
+
 
         public DynamicProperty(String name, Type propertyType, Object defaultValue, bool isReadonly)
         {
@@ -184,9 +185,13 @@ namespace WYF.DataEntity.Metadata.Dynamicobject
             return GetDTValue<object>(obj);
         }
 
-      
 
-      
+        public void ResetDTValue(DynamicObject dataEntity)
+        {
+            DynamicProperty find = FindTrueProperty(dataEntity);
+            find.ResetValuePrivate(dataEntity);
+        }
+
         public void ResetValuePrivate(DynamicObject dataEntity)
         {
             if (this._isReadonly)
@@ -376,7 +381,7 @@ namespace WYF.DataEntity.Metadata.Dynamicobject
         /// </summary>
         /// <param name="dataEntity">要检索的实体对象</param>
         /// <returns>此实体中此属性的值</returns>
-        public Object GetDTValueFast(DynamicObject dataEntity)
+        public virtual object GetDTValueFast(DynamicObject dataEntity)
         {
             Object localValue = dataEntity.DataStorage.getLocalValue(this);
             if (localValue == null)

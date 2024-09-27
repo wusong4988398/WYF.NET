@@ -12,6 +12,12 @@ namespace WYF.Entity
     /// </summary>
     public class RefEntityType : BasedataEntityType
     {
+        public string RefBaseEntityIds { get; set; }
+        public override void EndInit()
+        {
+            Console.WriteLine("");
+
+        }
         public void FillRefEntityTypes(Dictionary<string, DynamicObjectType> types)
         {
             FillRefType(this, types);

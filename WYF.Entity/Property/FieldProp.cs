@@ -26,7 +26,7 @@ namespace WYF.Entity.Property
         /// <summary>
         /// 过滤控件类型
         /// </summary>
-        public string FilterControlType { get; set; } = "";
+        public virtual string FilterControlType { get; set; } = "";
         /// <summary>
         /// 获取是否必录字段
         /// </summary>

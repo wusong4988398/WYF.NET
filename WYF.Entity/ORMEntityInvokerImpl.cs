@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.Intrinsics.Arm;
 using System.Text;
 using System.Threading.Tasks;
 using WYF.DataEntity.Metadata;
@@ -25,9 +26,13 @@ namespace WYF.Entity
             return EntityMetadataCache.GetDataEntityType(entityName);
         }
 
-        public IDataEntityType GetMulBasedataPropDataEntityType(IDataEntityProperty dataEntityProperty)
+        public IDataEntityType GetMulBasedataPropDataEntityType(IDataEntityProperty dp)
         {
-            throw new NotImplementedException();
+            if (dp is MulBasedataProp) {
+                MulBasedataProp mp = (MulBasedataProp)dp;
+                return (IDataEntityType)mp.DynamicCollectionItemPropertyType;
+            }
+            return null;
         }
     }
 }

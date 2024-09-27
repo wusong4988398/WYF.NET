@@ -17,6 +17,7 @@ namespace WYF.DataEntity.Metadata.Dynamicobject
     public class DynamicCollectionProperty : DynamicProperty, ICollectionProperty
     {
         public DynamicObjectType _collectionItemPropertyType;
+        [ComplexProperty]
         public IDataEntityType ItemType
         {
             get { return _collectionItemPropertyType; } 
@@ -42,9 +43,20 @@ namespace WYF.DataEntity.Metadata.Dynamicobject
         }
 
         public DynamicObjectType DynamicCollectionItemPropertyType { get { return _collectionItemPropertyType; } }
-        
 
-        public new object GetDTValueFast(DynamicObject obj)
+
+        public override IDataEntityType Parent 
+        { 
+            get => base.Parent;
+
+            set { 
+                
+                base.Parent = value;
+                this._collectionItemPropertyType.Parent = value;
+            }
+        }
+
+        public override  object GetDTValueFast(DynamicObject obj)
         {
             IDataStorage dataStorage = obj.DataStorage;
             object localValue = dataStorage.getLocalValue(this);
