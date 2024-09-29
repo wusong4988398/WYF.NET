@@ -10,6 +10,12 @@ namespace WYF.DbEngine
 {
     public class DBImpl : AbstractDBImpl
     {
+        private static  DBImpl self = new DBImpl();
+
+        public static DBImpl GetInstance()
+        {
+            return self;
+        }
 
         public override QueryResult<T> Query<T>(DBRoute dbRoute, IDbConnection con, bool close, string sql, Func<IDataReader, T> action, bool convert, params object[] paramVarArgs)
         {

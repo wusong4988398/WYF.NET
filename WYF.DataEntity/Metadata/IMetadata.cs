@@ -25,7 +25,7 @@ namespace WYF.DataEntity.Metadata
         /// 获取物理字段名(表名)
         /// </summary>
         /// <returns></returns>
-        public  string Alias { get; }
+        public   string Alias { get; }
         /// <summary>
         /// 是否关联物理表 false:关联，true：不关联
         /// </summary>

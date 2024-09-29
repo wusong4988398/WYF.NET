@@ -221,12 +221,13 @@ namespace WYF.OrmEngine.Query.Multi
             {
                 selectField.Append(ctx.GetSimpleEntityAlias(this.EntityAlias)).Append('.').Append(this.Field);
                 //if (this.PeropertyType is ISimpleProperty simpleProperty && simpleProperty.PrivacyType != 0)
-                if (this.PeropertyType is ISimpleProperty simpleProperty)
-                {
+                //if (this.PeropertyType is ISimpleProperty simpleProperty && simpleProperty.PrivacyType != 0)
+                //{
                     
-                    selectField.Append(EntityConst.Privacy_property_field_suffix);
-                }
-                else if (this.PeropertyType is ISimpleProperty simpleProperty2 && simpleProperty2.IsEncrypt)
+                //    selectField.Append(EntityConst.Privacy_property_field_suffix);
+                //}
+                //else 
+                if (this.PeropertyType is ISimpleProperty simpleProperty2 && simpleProperty2.IsEncrypt)
                 {
                     selectField.Append(EntityConst.Encrypt_property_field_suffix);
                 }

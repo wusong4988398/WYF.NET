@@ -4,10 +4,13 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WYF.Algo;
+using WYF.Algo.dataType;
 using WYF.DataEntity.Metadata;
 using WYF.DbEngine;
 using WYF.DbEngine.db;
 using WYF.OrmEngine.Impl;
+using WYF.OrmEngine.Query.CrossDb;
 
 namespace WYF.OrmEngine.Query.Multi
 {
@@ -122,10 +125,37 @@ namespace WYF.OrmEngine.Query.Multi
             
             return ds;
         }
-
         private QueryMeta CreateQueryMeta()
         {
-            return null;
+            var qm = new QueryMeta();
+            var fs = new Field[this._selectFields.Count()];
+            int i = 0;
+
+            foreach (var f in this._selectFields)
+            {
+                ISimpleProperty iSimpleProperty = null;
+                IDataEntityProperty dp = f.PeropertyType;
+                string name = f.Alias;
+                if (dp is IComplexProperty)
+                {
+                    
+
+                    iSimpleProperty = ((IComplexProperty)dp).ComplexType.PrimaryKey;
+                }
+
+                DataType dt = iSimpleProperty == null ? (DataType)DateType.UnknownType : DataSetDataType.GetDataType(iSimpleProperty.PropertyType);
+                bool nullable = iSimpleProperty != null && iSimpleProperty.IsEnableNull;
+
+                var fieldItem = new Field(name, dt, nullable);
+                fs[i++] = fieldItem;
+
+                //if (iSimpleProperty is ISimpleProperty simpleProperty && simpleProperty.IsEncrypt)
+                //{
+                //    qm.SetTransFunction(fieldItem, FieldDecrypt.Get(simpleProperty));
+                //}
+            }
+            qm.RowMeta = new RowMeta(fs);
+            return qm;
         }
 
         private QueryParameter CreateQueryParameter()
@@ -273,8 +303,11 @@ namespace WYF.OrmEngine.Query.Multi
             }
             else
             {
-                //sql.Append(TenantAccountCrossDBRuntime.GetCrossDBTable(this._entityType.Alias, this._dbRoute.RouteKey, this.withCrossDBObjectOrFilter))
-                //  .Append(' ').Append(this._ctx.GetSimpleEntityAlias(this._fullObjName));
+                sql.Append(TenantAccountCrossDBRuntime.GetCrossDBTable(this._entityType.Alias, this._dbRoute.RouteKey, this.withCrossDBObjectOrFilter))
+                .Append(' ').Append(this._ctx.GetSimpleEntityAlias(this._fullObjName));
+     
+
+
             }
             List<JoinTableInfo> joinWithFilters = new List<JoinTableInfo>();
             List<JoinTableInfo> joinTableList = new List<JoinTableInfo>(this._ctx.JoinTableList);

@@ -11,7 +11,13 @@ namespace WYF.DbEngine
     public class DB
     {
         private static ThreadLocal<AbstractDBImpl> thImpl = new ThreadLocal<AbstractDBImpl>();
-        private static AbstractDBImpl defaultImpl;
+        private static AbstractDBImpl defaultImpl= GetDefaultImplInstance();
+
+        private static AbstractDBImpl GetDefaultImplInstance()
+        {
+            return DBImpl.GetInstance();
+        }
+
         public static Object Instance
         {
             

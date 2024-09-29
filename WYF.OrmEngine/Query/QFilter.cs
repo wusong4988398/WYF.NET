@@ -53,7 +53,10 @@ namespace WYF.OrmEngine.Query
             this.Value = value;
             this.IsExpressValue = expressValue;
         }
-
+        public List<PropertyField> __GetParsedPropertyFields()
+        {
+            return this.parsedPropertyFields ?? new List<PropertyField>();
+        }
         public void __SetProperty(string property)
         {
             this.Property = (property == null) ? "" : property.Trim();

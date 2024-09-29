@@ -57,8 +57,8 @@ namespace WYF.DataEntity.Metadata.Dynamicobject
         [SimpleProperty]
         public string DisplayName
         {
-            get { return _tableName; }
-             set { this._tableName = value; }
+            get { return displayName; }
+             set { this.displayName = value; }
         }
         /// <summary>
         /// 实体表名

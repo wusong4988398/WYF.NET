@@ -234,19 +234,72 @@ namespace WYF.OrmEngine.Query.Multi
 
         }
 
-        private Dictionary<string, QFilter> CreateObjFilterMap(QFilter[] filters, string rootObjName, QContext ctx, bool isJoinFilters)
+        //private Dictionary<string, QFilter> CreateObjFilterMap(QFilter[] filters, string rootObjName, QContext ctx, bool isJoinFilters)
+        //{
+        //    Dictionary<string, QFilter> filterMap = new Dictionary<string, QFilter>();
+        //    if (filters != null && filters.Length > 0)
+        //    {
+        //        foreach (QFilter filter in filters)
+        //        {
+        //            string objName;
+        //            filter.ToQParameter(ctx);
+        //        }
+        //    }
+        //    return filterMap;
+        //}
+
+        public Dictionary<string, QFilter> CreateObjFilterMap(QFilter[] filters, string rootObjName, QContext ctx, bool isJoinFilters)
         {
-            Dictionary<string, QFilter> filterMap = new Dictionary<string, QFilter>();
+            var filterMap = new Dictionary<string, QFilter>();
             if (filters != null && filters.Length > 0)
             {
-                foreach (QFilter filter in filters)
+                foreach (var filter in filters)
                 {
                     string objName;
                     filter.ToQParameter(ctx);
+                    if (isJoinFilters)
+                    {
+                        objName = filter.JoinEntityPath.ToLower();
+                        string tryFullObjName = $"{rootObjName}.{objName}";
+                        if (ctx.GetEntityItem(tryFullObjName) != null)
+                            objName = tryFullObjName;
+                    }
+                    else
+                    {
+                        var objNameSet = new SortedSet<string>();
+                        foreach (var pf in filter.__GetParsedPropertyFields())
+                        {
+                            objNameSet.Add(pf.FullObjectName);
+                        }
+
+                        if (!objNameSet.Any())
+                        {
+                            objName = rootObjName;
+                        }
+                        else
+                        {
+                            // 如果集合中有多个对象名，这里选择了第一个。根据需要可以调整逻辑。
+                            objName = objNameSet.First();
+                        }
+                    }
+
+                    QFilter mergedFilter;
+                    if (!filterMap.TryGetValue(objName, out mergedFilter))
+                    {
+                        mergedFilter = filter;
+                    }
+                    else
+                    {
+                        mergedFilter = mergedFilter.And(filter);
+                    }
+
+                    filterMap[objName] = mergedFilter;
                 }
             }
-            return null;
+            return filterMap;
         }
+
+
 
         private void TransFilter(string rootObjName, QContext allCtx)
         {

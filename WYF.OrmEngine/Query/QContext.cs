@@ -271,6 +271,14 @@ namespace WYF.OrmEngine.Query
                         PutField(mainPKField, true, false);
                     }
                 }
+
+                if (add2SelectObjectMap)
+                    AddField2map(fullObjectName, field, this.SelectFieldMap, true);
+                if (add2PerformJoinFieldList)
+                {
+                    AddField2map(fullObjectName, field, this.performJoinFieldMap, true);
+                    AddField2map(fullObjectName, null, this.SelectFieldMap, true);
+                }
             }
 
             if (field.IsExpress)
