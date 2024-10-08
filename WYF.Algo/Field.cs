@@ -13,7 +13,7 @@ namespace WYF.Algo
 
         public string Name { get; private set; }
         public string Alias { get; private set; }
-        public DataType DataType { get; private set; }
+        public DataType DataType { get;  set; }
         public bool IsNullable { get; private set; }
 
         public Field(string name, DataType dataType)

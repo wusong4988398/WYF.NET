@@ -16,7 +16,7 @@ namespace WYF.Algo.dataType
         {
             return 8;
         }
-        public override Type GetJavaType()
+        public override Type GetCSharpType()
         {
 
             return typeof(long);

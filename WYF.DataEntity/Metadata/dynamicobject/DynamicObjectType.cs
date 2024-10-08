@@ -184,7 +184,7 @@ namespace WYF.DataEntity.Metadata.Dynamicobject
         //[SimpleProperty]
         //public  int CacheTypeId { get { return CacheType.GetValue<int>(); } set { this.CacheType= CacheType.get }
 
-        public DynamicObjectType(String name)
+        public DynamicObjectType(string name)
         {
             if (string.IsNullOrEmpty(name))
             {

@@ -43,7 +43,7 @@ namespace WYF.Algo.dataType
             return left.GetCompatibleLevel() >= right.GetCompatibleLevel() ? left : right;
         }
 
-        public override Type GetJavaType()
+        public override Type GetCSharpType()
         {
             return typeof(IConvertible);
         }

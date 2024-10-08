@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WYF.Algo;
 using WYF.DataEntity.Entity;
 using WYF.DataEntity.Metadata;
 using WYF.OrmEngine.Impl;
@@ -17,11 +18,16 @@ namespace WYF.OrmEngine
         {
             return (ORM)new ORMImpl();
         }
-        DataSet QueryDataSet(string algoKey, string entityName, string selectFields, QFilter[] filters, String orderBys, int top);
-        DataSet QueryDataSet(string algoKey, string entityName, string selectFields, QFilter[] filters, string orderBys, int top, IDistinctable distinctable);
-        DataSet QueryDataSet(string algoKey, string entityName, string selectFields, QFilter[] filters, string orderBys, int from, int length, IDistinctable distinctable);
+        IDataSet QueryDataSet(string algoKey, string entityName, string selectFields, QFilter[] filters, String orderBys, int top);
+        IDataSet QueryDataSet(string algoKey, string entityName, string selectFields, QFilter[] filters, string orderBys, int top, IDistinctable distinctable);
+        IDataSet QueryDataSet(string algoKey, string entityName, string selectFields, QFilter[] filters, string orderBys, int from, int length, IDistinctable distinctable);
+        IDataReader QueryDataReader(string algoKey, string entityName, string selectFields, QFilter[] filters, string orderBys, int from, int length, IDistinctable distinctable);
+        IDataReader QueryDataReader(string algoKey, string entityName, string selectFields, QFilter[] filters, String orderBys, int top);
 
-        DynamicObjectCollection ToPlainDynamicObjectCollection(DataSet ds);
+        //IDataSet QueryDataSet(string algoKey, string entityName, string selectFields, QFilter[] filters, string orderBys, int from, int length, IDistinctable distinctable);
+        //IDataSet QueryDataSet(string algoKey, string entityName, string selectFields, QFilter[] filters, String orderBys, int top);
+
+        DynamicObjectCollection ToPlainDynamicObjectCollection(IDataSet ds);
         //DataSet QueryDataSet(string algoKey, string entityName, string selectFields, QFilter[] filters, string orderBys, int from, int length, Func<IDataEntityType, Dictionary<string, bool>, bool> distinctable);
     }
 }

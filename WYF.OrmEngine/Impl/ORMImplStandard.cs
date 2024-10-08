@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WYF.Algo;
 using WYF.DataEntity.Entity;
 using WYF.DataEntity.Metadata;
 using WYF.DataEntity.Metadata.Clr;
@@ -26,7 +27,7 @@ namespace WYF.OrmEngine.Impl
             throw new NotImplementedException();
         }
 
-        public override DataSet QueryDataSet(string algoKey, string entityName, string selectFields, bool shouldSelectPK, QFilter[] filters, string groupBys, QFilter[] havings, string orderBys, int from, int length, IDistinctable distinctable)
+        public override IDataSet QueryDataSet(string algoKey, string entityName, string selectFields, bool shouldSelectPK, QFilter[] filters, string groupBys, QFilter[] havings, string orderBys, int from, int length, IDistinctable distinctable)
         {
             int top = from < 0 ? 0 : from;
             if (length < 0)
@@ -39,7 +40,24 @@ namespace WYF.OrmEngine.Impl
                 top = from + length;
             }
             MultiQuery mq = DoCreateMultiQuery(entityName, selectFields, shouldSelectPK, filters, groupBys, havings, orderBys, top, from, length, distinctable);
-            DataSet ds = mq.Query(algoKey);
+            IDataSet ds = mq.Query(algoKey);
+            return ds;
+        }
+
+        public override IDataReader QueryDataReader(string algoKey, string entityName, string selectFields, bool shouldSelectPK, QFilter[] filters, string groupBys, QFilter[] havings, string orderBys, int from, int length, IDistinctable distinctable)
+        {
+            int top = from < 0 ? 0 : from;
+            if (length < 0)
+            {
+                top = -1;
+                length = int.MaxValue;
+            }
+            else
+            {
+                top = from + length;
+            }
+            MultiQuery mq = DoCreateMultiQuery(entityName, selectFields, shouldSelectPK, filters, groupBys, havings, orderBys, top, from, length, distinctable);
+            IDataReader ds = mq.QueryDataReader(algoKey);
             return ds;
         }
 

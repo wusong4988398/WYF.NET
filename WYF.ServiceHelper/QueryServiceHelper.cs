@@ -4,9 +4,12 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WYF.Algo;
 using WYF.DataEntity.Entity;
+using WYF.DataEntity.Metadata;
 using WYF.OrmEngine;
 using WYF.OrmEngine.Query;
+using static IronPython.Modules.PythonCsvModule;
 
 namespace WYF.ServiceHelper
 {
@@ -19,7 +22,7 @@ namespace WYF.ServiceHelper
         public static DynamicObjectCollection Query(string algoKey, string entityName, string selectFields, QFilter[] filters, string orderBys, int top)
         {
             ORM orm = ORM.Create();
-            DataSet ds = orm.QueryDataSet(algoKey, entityName, selectFields, filters, orderBys, top);
+            IDataSet ds = orm.QueryDataSet(algoKey, entityName, selectFields, filters, orderBys, top);
             DynamicObjectCollection rows = orm.ToPlainDynamicObjectCollection(ds);
             return rows;
         }

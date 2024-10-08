@@ -19,7 +19,7 @@ namespace ConsoleApp2
 
 
 
-            DynamicObjectCollection dynamicObjects= QueryServiceHelper.Query("bos_user", "id,phone", null, "", 10);
+            DynamicObjectCollection dynamicObjects= QueryServiceHelper.Query("bos_user", "id,phone", null, "", -1);
             
             Console.WriteLine("执行完毕");
         }

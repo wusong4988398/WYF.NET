@@ -50,7 +50,7 @@ namespace WYF.Algo
 
         public abstract int GetFixedSize();
         public abstract int GetSqlType();
-        public abstract Type GetJavaType();
+        public abstract Type GetCSharpType();
         public abstract bool AcceptsType(DataType dataType);
         public abstract void Write(object obj, BinaryWriter dataOutputStream);
         public abstract object Read(BinaryReader dataInputStream);

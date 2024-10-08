@@ -78,7 +78,7 @@ namespace WYF.OrmEngine.Query.Multi
 
         public QContext AllCtx => this._allCtx;
 
-        public DataSet Query(string algoKey, bool finallySingleQuery)
+        public IDataSet Query(string algoKey, bool finallySingleQuery)
         {
             if (finallySingleQuery)
             {
@@ -120,10 +120,58 @@ namespace WYF.OrmEngine.Query.Multi
             string fullSQL = "/*ORM*/ " + sql;
 
 
-            DataSet ds = DB.QueryDataSet(algoKey, this._dbRoute, fullSQL, this._queryParameter.Parameters, CreateQueryMeta());
+            IDataSet ds = DB.QueryDataSet(algoKey, this._dbRoute, fullSQL, this._queryParameter.Parameters, CreateQueryMeta());
+
+
+
             //DataSet ds = DBExt.queryDataSet(algoKey, this._dbRoute, fullSQL, this._queryParameter.Parameters, CreateQueryMeta());
             
             return ds;
+        }
+
+
+        public IDataReader QueryDataReader(string algoKey, bool finallySingleQuery)
+        {
+            if (finallySingleQuery)
+            {
+                List<PropertyField> pfs = new List<PropertyField>(this._selectFields.Length);
+                foreach (PropertyField pf in this._selectFields)
+                {
+                    if (!pf.IsInnerField)
+                        pfs.Add(pf);
+                }
+                if (pfs.Count() < this._selectFields.Length)
+                {
+                    this._selectFields = pfs.ToArray();
+                    this._shouldRebuildSQL = true;
+                }
+            }
+            if (this._shouldRebuildSQL)
+                this._queryParameter = CreateQueryParameter();
+            string sql = this._queryParameter.Sql;
+            if (finallySingleQuery && this._top >= 0)
+                if (sql.StartsWith("SELECT DISTINCT "))
+                {
+                    if (this._limit > 0)
+                    {
+                        sql = "SELECT DISTINCT TOP " + this._limit + "," + this._start + ' ' + sql.Substring("SELECT DISTINCT ".Length);
+                    }
+                    else
+                    {
+                        sql = "SELECT DISTINCT TOP " + this._top + ' ' + sql.Substring("SELECT DISTINCT ".Length);
+                    }
+                }
+                else if (this._limit > 0)
+                {
+                    sql = "SELECT TOP " + this._limit + "," + this._start + ' ' + sql.Substring("SELECT ".Length);
+                }
+                else
+                {
+                    sql = "SELECT TOP " + this._top + ' ' + sql.Substring("SELECT ".Length);
+                }
+            string fullSQL = "/*ORM*/ " + sql;
+            IDataReader dataReader = DB.QueryDataReader(algoKey, this._dbRoute, fullSQL, this._queryParameter.Parameters, CreateQueryMeta());
+            return dataReader;
         }
         private QueryMeta CreateQueryMeta()
         {

@@ -24,9 +24,9 @@ namespace WYF.Algo.dataType
             throw new NotImplementedException();
         }
 
-        public override Type GetJavaType()
+        public override Type GetCSharpType()
         {
-            throw new NotImplementedException();
+            return typeof(string);
         }
 
         public override int GetSqlType()

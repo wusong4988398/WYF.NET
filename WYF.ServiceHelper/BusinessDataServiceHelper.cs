@@ -9,6 +9,7 @@ using WYF.DataEntity.Metadata.Dynamicobject;
 using WYF.Data;
 using WYF.OrmEngine;
 using WYF.OrmEngine.Query;
+using WYF.Algo;
 
 namespace WYF.ServiceHelper
 {
@@ -77,14 +78,14 @@ namespace WYF.ServiceHelper
             if (orderBy.IsNullOrEmpty())
             {
                 List<object> idList = new List<object>();
-                DataSet ds = ORM.Create().QueryDataSet("BusinessDataServiceHelper.load", entityName, "id", filters, null, pageIndex * pagesize, pagesize,
+                IDataSet ds = ORM.Create().QueryDataSet("BusinessDataServiceHelper.load", entityName, "id", filters, null, pageIndex * pagesize, pagesize,
                      WithEntityEntryDistinctable.Instance
                     );
-                foreach (DataRow row in ds.Tables[0].Rows)
-                {
-                    idList.Add(row[0]);
-                }
-                return BusinessDataReader.Load(idList.ToArray(), type, true);
+                //foreach (DataRow row in ds.Tables[0].Rows)
+                //{
+                //    idList.Add(row[0]);
+                //}
+                //return BusinessDataReader.Load(idList.ToArray(), type, true);
             }
             return null;
 

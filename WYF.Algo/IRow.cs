@@ -10,8 +10,11 @@ namespace WYF.Algo
     {
         int Size { get; }
 
-        object this[int index] { get; }
-        object this[string columnName] { get; }
+   
+
+        object Get(int index);
+
+        object Get(String columnName);
 
         string GetString(int index);
         string GetString(string columnName);

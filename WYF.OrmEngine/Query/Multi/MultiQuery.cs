@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WYF.Algo;
 using WYF.DataEntity.Metadata;
 using WYF.DbEngine.db;
 using WYF.OrmEngine.Impl;
@@ -30,10 +31,21 @@ namespace WYF.OrmEngine.Query.Multi
             this.optimization = optimization;
             this.allCtx = allCtx;
         }
-        public DataSet Query(string algoKey)
+        public IDataSet Query(string algoKey)
         {
             QueryOptimizater opt = new QueryOptimizater(this.optimization, this.allCtx);
-            DataSet root = opt.Query(algoKey, this.queries);
+            IDataSet root = opt.Query(algoKey, this.queries);
+            //this.querySingleDB = opt.IsQuerySingleDB;
+            //RowMeta rm = root.getRowMeta();
+
+            return root;
+
+        }
+
+        public IDataReader QueryDataReader(string algoKey)
+        {
+            QueryOptimizater opt = new QueryOptimizater(this.optimization, this.allCtx);
+            IDataReader root = opt.QueryDataReader(algoKey, this.queries);
             //this.querySingleDB = opt.IsQuerySingleDB;
             //RowMeta rm = root.getRowMeta();
 

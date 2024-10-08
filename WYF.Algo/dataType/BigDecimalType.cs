@@ -36,7 +36,7 @@ namespace WYF.Algo.dataType
         public int GetPrecision() => this.precision;
         public int GetScale() => this.scale;
 
-        public override Type GetJavaType()
+        public override Type GetCSharpType()
         {
             return typeof(decimal); // Closest equivalent in C# to BigDecimal
         }

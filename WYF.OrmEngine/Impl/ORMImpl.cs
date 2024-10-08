@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WYF.Algo;
 using WYF.DataEntity.Entity;
 using WYF.DataEntity.Metadata;
 using WYF.OrmEngine.Query;
@@ -46,36 +47,56 @@ namespace WYF.OrmEngine.Impl
             this.impl = ORMImplFactory.CreateORMImpl(this.entityTypeCache, this.ormHint, this.optimization);
         }
 
-        public DataSet QueryDataSet(string algoKey, string entityName, string selectFields, QFilter[] filters, string orderBys, int top, IDistinctable distinctable)
+        public IDataSet QueryDataSet(string algoKey, string entityName, string selectFields, QFilter[] filters, string orderBys, int top, IDistinctable distinctable)
         {
             return this.QueryDataSet(algoKey, entityName, selectFields, filters, orderBys, 0, top, distinctable);
         }
 
-        public DataSet QueryDataSet(string algoKey, string entityName, string selectFields, QFilter[] filters, string orderBys, int from, int length, IDistinctable distinctable)
+        public IDataSet QueryDataSet(string algoKey, string entityName, string selectFields, QFilter[] filters, string orderBys, int from, int length, IDistinctable distinctable)
         {
             //this.stat.BeginTrace();
 
             return this.impl.QueryDataSet(algoKey, entityName, selectFields, false, filters, null, null, orderBys, from, length, distinctable);
 
         }
+        public IDataReader QueryDataReader(string algoKey, string entityName, string selectFields, QFilter[] filters, string orderBys, int from, int length, IDistinctable distinctable)
+        {
+            //this.stat.BeginTrace();
+
+            return this.impl.QueryDataReader(algoKey, entityName, selectFields, false, filters, null, null, orderBys, from, length, distinctable);
+
+        }
+
+
         //public DataSet QueryDataSet(string algoKey, string entityName, string selectFields, QFilter[] filters, string orderBys, int from, int length, Func<IDataEntityType, Dictionary<string, bool>, bool> distinctable)
         //{
         //    throw new NotImplementedException();
         //}
 
-        public DataSet QueryDataSet(string algoKey, string entityName, string selectFields, QFilter[] filters, string orderBys, int top)
+        public IDataSet QueryDataSet(string algoKey, string entityName, string selectFields, QFilter[] filters, string orderBys, int top)
         {
 
             return this.QueryDataSet(algoKey, entityName, selectFields, filters, orderBys, 0, top,null);
 
         
         }
+        public IDataReader QueryDataReader(string algoKey, string entityName, string selectFields, QFilter[] filters, string orderBys, int top)
+        {
 
-        public DynamicObjectCollection ToPlainDynamicObjectCollection(DataSet ds)
+            return this.QueryDataReader(algoKey, entityName, selectFields, filters, orderBys, 0, top, null);
+
+
+        }
+
+        public DynamicObjectCollection ToPlainDynamicObjectCollection(IDataSet ds)
         {
             return ORMUtil.ToDynamicObjectCollection(ds, "PlainObject");
         }
 
-     
+        //public DynamicObjectCollection ToPlainDynamicObjectCollection(IDataReader dataReader)
+        //{
+        //    return ORMUtil.ToDynamicObjectCollection(dataReader);
+        //}
+
     }
 }

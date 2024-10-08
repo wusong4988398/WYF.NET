@@ -158,7 +158,7 @@ namespace WYF.Algo
         {
             for (int i = 0; i < fields.Length; i++)
             {
-                object value = row[i];
+                object value =row.Get(i);
                 value = DataType.ConvertValue(fields[i].DataType, value);
                 map[fields[i].Alias] = value;
             }

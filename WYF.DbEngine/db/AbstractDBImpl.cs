@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WYF.Algo;
 
 namespace WYF.DbEngine.db
 {
@@ -13,12 +14,22 @@ namespace WYF.DbEngine.db
 
         public abstract QueryResult<T> Query<T>(DBRoute dbRoute, IDbConnection con, bool close, string sql, Func<IDataReader, T> action, bool convert, params object[] paramVarArgs);
 
-        public DataSet QueryDataSet(string algoKey, DBRoute dbRoute, string sql, object[] parameters, QueryMeta queryMeta, TraceSpan traceSpan)
+        public IDataSet QueryDataSet(string algoKey, DBRoute dbRoute, string sql, object[] parameters, QueryMeta queryMeta, TraceSpan traceSpan)
         {
-            DataSet dataSet= DBUtils.ExecuteDataSet(new Context(), CommandType.Text, sql, null);
-            return dataSet;
+            //DataSet dataSet= DBUtils.ExecuteDataSet(new Context(), CommandType.Text, sql, null);
+            IDataReader  dataReader= DBUtils.ExecuteReader(new Context(), sql, null);
+            QueryMeta qm = QueryMeta.CreateOrFixQueryMeta(queryMeta, dataReader, DatabaseType.MS_SQL_Server);
+            return WYF.Algo.Algo.Create(algoKey).CreateDataSet(dataReader, qm.RowMeta);
+            //return dataSet;
             
            
+        }
+        public IDataReader QueryDataReader(string algoKey, DBRoute dbRoute, string sql, object[] parameters, QueryMeta queryMeta, TraceSpan traceSpan)
+        {
+            IDataReader dataReader= DBUtils.ExecuteReader(new Context(), sql, null);
+            return dataReader;
+
+
         }
     }
 }

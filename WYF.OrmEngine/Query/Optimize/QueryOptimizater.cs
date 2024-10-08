@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WYF.Algo;
 using WYF.OrmEngine.Impl;
 using WYF.OrmEngine.Query.Multi;
 
@@ -24,7 +25,7 @@ namespace WYF.OrmEngine.Query.Optimize
 
 
 
-        public DataSet Query(String algoKey, SingleQuery[] queries)
+        public IDataSet Query(String algoKey, SingleQuery[] queries)
         {
             QueryTreeNode root = QueryTreeNode.Create(queries);
             this.QuerySingleDB = (queries.Length == 1);
@@ -37,12 +38,28 @@ namespace WYF.OrmEngine.Query.Optimize
             return null;
 
         }
+        public IDataReader QueryDataReader(String algoKey, SingleQuery[] queries)
+        {
+            QueryTreeNode root = QueryTreeNode.Create(queries);
+            this.QuerySingleDB = (queries.Length == 1);
+            if (queries.Length == 1)
+            {
+                //ReplaceOrderBy(root);
+                return FinallySingleDataReaderQuery(algoKey, root);
+            }
 
-        DataSet FinallySingleQuery(String algoKey, QueryTreeNode root)
+            return null;
+
+        }
+        IDataSet FinallySingleQuery(String algoKey, QueryTreeNode root)
         {
             return root.SingleQuery.Query(algoKey, true);
+        }
 
 
+        IDataReader FinallySingleDataReaderQuery(String algoKey, QueryTreeNode root)
+        {
+            return root.SingleQuery.QueryDataReader(algoKey, true);
         }
 
     }

@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WYF.Algo;
 using WYF.DataEntity.Entity;
 using WYF.DataEntity.Metadata;
 using WYF.OrmEngine.Query;
@@ -22,8 +23,8 @@ namespace WYF.OrmEngine.Impl
             this.ormHint = ormHint;
             this.optimization = optimization;
         }
-        public abstract DataSet QueryDataSet(string algoKey, string entityName, string selectFields, bool shouldSelectPK, QFilter[] filters, string groupBys, QFilter[] havings, string orderBys, int from, int length, IDistinctable distinctable);
-        
+        public abstract IDataSet QueryDataSet(string algoKey, string entityName, string selectFields, bool shouldSelectPK, QFilter[] filters, string groupBys, QFilter[] havings, string orderBys, int from, int length, IDistinctable distinctable);
+        public abstract IDataReader QueryDataReader(string algoKey, string entityName, string selectFields, bool shouldSelectPK, QFilter[] filters, string groupBys, QFilter[] havings, string orderBys, int from, int length, IDistinctable distinctable);
         public abstract List<Object> Insert(List<DynamicObject> objs);
 
     }

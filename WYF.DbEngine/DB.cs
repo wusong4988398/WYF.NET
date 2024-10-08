@@ -4,6 +4,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WYF.Algo;
 using WYF.DbEngine.db;
 
 namespace WYF.DbEngine
@@ -68,12 +69,21 @@ namespace WYF.DbEngine
 
         //}
 
-        public static DataSet QueryDataSet(string algoKey, DBRoute dbRoute, string sql, Object[] paramter, QueryMeta queryMeta)
+        public static IDataSet QueryDataSet(string algoKey, DBRoute dbRoute, string sql, Object[] paramter, QueryMeta queryMeta)
         {
 
             TraceSpan ts = new TraceSpan();
 
             return GetImpl().QueryDataSet(algoKey, dbRoute, sql, paramter, queryMeta, ts);
+
+        }
+
+        public static IDataReader QueryDataReader(string algoKey, DBRoute dbRoute, string sql, Object[] paramter, QueryMeta queryMeta)
+        {
+
+            TraceSpan ts = new TraceSpan();
+
+            return GetImpl().QueryDataReader(algoKey, dbRoute, sql, paramter, queryMeta, ts);
 
         }
     }
