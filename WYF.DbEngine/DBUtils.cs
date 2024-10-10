@@ -24,13 +24,38 @@ namespace WYF.DbEngine
             }
         }
 
+        public static IDataReader ExecuteReader(Context ctx, string strSQL, object[] parameters, CommandType cmdtype, CommandBehavior cmdBehavior, bool bNewCn)
+        {
+            IDatabase database = DatabaseFactory.CreateDataBase(ctx);
+            using (DbCommand command = database.CreateCommandByCommandType(cmdtype, strSQL, 0))
+            {
+                if (bNewCn)
+                {
+                    throw new NotImplementedException();
+                    //return database.ExecuteReaderWithNewCn(command, parameters, cmdBehavior);
+                }
+                return database.ExecuteReader(command, parameters, cmdBehavior);
+            }
+        }
+
         public static IDataReader ExecuteReader(Context ctx, string strSQL, List<SqlParam> paramList)
         {
             return ExecuteReader(ctx, strSQL, paramList, CommandType.Text, false);
         }
+
+        public static IDataReader ExecuteReader(Context ctx, string strSQL, object[] parameters)
+        {
+            return ExecuteReader(ctx, strSQL, parameters, CommandType.Text, false);
+        }
+
         public static IDataReader ExecuteReader(Context ctx, string strSQL, IEnumerable<SqlParam> paramList, CommandType cmdtype, bool bNewCn)
         {
             return ExecuteReader(ctx, strSQL, paramList, cmdtype, CommandBehavior.KeyInfo, bNewCn);
+        }
+
+        public static IDataReader ExecuteReader(Context ctx, string strSQL, object[] parameters, CommandType cmdtype, bool bNewCn)
+        {
+            return ExecuteReader(ctx, strSQL, parameters, cmdtype, CommandBehavior.KeyInfo, bNewCn);
         }
         public static T ExecuteScalar<T>(Context ctx, string strSql, T defaultValue, params SqlParam[] paramList)
         {

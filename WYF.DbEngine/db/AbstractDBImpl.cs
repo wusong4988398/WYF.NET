@@ -18,19 +18,13 @@ namespace WYF.DbEngine.db
         {
             //DataSet dataSet= DBUtils.ExecuteDataSet(new Context(), CommandType.Text, sql, null);
 
-            IDataReader  dataReader= DBUtils.ExecuteReader(new Context(), sql, null);
+            IDataReader  dataReader= DBUtils.ExecuteReader(new Context(), sql, parameters);
             QueryMeta qm = QueryMeta.CreateOrFixQueryMeta(queryMeta, dataReader, DatabaseType.MS_SQL_Server);
             return WYF.Algo.Algo.Create(algoKey).CreateDataSet(dataReader, qm.RowMeta);
             //return dataSet;
             
            
         }
-        public IDataReader QueryDataReader(string algoKey, DBRoute dbRoute, string sql, object[] parameters, QueryMeta queryMeta, TraceSpan traceSpan)
-        {
-            IDataReader dataReader= DBUtils.ExecuteReader(new Context(), sql, null);
-            return dataReader;
-
-
-        }
+  
     }
 }

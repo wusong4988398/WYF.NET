@@ -81,13 +81,6 @@ namespace WYF.DbEngine
 
 
 
-        public static IDataReader QueryDataReader(string algoKey, DBRoute dbRoute, string sql, Object[] paramter, QueryMeta queryMeta)
-        {
-
-            TraceSpan ts = new TraceSpan();
-
-            return GetImpl().QueryDataReader(algoKey, dbRoute, sql, paramter, queryMeta, ts);
-
-        }
+    
     }
 }

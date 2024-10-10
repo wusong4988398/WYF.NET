@@ -42,15 +42,6 @@ namespace WYF.OrmEngine.Query.Multi
 
         }
 
-        public IDataReader QueryDataReader(string algoKey)
-        {
-            QueryOptimizater opt = new QueryOptimizater(this.optimization, this.allCtx);
-            IDataReader root = opt.QueryDataReader(algoKey, this.queries);
-            //this.querySingleDB = opt.IsQuerySingleDB;
-            //RowMeta rm = root.getRowMeta();
-
-            return root;
-
-        }
+ 
     }
 }

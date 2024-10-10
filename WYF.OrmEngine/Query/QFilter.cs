@@ -441,9 +441,9 @@ namespace WYF.OrmEngine.Query
             else
             {
                 //s.Append(pei).Append(' ').Append(this.Cp).Append(" ?");
-                s.Append(pei).Append(' ').Append(this.Cp).Append(" @"+pei);
+                s.Append(pei).Append(' ').Append(this.Cp).Append(" @"+this.Property);
                 //paramss.Add(this.Value);
-                paramss.Add(new SqlParam("@" + pei, KDbType.AnsiString, this.Cp));
+                paramss.Add(new SqlParam("@" + Property, KDbType.String, this.Value));
                 //paramss.Add(new { name = "@"+ pei, value = this.Value });
             }
 

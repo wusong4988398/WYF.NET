@@ -24,7 +24,6 @@ namespace WYF.OrmEngine.Impl
             this.optimization = optimization;
         }
         public abstract IDataSet QueryDataSet(string algoKey, string entityName, string selectFields, bool shouldSelectPK, QFilter[] filters, string groupBys, QFilter[] havings, string orderBys, int from, int length, IDistinctable distinctable);
-        public abstract IDataReader QueryDataReader(string algoKey, string entityName, string selectFields, bool shouldSelectPK, QFilter[] filters, string groupBys, QFilter[] havings, string orderBys, int from, int length, IDistinctable distinctable);
         public abstract List<Object> Insert(List<DynamicObject> objs);
 
     }

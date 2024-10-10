@@ -59,13 +59,7 @@ namespace WYF.OrmEngine.Impl
             return this.impl.QueryDataSet(algoKey, entityName, selectFields, false, filters, null, null, orderBys, from, length, distinctable);
 
         }
-        public IDataReader QueryDataReader(string algoKey, string entityName, string selectFields, QFilter[] filters, string orderBys, int from, int length, IDistinctable distinctable)
-        {
-            //this.stat.BeginTrace();
-
-            return this.impl.QueryDataReader(algoKey, entityName, selectFields, false, filters, null, null, orderBys, from, length, distinctable);
-
-        }
+  
         public IDataSet queryDataSet(String algoKey, String entityName, String selectFields, QFilter[] filters, String orderBys)
         {
             return this.QueryDataSet(algoKey, entityName, selectFields, filters, orderBys, 0, -1, null);
@@ -83,13 +77,7 @@ namespace WYF.OrmEngine.Impl
 
         
         }
-        public IDataReader QueryDataReader(string algoKey, string entityName, string selectFields, QFilter[] filters, string orderBys, int top)
-        {
 
-            return this.QueryDataReader(algoKey, entityName, selectFields, filters, orderBys, 0, top, null);
-
-
-        }
 
         public DynamicObjectCollection ToPlainDynamicObjectCollection(IDataSet ds)
         {

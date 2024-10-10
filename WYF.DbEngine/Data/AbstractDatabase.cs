@@ -1,4 +1,5 @@
-﻿using MySql.Data.MySqlClient;
+﻿using Google.Protobuf.WellKnownTypes;
+using MySql.Data.MySqlClient;
 using Npgsql;
 using Oracle.ManagedDataAccess.Client;
 using System;
@@ -383,10 +384,98 @@ namespace WYF.DbEngine
         {
             return this.ExecuteReader(command, paramList, CommandBehavior.KeyInfo, false);
         }
+        public IDataReader ExecuteReader(DbCommand command, object[] parameters)
+        {
+            return this.ExecuteReader(command, parameters, CommandBehavior.KeyInfo, false);
+        }
 
         public IDataReader ExecuteReader(DbCommand command, IEnumerable<SqlParam> paramList, CommandBehavior cmdBehavior)
         {
             return this.ExecuteReader(command, paramList, cmdBehavior, false);
+        }
+
+
+        public IDataReader ExecuteReader(DbCommand command, object[] parameters, CommandBehavior cmdBehavior)
+        {
+            return this.ExecuteReader(command, parameters, cmdBehavior, false);
+        }
+        //object[] parameters
+        private IDataReader ExecuteReader(DbCommand command, object[] parameters, CommandBehavior cmdBehavior, bool bNewCn = false)
+        {
+            ConnectionWrapper openConnection = null;
+            IDataReader reader2;
+            if (bNewCn)
+            {
+                openConnection = new ConnectionWrapper(this.GetNewOpenConnection(), true);
+            }
+            else
+            {
+                openConnection = this.GetOpenConnection(false);
+            }
+            try
+            {
+                PrepareCommand(command, openConnection.Connection);
+                this.PrepareParameter2(openConnection.Connection, command, parameters);
+                if (bNewCn)
+                {
+                    return this.DoExecuteReader(command, CommandBehavior.CloseConnection | cmdBehavior);
+                }
+                if ((Transaction.Current == null) && (SessionScope.Current == null))
+                {
+                    return this.DoExecuteReader(command, CommandBehavior.CloseConnection | cmdBehavior);
+                }
+                reader2 = this.DoExecuteReader(command, cmdBehavior);
+            }
+            catch (SqlException exception)
+            {
+                if ((Transaction.Current == null) && (SessionScope.Current == null))
+                {
+                    openConnection.Connection.Close();
+                    openConnection.Connection.Dispose();
+                }
+                throw new ExceptionDatabase("BOS_ExecuteReader", command.CommandText, exception.Message, exception);
+            }
+            catch (OracleException exception2)
+            {
+                if ((Transaction.Current == null) && (SessionScope.Current == null))
+                {
+                    openConnection.Connection.Close();
+                    openConnection.Connection.Dispose();
+                }
+                throw new ExceptionDatabase("BOS_ExecuteReader", command.CommandText, exception2.Message, exception2);
+            }
+            catch (NpgsqlException exception3)
+            {
+                if ((Transaction.Current == null) && (SessionScope.Current == null))
+                {
+                    openConnection.Connection.Close();
+                    openConnection.Connection.Dispose();
+                }
+                throw new ExceptionDatabase("BOS_ExecuteReader", command.CommandText, exception3.Message, exception3);
+            }
+            catch (MySqlException exception4)
+            {
+                if ((Transaction.Current == null) && (SessionScope.Current == null))
+                {
+                    openConnection.Connection.Close();
+                    openConnection.Connection.Dispose();
+                }
+                throw new ExceptionDatabase("BOS_ExecuteReader", command.CommandText, exception4.Message, exception4);
+            }
+            catch
+            {
+                if (((Transaction.Current == null) && (SessionScope.Current == null)) || bNewCn)
+                {
+                    openConnection.Connection.Close();
+                    openConnection.Connection.Dispose();
+                }
+                throw;
+            }
+            finally
+            {
+                this.ReleaseParam(command);
+            }
+            return reader2;
         }
 
         private IDataReader ExecuteReader(DbCommand command, IEnumerable<SqlParam> paramList, CommandBehavior cmdBehavior, bool bNewCn = false)
@@ -722,7 +811,47 @@ namespace WYF.DbEngine
             }
         }
 
-    
+        protected void PrepareParameter2(DbConnection conn, DbCommand cmd, object[] parameters)
+        {
+            if (parameters != null)
+            {
+                foreach (SqlParam param in parameters)
+                {
+                    object value= param.Value;
+                    if (value is string || value is char || value is char[])
+                    {
+                        param.KDbType = KDbType.String;
+                    }
+                    else if (value is int || value is long || value is short || value is byte)
+                    {
+                        param.KDbType = KDbType.Int32; // 或者根据具体类型选择DbType.Int64等
+                    }
+                    else if (value is float || value is double || value is decimal)
+                    {
+                        param.KDbType = KDbType.Decimal; // 或者根据具体类型选择DbType.Double等
+                    }
+                    else if (value is bool)
+                    {
+                        param.KDbType = KDbType.Boolean;
+                    }
+                    else if (value is DateTime)
+                    {
+                        param.KDbType = KDbType.DateTime;
+                    }
+                    else if (value is Guid)
+                    {
+                        param.KDbType = KDbType.Guid;
+                    }
+
+                    DbParameter parameter = this.GetParameter(conn, param.Name, param.KDbType, param.Size, param.Direction, true, 0, 0, string.Empty, DataRowVersion.Default, param.Value ?? DBNull.Value);
+
+                    cmd.Parameters.Add(parameter);
+                }
+
+                this.ConvertTableFun(cmd);
+            }
+        }
+
 
         protected virtual void ReleaseParam(IDbCommand cmd)
         {
@@ -730,6 +859,7 @@ namespace WYF.DbEngine
 
         public abstract bool TestDbOpenConnection(string strDbConnectionString, out string strErrMsg);
 
+ 
 
         public string ConnectionString
         {

@@ -29,7 +29,10 @@ namespace WYF.DbEngine
         int ExecuteNonQuery(DbCommand cmd, IEnumerable<SqlParam> listParam = null);
         int ExecuteNonQueryWithNewCn(DbCommand command, IEnumerable<SqlParam> listParam = null, bool bNewCn = true);
         IDataReader ExecuteReader(DbCommand cmd, IEnumerable<SqlParam> paramList);
+        IDataReader ExecuteReader(DbCommand cmd, object[] parameters);
         IDataReader ExecuteReader(DbCommand cmd, IEnumerable<SqlParam> paramList, CommandBehavior cmdBehavior);
+        IDataReader ExecuteReader(DbCommand cmd, object[] parameters, CommandBehavior cmdBehavior);
+
         IDataReader ExecuteReaderWithNewCn(DbCommand cmd, IEnumerable<SqlParam> paramList);
         IDataReader ExecuteReaderWithNewCn(DbCommand cmd, IEnumerable<SqlParam> paramList, CommandBehavior cmdBehavior);
         object ExecuteScalar(DbCommand command, params SqlParam[] paramList);

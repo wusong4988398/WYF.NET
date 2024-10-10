@@ -13,7 +13,7 @@ namespace ConsoleApp2
     {
         public static void TestMethod1()
         {
-            QFilter bizappFilter = new QFilter("id", "=", "2");
+            QFilter bizappFilter = new QFilter("id", "=", 2);
             //DynamicObjectCollection dynamicObjects= QueryServiceHelper.Query("bos_user", "id,phone", null, "", -1);
 
             DynamicObjectCollection dynamicObjects = QueryServiceHelper.Query("bos_user", "id", [bizappFilter]);

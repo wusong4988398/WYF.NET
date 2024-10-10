@@ -38,29 +38,14 @@ namespace WYF.OrmEngine.Query.Optimize
             return null;
 
         }
-        public IDataReader QueryDataReader(String algoKey, SingleQuery[] queries)
-        {
-            QueryTreeNode root = QueryTreeNode.Create(queries);
-            this.QuerySingleDB = (queries.Length == 1);
-            if (queries.Length == 1)
-            {
-                //ReplaceOrderBy(root);
-                return FinallySingleDataReaderQuery(algoKey, root);
-            }
-
-            return null;
-
-        }
+ 
         IDataSet FinallySingleQuery(String algoKey, QueryTreeNode root)
         {
             return root.SingleQuery.Query(algoKey, true);
         }
 
 
-        IDataReader FinallySingleDataReaderQuery(String algoKey, QueryTreeNode root)
-        {
-            return root.SingleQuery.QueryDataReader(algoKey, true);
-        }
+    
 
     }
 }
