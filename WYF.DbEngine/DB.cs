@@ -78,6 +78,9 @@ namespace WYF.DbEngine
 
         }
 
+
+
+
         public static IDataReader QueryDataReader(string algoKey, DBRoute dbRoute, string sql, Object[] paramter, QueryMeta queryMeta)
         {
 

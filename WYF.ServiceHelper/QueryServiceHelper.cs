@@ -15,6 +15,21 @@ namespace WYF.ServiceHelper
 {
     public class QueryServiceHelper
     {
+
+        public static DynamicObjectCollection Query(string entityName, string selectFields, QFilter[] filters)
+        {
+            return Query("QueryServiceHelper." + entityName, entityName, selectFields, filters, "");
+        }
+
+        public static DynamicObjectCollection Query(String algoKey, String entityName, String selectFields, QFilter[] filters, String orderBys)
+        {
+            ORM orm = ORM.Create();
+            IDataSet ds = orm.QueryDataSet(algoKey, entityName, selectFields, filters, orderBys);
+            DynamicObjectCollection rows = orm.ToPlainDynamicObjectCollection(ds);
+            return rows;
+
+        }
+
         public static DynamicObjectCollection Query(string entityName, string selectFields, QFilter[] filters, string orderBys, int top)
         {
             return Query("QueryServiceHelper." + entityName, entityName, selectFields, filters, orderBys, top);

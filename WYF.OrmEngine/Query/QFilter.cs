@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WYF.DataEntity.Metadata;
+using WYF.DbEngine;
 using WYF.OrmEngine.Impl;
 using WYF.OrmEngine.Query.Fulltext;
 using WYF.OrmEngine.Query.HugeIn;
@@ -439,8 +440,11 @@ namespace WYF.OrmEngine.Query
             }
             else
             {
-                s.Append(pei).Append(' ').Append(this.Cp).Append(" ?");
-                paramss.Add(this.Value);
+                //s.Append(pei).Append(' ').Append(this.Cp).Append(" ?");
+                s.Append(pei).Append(' ').Append(this.Cp).Append(" @"+pei);
+                //paramss.Add(this.Value);
+                paramss.Add(new SqlParam("@" + pei, KDbType.AnsiString, this.Cp));
+                //paramss.Add(new { name = "@"+ pei, value = this.Value });
             }
 
             foreach (QFilterNest nest in this.nests)
@@ -469,8 +473,10 @@ namespace WYF.OrmEngine.Query
                     }
                 }
             }
-
-            return null;
+            QParameter qp = new QParameter(s.ToString(), paramss.ToArray());
+            qp.Ctx = ctx;
+            return qp;
+           
         }
         private PropertyExpressInfo _GetPropertyString(QContext ctx, String rootObjName, String property)
         {

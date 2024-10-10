@@ -18,6 +18,7 @@ namespace WYF.OrmEngine
         {
             return (ORM)new ORMImpl();
         }
+        IDataSet QueryDataSet(string algoKey, string entityName, string selectFields, QFilter[] filters, string orderBys);
         IDataSet QueryDataSet(string algoKey, string entityName, string selectFields, QFilter[] filters, String orderBys, int top);
         IDataSet QueryDataSet(string algoKey, string entityName, string selectFields, QFilter[] filters, string orderBys, int top, IDistinctable distinctable);
         IDataSet QueryDataSet(string algoKey, string entityName, string selectFields, QFilter[] filters, string orderBys, int from, int length, IDistinctable distinctable);

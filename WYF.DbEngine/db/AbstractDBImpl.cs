@@ -17,6 +17,7 @@ namespace WYF.DbEngine.db
         public IDataSet QueryDataSet(string algoKey, DBRoute dbRoute, string sql, object[] parameters, QueryMeta queryMeta, TraceSpan traceSpan)
         {
             //DataSet dataSet= DBUtils.ExecuteDataSet(new Context(), CommandType.Text, sql, null);
+
             IDataReader  dataReader= DBUtils.ExecuteReader(new Context(), sql, null);
             QueryMeta qm = QueryMeta.CreateOrFixQueryMeta(queryMeta, dataReader, DatabaseType.MS_SQL_Server);
             return WYF.Algo.Algo.Create(algoKey).CreateDataSet(dataReader, qm.RowMeta);

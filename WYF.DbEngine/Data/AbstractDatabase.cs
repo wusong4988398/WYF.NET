@@ -715,12 +715,14 @@ namespace WYF.DbEngine
 
                     DbParameter parameter = this.GetParameter(conn, param.Name, param.KDbType, param.Size, param.Direction, true, 0, 0, string.Empty, DataRowVersion.Default, param.Value ?? DBNull.Value);
 
-
                     cmd.Parameters.Add(parameter);
                 }
+                
                 this.ConvertTableFun(cmd);
             }
         }
+
+    
 
         protected virtual void ReleaseParam(IDbCommand cmd)
         {
