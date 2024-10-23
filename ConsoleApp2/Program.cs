@@ -15,5 +15,6 @@ using WYF.OrmEngine.Query.OQL.G.expr;
 //Console.WriteLine("3323");
 
 
-Test1.TestMethod1();
+//Test1.TestMethod1();
+Test1.TestCache();//测试缓存
 Console.WriteLine("3323");

@@ -12,6 +12,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\WYF.Common\WYF.Common.csproj" />
+    <ProjectReference Include="..\WYF.FrameWork\WYF.Framework.csproj" />
   </ItemGroup>
 
 </Project>

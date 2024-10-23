@@ -21,14 +21,20 @@ namespace WYF.DataEntity.Metadata.Clr
 
         public IDataEntityType getParent()
         {
-          
             return this.owner;
-            
         }
 
 
-    
 
+        public new bool TryGetValue(string propertyName, out IDataEntityProperty ref_property)
+        {
+            ref_property = null;
+            IDataEntityProperty prop = (IDataEntityProperty)this[propertyName];
+            if (prop == null)
+                return false;
+            ref_property = prop;
+            return true;
+        }
 
         //public bool TryGetValue(String propertyName, out IDataEntityProperty ref_property)
         //{

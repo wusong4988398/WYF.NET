@@ -12,22 +12,41 @@ using WYF.OrmEngine.Query.Multi;
 
 namespace WYF.OrmEngine.Query
 {
+    /// <summary>
+    /// 为了构建和管理数据库实体的层次结构而设计的。它能够处理简单的属性以及更复杂的嵌套关系和集合关系，并提供了递归地构建整个实体树的能力。
+    /// 此外，它还支持局部化和一些高级的 ORM 功能，如属性选择的提示。
+    /// </summary>
     public class EntityItem
     {
+        /// <summary>
+        /// 实体项的全名
+        /// </summary>
         public string FullObjectName { get; private set; }
-
+        /// <summary>
+        /// 实体类型，代表了这个实体在数据库中的结构。
+        /// </summary>
         public IDataEntityType EntityType { get; private set; }
-
+        /// <summary>
+        /// 标记是否包含所有属性。
+        /// </summary>
         public bool WithFullProperties { get; private set; } = false;
-
+        /// <summary>
+        /// 属性列表，包含了该实体的所有属性信息。
+        /// </summary>
         public List<EntityItemProperty> Properties { get; private set; }
-
+        /// <summary>
+        /// 用来表示本地化相关的实体项。
+        /// </summary>
         public EntityItem Locale { get; private set; }
-
+        /// <summary>
+        /// 父级实体项，用于表达实体之间的关联。
+        /// </summary>
         public EntityItem ParentItem { get; private set; }
 
         public EntityItemJoinProperty JoinProperty { get; set; }
-
+        /// <summary>
+        /// 用于描述一对多或多对多的关系
+        /// </summary>
         public List<EntityItem> SubItems { get; private set; }
 
         public Dictionary<string, IDataEntityType> EntityTypeCache { get; private set; }

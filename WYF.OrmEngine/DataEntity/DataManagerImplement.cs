@@ -12,7 +12,7 @@ using WYF.DataEntity.Metadata.database;
 using WYF.DataEntity.Metadata.Dynamicobject;
 using WYF.DbEngine;
 using WYF.DbEngine.db;
-using WYF.OrmEngine.DataManager;
+using WYF.OrmEngine.dataManager;
 using WYF.OrmEngine.Drivers;
 
 namespace WYF.OrmEngine.DataEntity
@@ -831,6 +831,15 @@ namespace WYF.OrmEngine.DataEntity
             throw new NotImplementedException();
         }
 
+        public ISaveDataSet GetSaveDataSet(object[] dataEntities, bool includeDefaultValue)
+        {
+            throw new NotImplementedException();
+        }
+
+        public object Read(object pk)
+        {
+            throw new NotImplementedException();
+        }
 
         public DbMetadataDatabase Database { get; private set; }
 

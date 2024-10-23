@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 using WYF.DataEntity.Metadata;
 using WYF.DataEntity.Metadata.database;
 using WYF.DataEntity.Metadata.database;
-using WYF.OrmEngine.DataManager;
+using WYF.OrmEngine.dataManager;
 
 namespace WYF.OrmEngine.Drivers
 {

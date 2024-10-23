@@ -1,6 +1,6 @@
 ﻿using WYF.DataEntity.Collections;
 
-namespace WYF.OrmEngine.DataManager
+namespace WYF.OrmEngine.dataManager
 {
     public class QuickDataTableCollection : KeyedCollectionBase<string, QuickDataTable>
     {

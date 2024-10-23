@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using WYF.DataEntity.Metadata;
 using WYF.Bos.DataEntity;
 using WYF.OrmEngine.DataEntity;
-using WYF.OrmEngine.DataManager;
+using WYF.OrmEngine.dataManager;
 using WYF.OrmEngine.Drivers;
 
 namespace WYF.OrmEngine
@@ -48,12 +48,25 @@ namespace WYF.OrmEngine
             return ((option == null) || option.GetVariableValue<bool>("CacheMetadata", true));
         }
 
-        public static IDataManager<DT, ID> GetDataManager<DT, ID>()
+        //public static IDataManager<DT, ID> GetDataManager<DT, ID>()
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+
+        public static IDataManager GetDataManager(IDataEntityType dt)
         {
-            throw new NotImplementedException();
+            if (dt == null)
+                throw new ORMArgInvalidException("10001","创建一个数据管理器DataManager失败,实体类型IDataEntityType不能为空！");
+            IDataManager manager = null;
+            manager = new DataManagerImplement();
+            manager.DataEntityType = dt;
+            //manager.SetDataEntityType(dt);
+            return manager;
         }
 
-        public static IDataManager GetDataManager(this IDataEntityType dt, IDbDriver driver, OperateOption option = null)
+
+            public static IDataManager GetDataManager(this IDataEntityType dt, IDbDriver driver, OperateOption option = null)
         {
             if (dt == null)
             {

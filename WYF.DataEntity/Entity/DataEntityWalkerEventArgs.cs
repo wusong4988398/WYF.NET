@@ -16,6 +16,7 @@ namespace WYF.DataEntity.Entity
 
         public DataEntityWalkerEventArgs(object source) : base(source)
         {
+
         }
 
         public static void DataEntityWalker(List<Object> dataEntities, IDataEntityType dt, Action<DataEntityWalkerEventArgs> callback, bool onlyDbProperty)

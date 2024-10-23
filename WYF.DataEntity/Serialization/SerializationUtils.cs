@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace WYF.DataEntity.Serialization
 {
-    internal static class SerializationUtils
+    public static class SerializationUtils
     {
-        internal static T FromJsonString<T>(string strConfig)
+        public static T FromJsonString<T>(string strConfig)
         {
 
             try
@@ -25,7 +25,7 @@ namespace WYF.DataEntity.Serialization
 
 
 
-        internal static string ToJsonString(object o)
+        public static string ToJsonString(object o)
         {
 
             try

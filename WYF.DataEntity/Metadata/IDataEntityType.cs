@@ -29,7 +29,7 @@ namespace WYF.DataEntity.Metadata
         /// 返回实体名称带引用属性
         /// </summary>
         /// <returns></returns>
-        String getExtendName => Name;
+        String ExtendName => Name;
        
         /// <summary>
         /// 返回当前实体的主键属性

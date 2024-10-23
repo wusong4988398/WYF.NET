@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using WYF.DataEntity.Metadata.database;
 using WYF.DataEntity.Metadata;
 
-namespace WYF.OrmEngine.DataManager
+namespace WYF.OrmEngine.dataManager
 {
     internal struct SimpleColumnValuePair : IColumnValuePair
     {

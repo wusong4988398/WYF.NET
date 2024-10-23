@@ -6,23 +6,26 @@ using System.Threading.Tasks;
 using WYF.DataEntity.Entity;
 using WYF.DataEntity.Metadata;
 using WYF.DataEntity.Metadata.Dynamicobject;
-using WYF.OrmEngine.DataManager;
+using WYF.OrmEngine;
+using WYF.OrmEngine.dataManager;
 
 namespace WYF.Data
 {
+    /// <summary>
+    /// 单据读取实现
+    /// </summary>
     public class BusinessDataReader
     {
         public static DynamicObject[] Load(Object[] pkArray, DynamicObjectType type, bool loadReferenceData)
         {
-            //IDataManager dataManager = DataManagerUtils.GetDataManager((IDataEntityType)type);
-            //DynamicObject[] array = (DynamicObject[])dataManager.Read(pkArray);
-            //if (loadReferenceData)
-            //{
-            //    CachedLoadReferenceObjectManager cachedLoadReferenceObjectManager = new CachedLoadReferenceObjectManager((IDataEntityType)type, false);
-            //    cachedLoadReferenceObjectManager.Load((Object[])array);
-            //}
-            //return array;
-            return null;
+            IDataManager dataManager = DataManagerUtils.GetDataManager((IDataEntityType)type);
+            DynamicObject[] array = (DynamicObject[])dataManager.Read(pkArray);
+            if (loadReferenceData)
+            {
+                CachedLoadReferenceObjectManager cachedLoadReferenceObjectManager = new CachedLoadReferenceObjectManager((IDataEntityType)type, false);
+                cachedLoadReferenceObjectManager.Load((Object[])array);
+            }
+            return array;
         }
     }
 }

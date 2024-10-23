@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Collections.ObjectModel;
 using WYF.Bos.DataEntity;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace WYF.DataEntity.Utils
 {
@@ -43,6 +44,15 @@ namespace WYF.DataEntity.Utils
             return null;
         }
 
+        public static void DataEntityWalker(List<object> dataEntities, IDataEntityType dt, Action<DataEntityWalkerEventArgs> callback, bool onlyDbProperty)
+        {
+            DataEntityWalkerEventArgs.DataEntityWalker(dataEntities, dt, callback, onlyDbProperty);
+        }
+
+        public static object Clone(IDataEntityBase dataEntity, bool onlyDbProperty, bool clearPrimaryKeyValue)
+        {
+            return (new CloneUtils(onlyDbProperty, clearPrimaryKeyValue)).Clone(dataEntity);
+        }
 
         public static T GetPrimaryKeyValue<T>(this IDataEntityBase dataEntity, bool throwOnError = true)
         {

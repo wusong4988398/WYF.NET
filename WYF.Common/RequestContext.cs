@@ -12,7 +12,12 @@ namespace WYF
         private static ThreadLocal<RequestContext> current = new ThreadLocal<RequestContext>();
 
 
+
+        public static RequestContext? Current { get { return current.Value; } }
+
+
         public string UserId { get; set; } = "";
+        public string AccountId { get; set; } = "";
 
         public static RequestContext Get()
         {

@@ -9,18 +9,18 @@ namespace WYF.DataEntity.Entity
 {
     public class DataEntityReference
     {
-        public Object Oid { get;set; }
+        public object Oid { get;set; }
 
-        public Object DataEntity { get; set; }
+        public virtual object DataEntity { get; set; }
 
         public bool IsDataEntityLoaded { get; set; }
 
 
-        public DataEntityReference(Object oid)
+        public DataEntityReference(object oid)
         {
             this.Oid = oid;
         }
-        public void SetDataEntity(Object value)
+        public void SetDataEntity(object value)
         {
             this.DataEntity = value;
             this.IsDataEntityLoaded = true;

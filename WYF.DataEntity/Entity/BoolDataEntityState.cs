@@ -9,6 +9,7 @@ using System.ComponentModel;
 using WYF.DataEntity.Metadata.Clr;
 using WYF.DataEntity.Metadata;
 using WYF.DataEntity.Metadata.Dynamicobject;
+using Newtonsoft.Json.Linq;
 
 namespace WYF.DataEntity.Entity
 {
@@ -52,7 +53,7 @@ namespace WYF.DataEntity.Entity
         /// 获取实体的脏标志位值
         /// </summary>
         /// <returns></returns>
-        internal int[] GetDirtyFlags()
+        public override  int[] GetDirtyFlags()
         {
             int length = this._dirtyArray.Length;
             if (length <= 0)
@@ -64,6 +65,17 @@ namespace WYF.DataEntity.Entity
             this._dirtyArray.CopyTo(array, 0);
             return array;
         }
+
+
+        //public int[] GetDirtyFlags()
+        //{
+        //    int n = this._dirtyArray.Length;
+        //    if (n <= 0)
+        //        return new int[0];
+        //    return BitArrayToIntArrayConverter.ConvertBitArrayToIntArray(this._dirtyArray);
+
+        //}
+
         /// <summary>
         /// 返回指定实体中所有变更的属性列表
         /// 这里判断的是实体自创建或从数据库读取后，发生更改的属性列表。
@@ -130,5 +142,12 @@ namespace WYF.DataEntity.Entity
                 this._dirtyArray[args.Property.Ordinal] = true;
             }
         }
+
+        public override void SetDirtyFlags(int[] values)
+        {
+            this._dirtyArray = new BitArray(values);
+        }
+
+      
     }
 }

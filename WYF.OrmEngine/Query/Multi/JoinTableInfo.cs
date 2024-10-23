@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WYF.OrmEngine.Query.CrossDb;
 
 namespace WYF.OrmEngine.Query.Multi
 {
@@ -49,19 +50,19 @@ namespace WYF.OrmEngine.Query.Multi
             return ToJoinString(ctx.GetSimpleEntityAlias(this.TableAlias), ctx.GetSimpleEntityAlias(this.JoinTableAlias), crossToRouteKey, withCrossDBObjectOrFilter, ctx);
         }
 
-        private string ToJoinString(String tableAlias, String joinTableAlias, String crossToRouteKey, bool withCrossDBObjectOrFilter, QContext ctx)
+        private string ToJoinString(string tableAlias, string joinTableAlias, string crossToRouteKey, bool withCrossDBObjectOrFilter, QContext ctx)
         {
             StringBuilder sb = new StringBuilder(128);
             sb.Append("\r\n");
             sb.Append(this.Join.GetDescription<ORMHint.JoinHint>());
             sb.Append(' ');
-            if (crossToRouteKey == null)
+            if (crossToRouteKey.IsNullOrWhiteSpace())
             {
                 sb.Append(this.Table);
             }
             else
             {
-                //sb.Append(TenantAccountCrossDBRuntime.GetCrossDBTable(this.Table, crossToRouteKey, withCrossDBObjectOrFilter));
+                sb.Append(TenantAccountCrossDBRuntime.GetCrossDBTable(this.Table, crossToRouteKey, withCrossDBObjectOrFilter));
             }
             sb.Append(' ');
             sb.Append(tableAlias);

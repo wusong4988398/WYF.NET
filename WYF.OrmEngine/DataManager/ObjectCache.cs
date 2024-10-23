@@ -5,7 +5,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WYF.OrmEngine.DataManager
+namespace WYF.OrmEngine.dataManager
 {
     internal sealed class ObjectCache<TKey, TValue> where TKey : class where TValue : class
     {

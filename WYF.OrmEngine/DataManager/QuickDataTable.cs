@@ -1,7 +1,7 @@
 ﻿using WYF.Bos.DataEntity;
 using WYF.DataEntity.Metadata.database;
 
-namespace WYF.OrmEngine.DataManager
+namespace WYF.OrmEngine.dataManager
 {
     public class QuickDataTable
     {

@@ -111,7 +111,8 @@ namespace WYF.OrmEngine.Query.Multi
                 }
                 else if (this._limit > 0)
                 {
-                    sql = "SELECT TOP " + this._limit + "," + this._start + ' ' + sql.Substring("SELECT ".Length);
+                    //sql = "SELECT TOP " + this._limit + "," + this._start + ' ' + sql.Substring("SELECT ".Length);
+                    sql = "SELECT TOP " + this._top + ' ' + sql.Substring("SELECT ".Length);//临时调整 因为找不到原因
                 }
                 else
                 {

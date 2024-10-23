@@ -4,18 +4,24 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WYF.DataEntity.Metadata;
+using WYF.DataEntity.Metadata.database;
 
-namespace WYF.OrmEngine.DataManager
+namespace WYF.OrmEngine.dataManager
 {
     public interface IDataManager
     {
+        IDataEntityType DataEntityType { get; set; }
+        DataEntityTypeMap DataEntityTypeMap { get;  }
+
+        ISaveDataSet GetSaveDataSet(object[] dataEntities, bool includeDefaultValue);
         object[] Read(object[] ids);
+        object Read(object pk);
 
         object[] Read(ReadWhere where);
 
-        void Save(Object paramObject);
+        void Save(object dataEntity);
 
-        void SetDataEntityType(IDataEntityType dataEntityType);
+
     }
     public interface IDataManager<DataT, OidT>
     {

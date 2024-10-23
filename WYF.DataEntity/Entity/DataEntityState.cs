@@ -8,6 +8,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 namespace WYF.DataEntity.Entity
 {
     /// <summary>
@@ -21,11 +22,11 @@ namespace WYF.DataEntity.Entity
         private PkSnapshotSet _pkSnapshotSet;
       
         private BitArray _bizChanged=new BitArray(0);
-        private IDictionary<String, EntryInfo> _entryInfos;
+        private IDictionary<string, EntryInfo> _entryInfos;
         /// <summary>
         /// 是否移除对象标记
         /// </summary>
-        private Boolean removedItems;
+        private bool removedItems;
 
         protected DataEntityState()
         {
@@ -67,20 +68,36 @@ namespace WYF.DataEntity.Entity
             if (clearDirty)
             {
                 this.IsFromDatabase = value;
-             
             }
             
         }
-        /// <summary>
-        /// 是否移除对象标记
-        /// </summary>
-        public bool RemovedItems
+
+        public  void SetFromDatabase(bool value)
+        {
+            this._fromDatabase = value;
+            if (this._fromDatabase)
+            {
+                SetDirty(false);
+                removedItems = false;
+                for (int i = 0; i < this._bizChanged.Length; i++)
+                {
+                    this._bizChanged.Set(i, false);
+                }
+                    
+            }
+        }
+       
+    
+    /// <summary>
+    /// 是否移除对象标记
+    /// </summary>
+    public bool RemovedItems
         {
             get { return this.removedItems; }
             set { this.removedItems = value; }
         }
 
-        public IDictionary<String, EntryInfo> EntryInfos
+        public IDictionary<string, EntryInfo> EntryInfos
         {
             get { return this._entryInfos; }
             set { this._entryInfos = value; }
@@ -91,7 +108,13 @@ namespace WYF.DataEntity.Entity
            
             this._bizChanged = new BitArray(values);
         }
-        
+
+
+        public  int[] GetBizChangeFlags()
+        {
+            return BitArrayToIntArrayConverter.ConvertBitArrayToIntArray(this._bizChanged);
+        }
+
         public  void SetBizChanged(bool value)
         {
             if (value)
@@ -111,7 +134,7 @@ namespace WYF.DataEntity.Entity
         public void SetEntryRowCount(string entryName, int rowCount)
         {
             if (this.EntryInfos == null)
-                this.EntryInfos = new Dictionary<String, EntryInfo>();
+                this.EntryInfos = new Dictionary<string, EntryInfo>();
             this.EntryInfos.TryGetValue(entryName,out EntryInfo? entryInfo);
             if (entryInfo == null)
             {
@@ -122,10 +145,10 @@ namespace WYF.DataEntity.Entity
 
         }
 
-        public void SetEntryPageSize(String entryName, int pageSize)
+        public void SetEntryPageSize(string entryName, int pageSize)
         {
             if (this.EntryInfos == null)
-                this.EntryInfos = new Dictionary<String, EntryInfo>();
+                this.EntryInfos = new Dictionary<string, EntryInfo>();
             this.EntryInfos.TryGetValue(entryName,out EntryInfo ? entryInfo);
             if (entryInfo == null)
             {
@@ -134,11 +157,12 @@ namespace WYF.DataEntity.Entity
             }
             entryInfo.PageSize = pageSize;
         }
-
-        public void SetEntryStartRowIndex(String entryName, int startRowIndex)
+        public abstract int[] GetDirtyFlags();
+        public abstract void SetDirtyFlags(int[] values);
+        public void SetEntryStartRowIndex(string entryName, int startRowIndex)
         {
             if (this.EntryInfos == null)
-                this.EntryInfos = new Dictionary<String, EntryInfo>();
+                this.EntryInfos = new Dictionary<string, EntryInfo>();
             this.EntryInfos.TryGetValue(entryName, out EntryInfo? entryInfo);
             if (entryInfo == null)
             {
@@ -188,6 +212,9 @@ namespace WYF.DataEntity.Entity
               
             }
         }
+
+
+
         /// <summary>
         /// 返回此实体携带的快照对象，可能返回null
         /// </summary>

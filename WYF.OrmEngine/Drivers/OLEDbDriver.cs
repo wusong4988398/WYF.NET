@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using WYF.DataEntity.Metadata.database;
 using WYF.DbEngine;
-using WYF.OrmEngine.DataManager;
+using WYF.OrmEngine.dataManager;
 using WYF.OrmEngine.Drivers.Sql;
 
 namespace WYF.OrmEngine.Drivers

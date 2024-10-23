@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using WYF.DataEntity.Entity;
 
-namespace WYF.OrmEngine.DataManager
+namespace WYF.OrmEngine.dataManager
 {
     internal sealed class RuntimePkSnapshot
     {

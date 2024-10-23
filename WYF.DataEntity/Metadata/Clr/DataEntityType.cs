@@ -349,6 +349,15 @@ namespace WYF.DataEntity.Metadata.Clr
             {
             }
 
+            public override void SetDirtyFlags(int[] values)
+            {
+                throw new NotImplementedException();
+            }
+
+            public override int[] GetDirtyFlags()
+            {
+                throw new NotImplementedException();
+            }
 
             public override bool DataEntityDirty
             {

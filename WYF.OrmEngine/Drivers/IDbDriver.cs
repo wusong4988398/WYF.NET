@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WYF.DataEntity.Metadata.database;
-using WYF.OrmEngine.DataManager;
+using WYF.OrmEngine.dataManager;
 
 namespace WYF.OrmEngine.Drivers
 {

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using WYF.Bos.DataEntity;
 using WYF.DbEngine.db;
 
-namespace WYF.OrmEngine.DataManager
+namespace WYF.OrmEngine.dataManager
 {
     public sealed class ReadWhere
     {
@@ -33,7 +33,7 @@ namespace WYF.OrmEngine.DataManager
 
         public object[] ReadOids { get; private set; }
 
-        public string WhereSql { get; private set; }
+        public string WhereSql { get;  set; }
 
         public List<SqlParameter> SqlParams { get; private set; }
     }
