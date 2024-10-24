@@ -336,6 +336,13 @@ namespace WYF
         {
             return string.IsNullOrWhiteSpace(value);
         }
+
+
+        public static bool IsNumericString(this string value)
+        {
+            return value.All(char.IsDigit);
+        }
+
         public static string ReplaceFirst(this string input, string oldValue, string newValue)
         {
             Regex regex = new Regex(oldValue, RegexOptions.Multiline);

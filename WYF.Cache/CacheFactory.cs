@@ -11,6 +11,7 @@ namespace WYF.Cache
         private static volatile CacheFactory commonCacheFactory = null;
         private static readonly object syncLock = new object();
 
+
         public static CacheFactory GetCommonCacheFactory()
         {
             if (commonCacheFactory == null)

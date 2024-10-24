@@ -1,10 +1,12 @@
-﻿using System;
+﻿using Google.Protobuf.WellKnownTypes;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WYF.DataEntity.Metadata;
+using static Mysqlx.Expect.Open.Types.Condition.Types;
 
 namespace WYF.OrmEngine.Impl
 {
@@ -133,6 +135,14 @@ namespace WYF.OrmEngine.Impl
             this.globalCache.Remove(lk, out IDataEntityType? dt1);
             this.instanceCache.Remove(lk, out IDataEntityType? dt2);
             return (dt2 == null) ? dt1 : dt2;
+        }
+
+        public void PutInstanceCache(string entityName, IDataEntityType dt)
+        {
+
+
+            this.instanceCache[entityName] = dt;
+
         }
 
 

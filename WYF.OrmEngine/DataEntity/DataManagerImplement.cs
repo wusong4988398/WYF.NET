@@ -22,7 +22,8 @@ namespace WYF.OrmEngine.DataEntity
         private int batchDeleteSize = 10000;
         private OperateOption _option;
         private int maxObjects = 1000000;
-        public bool SelectHeadOnly { get; set; } = false;
+
+        public bool IsSelectHeadOnly { get; set; } = false;
         private TableAliasGenner aliasGenner = new TableAliasGenner();
         private static readonly Object[] EmptyDynmaicObjects = new DynamicObject[0];
         private static readonly Object[] EmptyObjects = new Object[0];
@@ -497,7 +498,7 @@ namespace WYF.OrmEngine.DataEntity
             foreach (DbMetadataTable tableSchema in tablesSchema)
             {
                 QuickDataTable table = new QuickDataTable(tableSchema);
-                if (this.SelectHeadOnly && tableSchema != rootTable && (
+                if (this.IsSelectHeadOnly && tableSchema != rootTable && (
                    !tableSchema.Name.StartsWith(rootTable.Name)))
                 {
                     table.Rows = new QuickRow[0];
@@ -836,9 +837,18 @@ namespace WYF.OrmEngine.DataEntity
             throw new NotImplementedException();
         }
 
-        public object Read(object pk)
+        public object Read(object oid)
         {
-            throw new NotImplementedException();
+            if (oid==null)
+            {
+                throw new Exception("oid不能为空");
+            }
+            ReadWhere where = new ReadWhere(new Object[] { oid });
+            object[] result = Read(where);
+            if (result == null || result.Length == 0) return null;
+            return result.FirstOrDefault();
+            
+
         }
 
         public DbMetadataDatabase Database { get; private set; }
@@ -891,5 +901,7 @@ namespace WYF.OrmEngine.DataEntity
                 this._option = value;
             }
         }
+
+       
     }
 }

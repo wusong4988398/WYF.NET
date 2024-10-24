@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static IronPython.Modules.PythonCsvModule;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace WYF.Form.Service.Metadata
 {
@@ -74,8 +76,14 @@ namespace WYF.Form.Service.Metadata
         public string LoadClientFormMeta(string number)
         {
             string str = _reader.LoadFormRuntimeMeta(number, RuntimeMetaType.Client, number);
-
             return str;
+        }
+
+        public string GetRuntimeMetadataVersion(string entityName)
+        {
+            string version = _reader.GetRuntimeFormMetaVersion(entityName);
+
+            return version;
         }
     }
 }

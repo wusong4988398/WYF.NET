@@ -89,6 +89,16 @@ namespace WYF.OrmEngine.Impl
             return this.QueryDataSet(algoKey, entityName, selectFields, filters, orderBys, 0, -1, null);
         }
 
+        public void SetDataEntityType(string entityName, IDataEntityType dt)
+        {
+            this.entityTypeCache.PutInstanceCache(entityName, dt);
+        }
+
+        public IDataSet QueryDataSet(string algoKey, string entityName, string selectFields, QFilter[] filters)
+        {
+            return this.QueryDataSet(algoKey, entityName, selectFields, filters, null, 0, -1, null);
+        }
+
 
         //public DynamicObjectCollection ToPlainDynamicObjectCollection(IDataReader dataReader)
         //{

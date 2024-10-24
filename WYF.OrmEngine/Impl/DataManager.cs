@@ -123,6 +123,7 @@ namespace WYF.OrmEngine.Impl
         {
             get => impl.DataEntityTypeMap;
         }
+        public bool IsSelectHeadOnly { get; set; }
 
         public void SetStartRowIndex(int start) { }
 

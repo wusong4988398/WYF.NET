@@ -13,6 +13,9 @@ using WYF.Algo;
 using System.Text.RegularExpressions;
 using IronPython.Runtime.Operations;
 using WYF.Entity;
+using System.Collections;
+using WYF.OrmEngine.dataManager;
+using WYF.DataEntity.Metadata;
 
 namespace WYF.ServiceHelper
 {
@@ -22,19 +25,84 @@ namespace WYF.ServiceHelper
     public class BusinessDataServiceHelper
     {
         private static readonly DynamicObject[] EmptyObjects = new DynamicObject[0];
-        public static Dictionary<object, DynamicObject> LoadFromCache(string entityName, string selectProperties, QFilter[] filters, string orderBy)
+        public static IDictionary<object, DynamicObject> LoadFromCache(string entityName, string selectProperties, QFilter[] filters, string orderBy)
         {
             DynamicObjectType type = GetSubEntityType(entityName, selectProperties);
             List<object> idList = new List<object>();
+            if (orderBy.IsNullOrWhiteSpace())
+            {
+                using (IDataSet ds = ORM.Create().QueryDataSet("BusinessDataServiceHelper.load", entityName, "id", filters, null, -1,WithEntityEntryDistinctable.Instance))
+                {
+                    idList.AddRange(from row in ds select row.Get(0));
+                }
+            }
+            else
+            {
+                // 创建IDSet实例
+                //IDSet idSet = new IDSet();
+                // 初始化selectFields
+                string selectFields = "id";
+                // 使用正则表达式进行匹配
+                if (Regex.IsMatch(orderBy, @"(^id$)|(^id[ ,]+)|([ ,]+id[ ,]+)|([ ,]+id$)"))
+                {
+                    selectFields = Regex.Replace(orderBy.ToLower(), @"\basc\b|\bdesc\b", "");
+                }
+                else
+                {
+                    selectFields += "," + Regex.Replace(orderBy.ToLower(), @"\basc\b|\bdesc\b", "");
+                }
+                using (IDataSet ds = ORM.Create().QueryDataSet("BusinessDataServiceHelper.load", entityName, selectFields, filters, orderBy, -1))
+                {
+                    idList.AddRange(from row in ds select row.Get(0));
+                }
+            }
+            IDictionary<object, DynamicObject> fromCache = BusinessDataReader.LoadFromCache(idList.ToArray(), type);
+            IDictionary<object, DynamicObject> listObjs = new Dictionary<object, DynamicObject>();
+            foreach (var id in idList)
+            {
+                DynamicObject tObj = fromCache.GetOrDefault(id);
+                if (null != tObj)
+                    listObjs[id]=tObj;
+            }
             //DataEntityCacheManager cacheManager = new DataEntityCacheManager(type);
-
-
-            return null;
+            return listObjs;
 
 
 
         }
+        public static DynamicObject LoadSingleFromCache(string entityName, string selectProperties, QFilter[] filters)
+        {
+            DynamicObjectType type = GetSubEntityType(entityName, selectProperties);
 
+            return LoadSingleFromCache(filters, type);
+        }
+
+        public static DynamicObject LoadSingle(object pk, DynamicObjectType type)
+        {
+            return BusinessDataReader.LoadSingle(pk, type);
+        }
+
+        private static DynamicObject LoadSingleFromCache(QFilter[] filters, DynamicObjectType type)
+        {
+
+            List<object> idList = new List<object>();
+            DataEntityCacheManager cacheManager = new DataEntityCacheManager((IDataEntityType)type);
+            object[] pks = cacheManager.GetCachePks(filters);
+            if (pks == null)
+            {
+                using (IDataSet ds = ORM.Create().QueryDataSet("BusinessDataServiceHelper.LoadFromCache", type.Name, "id", filters, null, -1, WithEntityEntryDistinctable.Instance))
+                {
+                    idList.AddRange(from row in ds select row.Get(0));
+
+                }
+                pks = idList.ToArray();
+                cacheManager.PutCachePks(filters, pks);
+            }
+
+            IDictionary<object, DynamicObject> mapObject = BusinessDataReader.LoadFromCache(pks, type);
+           
+            return (mapObject.Count > 0) ? mapObject.Values.ToArray()[0] : null;
+        }
         public static DynamicObject[] Load(String entityName, String selectProperties, QFilter[] filters)
         {
             return Load(entityName, selectProperties, filters, null, -1);

@@ -6,9 +6,4 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\WYF.Metadata\WYF.Metadata.csproj" />
-    <ProjectReference Include="..\WYF.OrmEngine\WYF.OrmEngine.csproj" />
-  </ItemGroup>
-
 </Project>

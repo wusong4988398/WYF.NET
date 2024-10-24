@@ -19,6 +19,15 @@ namespace WYF.Entity
 
         protected List<RefPropType> _refPropTypes = new List<RefPropType>();
 
+        public long CheckVersionTimeMillis { get; set; }
+
+        [SimpleProperty]
+        public string Version { get; set; }
+
+        [SimpleProperty]
+        public string BOSVer {  get; set; } 
+
+
         /// <summary>
         /// 引用属性类型
         /// </summary>

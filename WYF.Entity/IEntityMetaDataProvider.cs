@@ -15,6 +15,9 @@ namespace WYF.Entity
         /// <returns></returns>
         MainEntityType GetDataEntityType(string entityName);
 
-        RefEntityType GetRefEntityType(string number);
+        RefEntityType GetRefEntityType(string entityName);
+
+        string GetRuntimeMetadataVersion(string entityName);
+
     }
 }

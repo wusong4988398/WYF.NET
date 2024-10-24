@@ -13,6 +13,8 @@ namespace WYF.OrmEngine.dataManager
         IDataEntityType DataEntityType { get; set; }
         DataEntityTypeMap DataEntityTypeMap { get;  }
 
+        bool IsSelectHeadOnly {  get; set; }
+
         ISaveDataSet GetSaveDataSet(object[] dataEntities, bool includeDefaultValue);
         object[] Read(object[] ids);
         object Read(object pk);

@@ -37,7 +37,8 @@ namespace WYF.Cache
         public override ILocalMemoryCache GetOrCreateLocalMemoryCache(string region, string type,
                              CacheConfigInfo cacheConfig)
         {
-            throw new NotImplementedException();
+            ILocalMemoryCache cache = GetLocalSessionlessCache(region);
+            return ((ILocalSessionCacheRegionManger)cache).GetOrCreateCache(type, cacheConfig);
         }
 
         private ILocalMemoryCache GetLocalSessionlessCache(string region)

@@ -12,6 +12,7 @@ namespace WYF
         Rule = 2,
         Config = 3,
         Client = 5,
+        Version=10,
         Entity = 11,
     }
 }

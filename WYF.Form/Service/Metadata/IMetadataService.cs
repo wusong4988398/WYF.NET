@@ -31,5 +31,7 @@ namespace WYF.Form.Service.Metadata
         /// <param name="formId"></param>
         /// <returns></returns>
         string LoadClientFormMeta(String formId);
+
+        string GetRuntimeMetadataVersion(string entityName);
     }
 }

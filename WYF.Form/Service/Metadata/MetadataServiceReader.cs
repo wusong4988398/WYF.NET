@@ -3,8 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WYF.Cache;
 using WYF.DbEngine;
 using WYF.Metadata.Dao;
+
 
 namespace WYF.Form.Service.Metadata
 {
@@ -83,6 +85,31 @@ namespace WYF.Form.Service.Metadata
             string sRet = DBUtils.ExecuteScalar<string>(new Context(), sql, "");
             return sRet;
             
+        }
+
+        public string GetRuntimeFormMetaVersion(string entityName)
+        {
+          string verison=  ThreadCache.Get<string>("FV." + entityName, () =>
+            {
+                string redisMetaVer = MetaCacheUtils.GetFormMetaVersion(entityName);
+                if (redisMetaVer.IsNullOrEmpty())
+                {
+                    redisMetaVer = DoQueryFormMeta(entityName, entityName, RuntimeMetaType.Version);
+                    if (redisMetaVer.IsNullOrEmpty())
+                    {
+                        RebuildRuntimeMeta(entityName);
+                        redisMetaVer = DoQueryFormMeta(entityName, entityName, RuntimeMetaType.Version);
+                    }
+                    MetaCacheUtils.SetFormMetaVersion(entityName, redisMetaVer);
+                }
+                return redisMetaVer;
+            });
+            return verison;
+        }
+
+        private void RebuildRuntimeMeta(string number)
+        {
+            MetadataDao.RebuildRuntimeMetaByNumber(number);
         }
     }
 }

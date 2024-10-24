@@ -42,7 +42,7 @@ namespace WYF.OrmEngine.dataManager
         }
 
         // 加载引用对象
-        public void Load(object[] dataEntities)
+        public void Load(params object[] dataEntities)
         {
             DoTasks(GetTasks(dataEntities));
         }

@@ -110,5 +110,23 @@ namespace WYF.Cache.redis
             RedisClient client = RedisFactory.GetRedisClient(GetRedisUrl());
             return client.HGet(type, key);
         }
+
+        public string Get(string key)
+        {
+            RedisClient client = RedisFactory.GetRedisClient(GetRedisUrl());
+            return client.Get(key);
+        }
+
+        public void Put(string type, string key, string value)
+        {
+            this.Put(type, key, value, this.GetDefaultTimeout());
+        }
+
+        public void Put(string type, string key, string value, TimeSpan timeout)
+        {
+            RedisClient client = RedisFactory.GetRedisClient(GetRedisUrl());
+            client.HSet(type, key,value);
+            client.Expire(type, timeout.Seconds);
+        }
     }
 }

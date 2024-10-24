@@ -1,5 +1,6 @@
 ﻿using WYF.Entity.Service;
 using WYF.Form.Service.Metadata;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace WYF.Entity
 {
@@ -69,6 +70,11 @@ namespace WYF.Entity
 
             return refEntityType;
 
+        }
+
+        public string GetRuntimeMetadataVersion(string entityName)
+        {
+            return this._metadataService.GetRuntimeMetadataVersion(entityName);
         }
     }
 }

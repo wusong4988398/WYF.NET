@@ -22,7 +22,11 @@ namespace WYF.OrmEngine
         IDataSet QueryDataSet(string algoKey, string entityName, string selectFields, QFilter[] filters, String orderBys, int top);
         IDataSet QueryDataSet(string algoKey, string entityName, string selectFields, QFilter[] filters, string orderBys, int top, IDistinctable distinctable);
         IDataSet QueryDataSet(string algoKey, string entityName, string selectFields, QFilter[] filters, string orderBys, int from, int length, IDistinctable distinctable);
-  
+        IDataSet QueryDataSet(string algoKey, string entityName, string selectFields, QFilter[] filters);
+
+
+        void SetDataEntityType(string entityName, IDataEntityType dt);
+
         //IDataSet QueryDataSet(string algoKey, string entityName, string selectFields, QFilter[] filters, string orderBys, int from, int length, IDistinctable distinctable);
         //IDataSet QueryDataSet(string algoKey, string entityName, string selectFields, QFilter[] filters, String orderBys, int top);
 

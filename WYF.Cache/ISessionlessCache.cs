@@ -8,16 +8,19 @@ namespace WYF.Cache
 {
     public interface ISessionlessCache<T>
     {
+        void Put(string type, string key, T value);
         void Put(string key, T value);
         void Put(string type, Dictionary<string, T> keyValues);
         void Put(string key, T value, TimeSpan timeout);
         void Put(string type, Dictionary<string, string> keyValues,  TimeSpan timeout);
+        void Put(string type, string key, string value, TimeSpan timeout);
 
         void Remove(params string[] keys);
         void Remove(string type, string key);
         void Remove(string type, string[] keys);
         List<T> Get(string type, params string[] keys);
         T Get(string type, string key);
+        T Get(string key);
 
         Dictionary<string, T> GetAll(string type);
     }
