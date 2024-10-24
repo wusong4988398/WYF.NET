@@ -55,10 +55,23 @@ namespace WYF.Form.Service.Metadata
 
         public string LoadEntityMeta(string entityName)
         {
-            string metaStr = this.QueryEntityMetaCache(entityName, entityName, RuntimeMetaType.Entity);
+            string metaStr = this.QueryMeta(entityName, entityName, RuntimeMetaType.Entity);
 
             return metaStr;
         }
+
+        private string QueryMeta(string number, string ctlKey, RuntimeMetaType type)
+        {
+ 
+            string val = MetaCacheUtils.GetDistributeCache(number, ctlKey, type.ToInt());
+            if (val.IsNullOrWhiteSpace())
+            {
+                val = QueryEntityMetaCache(number, ctlKey, type);
+                MetaCacheUtils.PutDistributeCache(number, ctlKey, type.ToInt(), val);
+            }
+            return val;
+        }
+
         private string QueryEntityMetaCache(string number, string fieldKey, RuntimeMetaType type)
         {
             string val = this.DoQueryMetaData(number, fieldKey, type, "T_META_ENTITY");

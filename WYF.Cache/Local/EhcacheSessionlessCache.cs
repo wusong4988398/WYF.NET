@@ -14,7 +14,7 @@ namespace WYF.Cache.Local
 {
     public class EhcacheSessionlessCache : ILocalSessionCacheRegionManger
     {
-        private static IDictionary<string, CacheProperites> configMap;
+        private static Dictionary<string, CacheProperites> configMap;
         private static  char REGIONTYPESPILTCHAR = '-';
         private string _region;
         private ConcurrentDictionary<string, EhcacheSessionlessCacheWrapper> cacheMap;
@@ -112,17 +112,19 @@ namespace WYF.Cache.Local
         private EhcacheSessionlessCacheWrapper GetCache(string type,  bool createIfNotExists)
         {
             string region = this.MakeInnerRegion(type);
-            EhcacheSessionlessCacheWrapper cacheWrapper = this.cacheMap[region];
+            EhcacheSessionlessCacheWrapper cacheWrapper = this.cacheMap.GetValueOrDefault(region);
+           
             if ((cacheWrapper == null || cacheWrapper.Cache == null) && createIfNotExists)
             {
                 lock (cacheMap) {
-                    cacheWrapper = this.cacheMap[region];
+                    cacheWrapper = this.cacheMap.GetValueOrDefault(region);
                     if (cacheWrapper==null|| cacheWrapper.Cache==null)
                     {
-                        CacheProperites cp = EhcacheSessionlessCache.configMap[region];
+                        CacheProperites cp =configMap.GetValueOrDefault(region);
                         if (cp==null)
                         {
-                            cp = EhcacheSessionlessCache.configMap[this._region];
+
+                            cp = configMap.GetValueOrDefault(this._region);
                         }
                         if (cp==null)
                         {
@@ -167,7 +169,7 @@ namespace WYF.Cache.Local
             {
                 DefaultEntryOptions = new FusionCacheEntryOptions
                 {
-                    Duration = TimeSpan.FromMinutes(2),
+                    Duration = TimeSpan.FromMinutes(200),
                 },
                 CacheName = region,
 

@@ -43,9 +43,9 @@ namespace WYF.Entity
             MainEntityType dt = EntityMetadataLocalCache.GetDataEntityType(entityName);
             if (dt==null)
             {
-                GetRuntimeMetadataVersion(entityName);
+                //GetRuntimeMetadataVersion(entityName);
                 dt = Provider.GetDataEntityType(entityName);
-                MakeUnmodifiable(dt);
+               // MakeUnmodifiable(dt);
                 EntityMetadataLocalCache.PutDataEntityType(dt);
                 dt.CheckVersionTimeMillis = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds();
             }
