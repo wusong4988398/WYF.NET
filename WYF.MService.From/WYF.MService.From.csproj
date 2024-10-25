@@ -7,9 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\WYF.DataEntity\WYF.DataEntity.csproj" />
+    <ProjectReference Include="..\WYF.Entity.Core\WYF.Entity.Core.csproj" />
+    <ProjectReference Include="..\WYF.Metadata\WYF.Metadata.csproj" />
     <ProjectReference Include="..\WYF.MService.From.Api\WYF.MService.From.Api.csproj" />
-    <ProjectReference Include="..\WYF.OrmEngine\WYF.OrmEngine.csproj" />
   </ItemGroup>
 
 </Project>

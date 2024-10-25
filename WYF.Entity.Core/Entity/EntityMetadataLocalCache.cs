@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WYF.Cache;
-using WYF.Entity.Core.Entity.Cache;
+using WYF.Entity.Cache;
 
 namespace WYF.Entity
 {

@@ -3,10 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static IronPython.Modules.PythonCsvModule;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 
-namespace WYF.Form.Service.Metadata
+namespace WYF.Service.Metadata
 {
     public class MetadataService : IMetadataService
     {
@@ -64,7 +62,7 @@ namespace WYF.Form.Service.Metadata
         /// <param name="formMetaType"></param>
         /// <param name="key"></param>
         /// <returns></returns>
-        public string LoadFormRuntimeMeta(string formId, RuntimeMetaType formMetaType, string key)
+        public string LoadFormRuntimeMeta(string formId, int formMetaType, string key)
         {
             return _reader.LoadFormRuntimeMeta(formId, formMetaType, key);
         }
@@ -75,15 +73,15 @@ namespace WYF.Form.Service.Metadata
         /// <returns></returns>
         public string LoadClientFormMeta(string number)
         {
-            string str = _reader.LoadFormRuntimeMeta(number, RuntimeMetaType.Client, number);
+            string str = _reader.LoadFormRuntimeMeta(number, (int)RuntimeMetaType.Client, number);
+
             return str;
         }
 
-        public string GetRuntimeMetadataVersion(string entityName)
+        public string GetRuntimeMetadataVersion(string number)
         {
-            string version = _reader.GetRuntimeFormMetaVersion(entityName);
-
-            return version;
+            throw new NotImplementedException();
         }
     }
+
 }

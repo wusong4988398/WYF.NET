@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WYF.Form.Service.Metadata
+namespace WYF.Service.Metadata
 {
     public interface IMetadataService
     {
@@ -23,7 +23,7 @@ namespace WYF.Form.Service.Metadata
         /// <param name="formMetaType"></param>
         /// <param name="key"></param>
         /// <returns></returns>
-        string LoadFormRuntimeMeta(string formId, RuntimeMetaType formMetaType, string key);
+        string LoadFormRuntimeMeta(string formId, int formMetaType, string key);
 
         /// <summary>
         /// 加载前端表单元数据
@@ -32,6 +32,7 @@ namespace WYF.Form.Service.Metadata
         /// <returns></returns>
         string LoadClientFormMeta(String formId);
 
-        string GetRuntimeMetadataVersion(string entityName);
+
+        string GetRuntimeMetadataVersion(string number);
     }
 }
