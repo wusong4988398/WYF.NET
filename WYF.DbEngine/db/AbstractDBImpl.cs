@@ -28,7 +28,8 @@ namespace WYF.DbEngine.db
 
         public T Query<T>(DBRoute dbRoute, string sql, object[] parameters, Func<IDataReader, T> action, TraceSpan ts)
         {
-           return this.Query(dbRoute, sql, parameters, action, ts);   
+            QueryResult<T> ret = this.Query(dbRoute,true, sql, action,true, parameters);   
+            return ret.Result;
         }
     }
 }

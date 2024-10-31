@@ -87,7 +87,7 @@ namespace WYF.DbEngine
         {
 
 
-            return default;
+            throw new NotImplementedException();
         }
 
 
@@ -115,7 +115,6 @@ namespace WYF.DbEngine
         {
             AbstractDBImpl db = GetImpl();
             TraceSpan ts = new TraceSpan();
-
             SqlObject so = sb.GenSQLObject();
             return cb.Invoke(ts, db, so);
 
