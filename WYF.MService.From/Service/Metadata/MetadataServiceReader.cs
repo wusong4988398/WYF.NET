@@ -1,4 +1,7 @@
-﻿using WYF.Metadata.Dao;
+﻿using WYF.DbEngine;
+using WYF.DbEngine.db;
+using WYF.Metadata.Dao;
+using static IronPython.Modules.PythonCsvModule;
 
 namespace WYF.Service.Metadata
 {
@@ -41,8 +44,18 @@ namespace WYF.Service.Metadata
             {
                 sql = sql + $" and FKey='{ctlKey}'";
             }
-            // string sRet= DB.Instance.QuerySqlScalarSync(sql).ToNullString();
-            return "";
+            string sRet = DB.Query(DBRoute.meta, sql, [], reader =>
+            {
+                string  str = String.Empty;
+                if (reader.Read())
+                {
+                    str = reader.GetString(0);
+                }
+                return str;
+
+            });
+            //string sRet= DB.Instance.QuerySqlScalarSync(sql).ToNullString();
+            return sRet;
         }
 
         public string LoadEntityMeta(string entityName)

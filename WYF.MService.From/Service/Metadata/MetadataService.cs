@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static IronPython.Modules.PythonCsvModule;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace WYF.Service.Metadata
 {
@@ -48,10 +50,12 @@ namespace WYF.Service.Metadata
         {
 
             //string sdata = _repository.Context.Ado.GetString($"select FDATA from T_META_FORM where FNUMBER = '{formId}' and FKEY = '{formId}' and FTYPE = {(int)RuntimeMetaType.Config}");
-            // string sdata = DB.Instance.GetClient().Ado.GetString($"select FDATA from T_META_FORM where FNUMBER = '{formId}' and FKEY = '{formId}' and FTYPE = {(int)RuntimeMetaType.Config}");
-            // string sdata = DB.Instance.QuerySqlScalarSync($"select FDATA from T_META_FORM where FNUMBER = '{formId}' and FKEY = '{formId}' and FTYPE = {(int)RuntimeMetaType.Config}").ToNullString();
-            // return sdata;
-            return "";
+            //string sdata = DB.Instance.GetClient().Ado.GetString($"select FDATA from T_META_FORM where FNUMBER = '{formId}' and FKEY = '{formId}' and FTYPE = {(int)RuntimeMetaType.Config}");
+            //string sdata = DB.Instance.QuerySqlScalarSync($"select FDATA from T_META_FORM where FNUMBER = '{formId}' and FKEY = '{formId}' and FTYPE = {(int)RuntimeMetaType.Config}").ToNullString();
+            return _reader.LoadFormConfig(formId);
+
+            //return sdata;
+
 
 
         }

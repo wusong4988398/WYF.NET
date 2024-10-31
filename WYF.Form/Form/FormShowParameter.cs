@@ -316,7 +316,7 @@ namespace WYF.Form
 
 
 
-        public static FormShowParameter CreateFormShowParameter(Dictionary<string, object> openParameter)
+        public static FormShowParameter CreateFormShowParameter(IDictionary<string, object> openParameter)
         {
        
 
@@ -364,7 +364,7 @@ namespace WYF.Form
                     string propName = item.Key;
                     if (notCanWriteProp.Any(t => t.Name == propName))
                     {
-                        showParameter.CustomParams.Add(propName, openParameter.GetValueOrDefault(propName));
+                        showParameter.CustomParams.Add(propName, openParameter.Get(propName));
                     }
 
                 }

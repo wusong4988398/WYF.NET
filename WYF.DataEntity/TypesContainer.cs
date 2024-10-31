@@ -7,6 +7,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using WYF.Common;
 
 
 namespace WYF.DataEntity
@@ -35,36 +36,52 @@ namespace WYF.DataEntity
         /// </summary>
         /// <param name="typeName">类全限定名</param>
         /// <returns></returns>
+        //public static Type GetOrRegister(string typeName)
+        //{
+        //    if (string.IsNullOrEmpty(typeName))
+        //    {
+        //        return null;
+        //    }
+
+        //    return typesDict.GetOrAdd(typeName, tp => {
+        //        Type type= Type.GetType(tp);
+        //        if (type == null)
+        //        {
+        //            // 加载 DLL
+        //            string[] parts = tp.Split('.');
+        //            string desiredPart = parts[0] + "." + parts[1]+".dll"; // "WYF.Form"
+
+        //            Assembly assembly = Assembly.LoadFrom(desiredPart);
+        //            type=assembly.GetType(tp);
+        //        }
+        //        return type;
+        //    });
+
+        //}
+
+
+
         public static Type GetOrRegister(string typeName)
         {
             if (string.IsNullOrEmpty(typeName))
             {
-                return null;
+                throw new ArgumentException("typeName cannot be null or empty.", nameof(typeName));
             }
 
-            return typesDict.GetOrAdd(typeName, tp => {
-
-
-
-
-                Type type= Type.GetType(tp);
-                if (type == null)
+            return typesDict.GetOrAdd(typeName.Trim(), clsName =>
+            {
+                try
                 {
-                    // 加载 DLL
+                    Type type = Type.GetType(clsName,true,true);
 
 
-                    string[] parts = tp.Split('.');
-                    string desiredPart = parts[0] + "." + parts[1]+".dll"; // "WYF.Form"
-
-                    Assembly assembly = Assembly.LoadFrom(desiredPart);
-                    type=assembly.GetType(tp);
+                    return type;
                 }
-
-                return type;
-
-
+                catch (Exception e)
+                {
+                    throw new InvalidOperationException($"{Instance.GetClusterName()}: {clsName} not found.", e);
+                }
             });
-
         }
 
         public static T GetOrRegisterSingletonInstance<T>(string typeName)

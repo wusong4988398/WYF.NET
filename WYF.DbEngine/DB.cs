@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using WYF.Algo;
 using WYF.DbEngine.db;
 
+using static IronPython.Modules.PythonSocket;
+
 namespace WYF.DbEngine
 {
     public class DB
@@ -48,28 +50,78 @@ namespace WYF.DbEngine
             return null;
         }
 
+        //public static T Query<T>(DBRoute dbRoute, SqlBuilder sb, Func<IDataReader, T> action)
+        //{
+        //    //return ExecuteSqlBuilder<T>(dbRoute, sb, (span, db, sqlobj) =>
+        //    //{
+
+        //    //    return db.Query<T>(dbRoute, sqlobj.Sql.ToString(), sqlobj.Parameters.ToArray(), action, span);
+
+        //    //});
+
+        //    TraceSpan ts = new TraceSpan();
+
+        //    return GetImpl().QueryDataSet(dbRoute, sb.ToString(), paramter, queryMeta, ts);
+
+
+
+        //    return default;
+        //}
+
         public static T Query<T>(DBRoute dbRoute, SqlBuilder sb, Func<IDataReader, T> action)
         {
-            //return ExecuteSqlBuilder<T>(dbRoute, sb, (span, db, sqlobj) =>
-            //{
 
-            //    return db.Query<T>(dbRoute, sqlobj.Sql.ToString(), sqlobj.Parameters.ToArray(), action, span);
+            TraceSpan ts = new TraceSpan();
 
-            //});
+            //return GetImpl().Query(dbRoute, sb., paramter, queryMeta, ts);
+            return ExecuteSqlBuilder<T>(dbRoute, sb, (span, db, sqlobj) =>
+            {
+
+                return db.Query<T>(dbRoute, sqlobj.Sql.ToString(), sqlobj.Params.ToArray(), action, span);
+
+            });
+            //return default;
+        }
+
+        public static T Query<T>(DBRoute dbRoute, string sql,object[] parameters, Func<IDataReader, T> action)
+        {
+
+
             return default;
         }
 
-        //private static T ExecuteSqlBuilder<T>(DBRoute dbRoute, SqlBuilder sb, Func<TraceSpan, AbstractDBImpl, SqlObject, T> cb)
+
+
+        //public static T Query<T>(DBRoute dbRoute, string  sql, List<Object[]> paramsList, Func<IDataReader, T> action)
         //{
-        //    AbstractDBImpl db = GetImpl();
+        //    //return ExecuteSqlBuilder<T>(dbRoute, sb, (span, db, sqlobj) =>
+        //    //{
+
+        //    //    return db.Query<T>(dbRoute, sqlobj.Sql.ToString(), sqlobj.Parameters.ToArray(), action, span);
+
+        //    //});
+
         //    TraceSpan ts = new TraceSpan();
 
-        //    SqlObject so = sb.GenSQLObject(null);
-        //    return cb.Invoke(ts, db, so);
+        //    return GetImpl().Query(dbRoute, sql, paramsList, action, ts);
 
+
+
+        //    return default;
         //}
 
-        public static IDataSet QueryDataSet(string algoKey, DBRoute dbRoute, string sql, Object[] paramter, QueryMeta queryMeta)
+
+        private static T ExecuteSqlBuilder<T>(DBRoute dbRoute, SqlBuilder sb, Func<TraceSpan, AbstractDBImpl, SqlObject,T> cb)
+        {
+            AbstractDBImpl db = GetImpl();
+            TraceSpan ts = new TraceSpan();
+
+            SqlObject so = sb.GenSQLObject();
+            return cb.Invoke(ts, db, so);
+
+        }
+
+        public static IDataSet QueryDataSet(string algoKey, DBRoute dbRoute, string sql, object[] paramter, QueryMeta queryMeta)
         {
 
             TraceSpan ts = new TraceSpan();

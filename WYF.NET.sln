@@ -45,13 +45,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WinFormsApp1", "WinFormsApp
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WYF.Entity.Core", "WYF.Entity.Core\WYF.Entity.Core.csproj", "{C0CA53F3-78C1-4A0B-9092-126AF1D0F593}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WYF.Form.Mvc", "WYF.Form.Mvc\WYF.Form.Mvc.csproj", "{B3566CA0-4A33-47D8-8A72-272927809A78}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WYF.Form.Mvc", "WYF.Form.Mvc\WYF.Form.Mvc.csproj", "{B3566CA0-4A33-47D8-8A72-272927809A78}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Microservices", "Microservices", "{1F47634E-6252-4F65-9B83-6AE95512DA3E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WYF.MService.From.Api", "WYF.MService.From.Api\WYF.MService.From.Api.csproj", "{464B020E-AF16-49C0-B643-5030A1BC087F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WYF.MService.From.Api", "WYF.MService.From.Api\WYF.MService.From.Api.csproj", "{464B020E-AF16-49C0-B643-5030A1BC087F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WYF.MService.From", "WYF.MService.From\WYF.MService.From.csproj", "{BCCB3BF8-5104-4FD4-9744-F17FAA892548}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WYF.MService.From", "WYF.MService.From\WYF.MService.From.csproj", "{BCCB3BF8-5104-4FD4-9744-F17FAA892548}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebApplication1", "WebApplication1\WebApplication1.csproj", "{4A30152C-F373-4FB8-B6CE-C0C99E943CB1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -347,6 +349,18 @@ Global
 		{BCCB3BF8-5104-4FD4-9744-F17FAA892548}.Release|x64.Build.0 = Release|Any CPU
 		{BCCB3BF8-5104-4FD4-9744-F17FAA892548}.Release|x86.ActiveCfg = Release|Any CPU
 		{BCCB3BF8-5104-4FD4-9744-F17FAA892548}.Release|x86.Build.0 = Release|Any CPU
+		{4A30152C-F373-4FB8-B6CE-C0C99E943CB1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4A30152C-F373-4FB8-B6CE-C0C99E943CB1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4A30152C-F373-4FB8-B6CE-C0C99E943CB1}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{4A30152C-F373-4FB8-B6CE-C0C99E943CB1}.Debug|x64.Build.0 = Debug|Any CPU
+		{4A30152C-F373-4FB8-B6CE-C0C99E943CB1}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{4A30152C-F373-4FB8-B6CE-C0C99E943CB1}.Debug|x86.Build.0 = Debug|Any CPU
+		{4A30152C-F373-4FB8-B6CE-C0C99E943CB1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4A30152C-F373-4FB8-B6CE-C0C99E943CB1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4A30152C-F373-4FB8-B6CE-C0C99E943CB1}.Release|x64.ActiveCfg = Release|Any CPU
+		{4A30152C-F373-4FB8-B6CE-C0C99E943CB1}.Release|x64.Build.0 = Release|Any CPU
+		{4A30152C-F373-4FB8-B6CE-C0C99E943CB1}.Release|x86.ActiveCfg = Release|Any CPU
+		{4A30152C-F373-4FB8-B6CE-C0C99E943CB1}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

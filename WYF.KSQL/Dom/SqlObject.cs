@@ -17,7 +17,7 @@ namespace WYF.KSQL.Dom
         public SqlObject()
         {
         }
-
+    
         public SqlObject(int line, int col)
         {
             this.line = line;

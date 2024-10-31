@@ -10,6 +10,7 @@ namespace WYF.DbEngine.db
 {
     public class DBRoute
     {
+        public static readonly DBRoute meta = new DBRoute("sys.meta");
         public string RouteKey { get; set; }
         private static IDictionary<string, DBRoute> _sharedDBRouteMap = new ConcurrentDictionary<string, DBRoute>();
         private IDictionary<string, string> tableRouteMap;

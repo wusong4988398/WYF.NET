@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WYF.DataEntity;
+using WYF.Service.Metadata;
 
 namespace WYF.Entity.Service
 {
@@ -39,7 +40,9 @@ namespace WYF.Entity.Service
 
         static ServiceFactory()
         {
-            serviceMap.Add("IMetadataService", "WYF.Form.Service.Metadata.MetadataService");
+            //serviceMap.Add("IMetadataService", "WYF.Service.Metadata.MetadataService");
+            serviceMap.Add("IMetadataService", "WYF.Service.Metadata.MetadataService,WYF.MService.From");
+
         }
     }
 }

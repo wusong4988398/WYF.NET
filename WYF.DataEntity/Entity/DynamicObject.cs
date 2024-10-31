@@ -65,7 +65,7 @@ namespace WYF.DataEntity.Entity
             this.isQueryObj = isQueryObj;
         }
         public DynamicObjectType DynamicObjectType => this.dt;
-        protected internal IDataStorage DataStorage
+        public  IDataStorage DataStorage
         {
             get
             {
@@ -76,7 +76,7 @@ namespace WYF.DataEntity.Entity
                 this.dataStorage = value;
             }
         }
-        protected virtual IDataStorage CreateDataStorage()
+        public virtual IDataStorage CreateDataStorage()
         {
 
             if (this.dt.Properties.Count > 200)

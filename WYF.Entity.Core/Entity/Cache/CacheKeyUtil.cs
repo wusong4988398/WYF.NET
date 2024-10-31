@@ -15,5 +15,9 @@ namespace WYF.Entity.Cache
             return accid;
 
         }
+        public static TimeSpan GetPageCacheKeyTimeout()
+        {
+            return TimeSpan.FromMinutes(60);
+        }
     }
 }

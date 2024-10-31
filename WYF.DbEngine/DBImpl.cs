@@ -17,14 +17,15 @@ namespace WYF.DbEngine
             return self;
         }
 
-        public override QueryResult<T> Query<T>(DBRoute dbRoute, IDbConnection con, bool close, string sql, Func<IDataReader, T> action, bool convert, params object[] paramVarArgs)
+        public override QueryResult<T> Query<T>(DBRoute dbRoute, bool close, string sql, Func<IDataReader, T> action, bool convert, params object[] parameters)
         {
+            IDataReader rs = DBUtils.ExecuteReader(new Context(), sql, parameters);
             bool rollback = false;
             QueryResource resource = new QueryResource();
-            IDbCommand dbcommand = con.CreateCommand();
-            dbcommand.CommandText = sql;
-            dbcommand.CommandType = CommandType.Text;
-            IDataReader rs = dbcommand.ExecuteReader();
+            //IDbCommand dbcommand = con.CreateCommand();
+            //dbcommand.CommandText = sql;
+            //dbcommand.CommandType = CommandType.Text;
+            //IDataReader rs = dbcommand.ExecuteReader();
             T result = action.Invoke(rs);
             QueryResult<T> queryResult = new QueryResult<T>(result, resource);
             return queryResult;

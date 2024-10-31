@@ -12,7 +12,7 @@ namespace WYF.DbEngine.db
     {
         private static ThreadLocal<AtomicBoolean> thQueryAlone = new ThreadLocal<AtomicBoolean>();
 
-        public abstract QueryResult<T> Query<T>(DBRoute dbRoute, IDbConnection con, bool close, string sql, Func<IDataReader, T> action, bool convert, params object[] paramVarArgs);
+        public abstract QueryResult<T> Query<T>(DBRoute dbRoute, bool close, string sql, Func<IDataReader, T> action, bool convert, params object[] paramVarArgs);
 
         public IDataSet QueryDataSet(string algoKey, DBRoute dbRoute, string sql, object[] parameters, QueryMeta queryMeta, TraceSpan traceSpan)
         {
@@ -25,6 +25,10 @@ namespace WYF.DbEngine.db
             
            
         }
-  
+
+        public T Query<T>(DBRoute dbRoute, string sql, object[] parameters, Func<IDataReader, T> action, TraceSpan ts)
+        {
+           return this.Query(dbRoute, sql, parameters, action, ts);   
+        }
     }
 }
