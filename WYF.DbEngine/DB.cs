@@ -8,6 +8,7 @@ using WYF.Algo;
 using WYF.DbEngine.db;
 
 using static IronPython.Modules.PythonSocket;
+using static Microsoft.Scripting.Hosting.Shell.ConsoleHostOptions;
 
 namespace WYF.DbEngine
 {
@@ -85,8 +86,9 @@ namespace WYF.DbEngine
 
         public static T Query<T>(DBRoute dbRoute, string sql,object[] parameters, Func<IDataReader, T> action)
         {
+            TraceSpan ts = new TraceSpan();
 
-
+            return GetImpl().Query(dbRoute, sql, parameters, action,ts);
             throw new NotImplementedException();
         }
 

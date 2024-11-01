@@ -22,7 +22,7 @@ namespace WYF.OrmEngine.Impl
         {
             try
             {
-                Assembly assembly = Assembly.LoadFrom("WYF.Entity.dll");
+                Assembly assembly = Assembly.LoadFrom("WYF.Entity.Core.dll");
                 //_multiLangTextPropType = Type.GetType("kd.bos.entity.property.MuliLangTextProp");
                 //_entryPropType = Type.GetType("kd.bos.entity.property.EntryProp");
                 //_entryEntityType = Type.GetType("kd.bos.entity.EntryType");

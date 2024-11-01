@@ -54,7 +54,7 @@ namespace WYF.Service.Metadata
                 return str;
 
             });
-            //string sRet= DB.Instance.QuerySqlScalarSync(sql).ToNullString();
+
             return sRet;
         }
 
@@ -86,10 +86,19 @@ namespace WYF.Service.Metadata
                 sql = $"select FDATA from {table} where FNUMBER='{number}' and FTYPE={(int)type}";
 
             }
+            string sRet = DB.Query(DBRoute.meta, sql, [], reader =>
+            {
+                string str = string.Empty;
+                if (reader.Read())
+                {
+                    str = reader.GetString(0);
+                }
+                return str;
 
-            // string sRet = DB.Instance.QuerySqlScalarSync(sql).ToNullString();
-            //return sRet;
-            return "";
+            });
+
+            return sRet;
+
         }
     }
 }

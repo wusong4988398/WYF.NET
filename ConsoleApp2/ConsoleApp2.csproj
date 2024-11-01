@@ -14,7 +14,8 @@
   <ItemGroup>
     <ProjectReference Include="..\WYF.Algo\WYF.Algo.csproj" />
     <ProjectReference Include="..\WYF.Cache\WYF.Cache.csproj" />
-    <ProjectReference Include="..\WYF.Entity\WYF.Entity.csproj" />
+    <ProjectReference Include="..\WYF.Entity.Core\WYF.Entity.Core.csproj" />
+    <ProjectReference Include="..\WYF.MService.From\WYF.MService.From.csproj" />
     <ProjectReference Include="..\WYF.OrmEngine\WYF.OrmEngine.csproj" />
     <ProjectReference Include="..\WYF.ServiceHelper\WYF.ServiceHelper.csproj" />
   </ItemGroup>

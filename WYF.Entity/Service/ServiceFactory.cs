@@ -39,7 +39,7 @@ namespace WYF.Entity.Service
 
         static ServiceFactory()
         {
-            serviceMap.Add("IMetadataService", "WYF.Form.Service.Metadata.MetadataService");
+            serviceMap.Add("IMetadataService", "WYF.Service.Metadata.MetadataService,WYF.MService.From");
         }
     }
 }
