@@ -17,6 +17,7 @@ using WYF.OrmEngine.Query.OQL.G.expr;
 RequestContext rc = RequestContext.Create();
 rc.AccountId = "ws";
 rc.UserId = "10001";
-Test1.TestMethod1();
+//Test1.TestDataBase();
+Test1.TestDataBase2();
 //Test1.TestCache();//测试缓存
 Console.WriteLine("3323");

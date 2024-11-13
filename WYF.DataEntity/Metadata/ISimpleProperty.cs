@@ -5,6 +5,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using WYF.Form.DataEntity;
 
 namespace WYF.DataEntity.Metadata
 {
@@ -20,6 +21,9 @@ namespace WYF.DataEntity.Metadata
         void ResetValue(object dataEntity);
 
 
+        long PrivacyType { get; set; }
+
+        object GetSaveValue(object dataEntity, OperateOption option, RowOperateType type);
         bool ShouldSerializeValue(object dataEntity);
         bool IsLocalizable { get; }
         /// <summary>

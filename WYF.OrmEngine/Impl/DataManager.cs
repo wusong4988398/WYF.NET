@@ -9,6 +9,8 @@ using WYF.DataEntity.Metadata;
 using WYF.OrmEngine.dataManager;
 using WYF.DbEngine.db;
 using WYF.OrmEngine.DataEntity;
+using WYF.OrmEngine.Drivers;
+using WYF.Form.DataEntity;
 
 namespace WYF.OrmEngine.Impl
 {
@@ -166,6 +168,11 @@ namespace WYF.OrmEngine.Impl
                 }
             }
             return pks.ToArray();
+        }
+
+        public void Save(object dataEntity, IOrmTransaction ormTransaction = null, OperateOption option = null)
+        {
+            throw new NotImplementedException();
         }
     }
 }

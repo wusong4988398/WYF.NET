@@ -142,7 +142,7 @@ namespace WYF.Algo.dataset
 
         public void Dispose()
         {
-            throw new NotImplementedException();
+            //throw new NotImplementedException();
         }
 
         public IDataSet ExecuteSql(string sql)

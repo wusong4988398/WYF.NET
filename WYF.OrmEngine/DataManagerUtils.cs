@@ -9,6 +9,7 @@ using WYF.Bos.DataEntity;
 using WYF.OrmEngine.DataEntity;
 using WYF.OrmEngine.dataManager;
 using WYF.OrmEngine.Drivers;
+using WYF.Form.DataEntity;
 
 namespace WYF.OrmEngine
 {
@@ -22,16 +23,18 @@ namespace WYF.OrmEngine
 
         public static int GetBatchSize(this OperateOption option)
         {
-            if (option == null)
-            {
-                return 0x1388;
-            }
-            int variableValue = option.GetVariableValue<int>("BatchSize", 0x1388);
-            if (variableValue <= 0)
-            {
-                variableValue = 0x1388;
-            }
-            return variableValue;
+
+            return 5000;
+            //if (option == null)
+            //{
+            //    return 0x1388;
+            //}
+            //int variableValue = option.GetVariableValue<int>("BatchSize", 0x1388);
+            //if (variableValue <= 0)
+            //{
+            //    variableValue = 0x1388;
+            //}
+            //return variableValue;
         }
 
         public static bool GetBulkCopy(this OperateOption option)
@@ -45,7 +48,8 @@ namespace WYF.OrmEngine
 
         public static bool GetCacheMetadata(this OperateOption option)
         {
-            return ((option == null) || option.GetVariableValue<bool>("CacheMetadata", true));
+            //return ((option == null) || option.GetVariableValue<bool>("CacheMetadata", true));
+            return true;
         }
 
         //public static IDataManager<DT, ID> GetDataManager<DT, ID>()

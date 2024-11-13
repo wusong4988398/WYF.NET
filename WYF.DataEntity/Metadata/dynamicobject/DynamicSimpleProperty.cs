@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Reflection;
+using WYF.Form.DataEntity;
 
 namespace WYF.DataEntity.Metadata.Dynamicobject
 {
@@ -42,6 +43,8 @@ namespace WYF.DataEntity.Metadata.Dynamicobject
 
         [SimpleProperty]
         public bool IsEncrypt { get; set; }
+        [SimpleProperty]
+        public long PrivacyType { get; set; }
 
         public DynamicSimpleProperty() { }
         public DynamicSimpleProperty(string name, Type propertyType, object defaultValue) : base(name, propertyType, defaultValue, false)
@@ -111,6 +114,11 @@ namespace WYF.DataEntity.Metadata.Dynamicobject
             DynamicObject obj = ConvertToDynamicObject(dataEntity);
             IDataEntityProperty trueProperty = FindTrueProperty(obj);
             return (obj.DataStorage.getLocalValue(trueProperty) != null);
+        }
+
+        public object GetSaveValue(object dataEntity, OperateOption option, RowOperateType type)
+        {
+            throw new NotImplementedException();
         }
     }
 }

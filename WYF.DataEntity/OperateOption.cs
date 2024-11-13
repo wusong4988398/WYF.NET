@@ -3,7 +3,7 @@ using WYF.Bos.DataEntity;
 using System;
 using System.Collections.Generic;
 
-namespace JNPF.Form.DataEntity
+namespace WYF.Form.DataEntity
 {
     /// <summary>
     /// 操作选项（自定义参数），可以为数据的操作提供额外的选项
@@ -29,7 +29,7 @@ namespace JNPF.Form.DataEntity
             T local;
             if (!this.TryGetVariableValue<T>(name, out local))
             {
-                throw new ORMDesignException("??????", string.Format("从额外选项OperateOption中获取变量失败，变量[{0}]不存在！", name));
+                throw new Exception(string.Format("从额外选项OperateOption中获取变量失败，变量[{0}]不存在！", name));
             }
             return local;
         }
@@ -186,7 +186,7 @@ namespace JNPF.Form.DataEntity
             {
                 if (string.IsNullOrEmpty(name))
                 {
-                    throw new ORMDesignException("??????", "设置额外选项OperateOption的变量失败，变量名不能为空！");
+                    throw new Exception("设置额外选项OperateOption的变量失败，变量名不能为空！");
                 }
                 this._dict[name] = value;
             }

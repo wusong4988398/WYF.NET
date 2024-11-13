@@ -74,6 +74,15 @@ namespace WYF.DbEngine.db
             this.Direction = direction;
             this.DbType = type;
         }
+
+
+        public SqlParameter(string name, System.Data.DbType type, object value)
+        {
+            this.Value = value;
+            this.ParameterName = name;
+   
+            this.DbType = type;
+        }
         public SqlParameter(string name, object value, System.Data.DbType type, ParameterDirection direction, int size)
         {
             this.Value = value;
@@ -186,6 +195,12 @@ namespace WYF.DbEngine.db
                 this.Direction = ParameterDirection.Output;
             }
         }
+
+        public SqlParameter(string name, int dbType, object value) : this(name, value)
+        {
+            this.CustomDbType = dbType;
+        }
+
         public override System.Data.DbType DbType
         {
             get; set;
@@ -212,6 +227,7 @@ namespace WYF.DbEngine.db
         }
 
         public int _Size;
+        private object v;
 
         public override int Size
         {

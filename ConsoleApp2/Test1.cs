@@ -4,10 +4,14 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Transactions;
 using WYF.Cache;
+using WYF.Data;
 using WYF.DataEntity.Entity;
+using WYF.DbEngine;
 using WYF.OrmEngine.Query;
 using WYF.ServiceHelper;
+using static IronPython.Modules._ast;
 
 namespace ConsoleApp2
 {
@@ -50,6 +54,44 @@ namespace ConsoleApp2
             IDistributeSessionlessCache cache = CacheFactory.GetCommonCacheFactory().GetDistributeSessionlessCache("customRegion");
             cache.Put("K", "3");
             Console.WriteLine("执行完毕");
+        }
+
+        /// <summary>
+        /// 数据库相关测试(事务)
+        /// </summary>
+        internal static void TestDataBase()
+        {
+
+
+
+            using (WTransactionScope tran = new WTransactionScope(TransactionScopeOption.Required))
+            {
+                int i = 0;
+
+                BusinessDataWriter.SaveTest1();
+                //SugarBase.Db.Ado.ExecuteCommand("insert into Test1 (FName) values('1')");
+
+                decimal kkk = 1.0M / i;
+                SugarBase.Db.Ado.ExecuteCommand("insert into Test1 (FName) values('2')");
+   
+                tran.Complete();
+            }
+        }
+
+        /// <summary>
+        /// 查询并更新
+        /// </summary>
+        internal static void TestDataBase2() {
+
+            DynamicObject[] dynamicObjects = BusinessDataServiceHelper.Load("bos_user", "password", [new QFilter("id", "=", 2)]);
+            if (dynamicObjects == null || dynamicObjects.Length == 0)
+            {
+                throw new Exception("用户不存在！");
+            }
+            DynamicObject dynamicObject = dynamicObjects[0];
+            dynamicObject["password"] = 2;
+            BusinessDataServiceHelper.Save(dynamicObject.GetDataEntityType(), [dynamicObject]);
+
         }
     }
 }

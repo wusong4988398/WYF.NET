@@ -131,9 +131,22 @@ namespace WYF.DbEngine
 
         }
 
+        public static bool Execute(DBRoute dbRoute, string sql, object[] parameters)
+        {
+            TraceSpan ts = new TraceSpan();
+            return GetImpl().Execute(dbRoute, sql, parameters, ts);
+        }
 
+        public static int Update(DBRoute dbRoute, string sql, object[] parameters)
+        {
+            TraceSpan ts = new TraceSpan();
+            return GetImpl().Update(dbRoute, sql, parameters, ts);
+        }
 
-
-    
+        public static long[] GenLongIds(string tableName, int count)
+        {
+            //return ID.GenLongIds(count);
+            return [1000];
+        }
     }
 }

@@ -11,6 +11,7 @@ namespace WYF.DataEntity.Metadata
     {
         IDeleteMetaRow[] DeleteRows { get; }
         ISaveMetaRow[] SaveRows { get; }
-        DbMetadataTable Schema { get; }
+        DbMetadataTable Schema { get; set; }
+        List<Tuple<object, object, int>> ChangeRows { get; }
     }
 }

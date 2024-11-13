@@ -23,7 +23,9 @@ namespace WYF.DataEntity.Metadata
         Object CreateInstance(bool isQueryObj);
 
 
-        Object DataEntityReferenceSchema { get; set; }  
+        Object DataEntityReferenceSchema { get; set; }
+
+        bool IsQueryObj(object dataEntity);
 
         /// <summary>
         /// 返回实体名称带引用属性

@@ -98,17 +98,19 @@ namespace WYF.DataEntity.Metadata.database
                     errors.Add(new ORMDesignException("100001", $"发现表名称{table.Name}不符合规范。"));
                 }
                 DbMetadataTable find = null;
-                
-                if ((find = tables[table.Name]) != null)
+
+
+                if (tables.TryGetValue(table.Name, out find))
                 {
-                    errors.Add(new ORMDesignException("100001", $"发现重复的表名称{table.Name},索引位置:{database.Tables.IndexOf(find)}，{database.Tables.IndexOf(table)}"));
+                    errors.Add(new ORMDesignException("100001",
+                        $"发现重复的表名称 {table.Name}, 索引位置: {database.Tables.IndexOf(find)}, {database.Tables.IndexOf(table)}"));
                 }
                 else
                 {
-                    tables[table.Name]= table;
+                    tables[table.Name] = table;
                 }
                 Dictionary<string, DbMetadataColumn> columns = new Dictionary<string, DbMetadataColumn>(table.Columns.Count);
-                if (columns.Count==0)
+                if (table.Columns.Count == 0)
                 {
                     errors.Add(new ORMDesignException("100001", $"表{table.Name}没有任何在数据库中映射的字段。"));
 
@@ -124,7 +126,8 @@ namespace WYF.DataEntity.Metadata.database
                     {
                         errors.Add(new ORMDesignException("100001", $"在表{table.Name}中发现字段名{column.Name}不符合规范。"));
                     }
-                    DbMetadataColumn findColumn = columns[column.Name];
+                    
+                    DbMetadataColumn findColumn = columns.GetOrDefault(column.Name);
                     if (findColumn != null) { continue; }
                     columns[column.Name] = column;
 

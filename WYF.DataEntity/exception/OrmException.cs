@@ -5,7 +5,7 @@ using System.Runtime.Serialization;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace WYF.Bos.DataEntity
+namespace WYF.DataEntity
 {
     [Serializable]
     public class OrmException : ApplicationException

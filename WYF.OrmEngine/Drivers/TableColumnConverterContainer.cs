@@ -8,31 +8,44 @@ using WYF.DataEntity.Metadata;
 
 namespace WYF.OrmEngine.Drivers
 {
-    internal sealed class TableColumnConverterContainer
+    // 表列转换器容器类
+    public class TableColumnConverterContainer
     {
-     
-        private Func<object, object>[] _converters;
+        private readonly Func<object, object>[] _converters;
 
-   
+        // 构造函数，初始化转换器数组
         public TableColumnConverterContainer(Func<object, object>[] converters)
         {
-            this._converters = converters;
+            _converters = converters;
         }
 
+        // 尝试获取指定列的转换器
+        public bool TryGetConverter(DbMetadataColumn column, out Func<object, object> converter)
+        {
+            converter = _converters[column.ColumnIndex];
+            return converter != null;
+        }
+
+        // 获取列的数据库值
         public object GetColumnDbValue(IColumnValuePair pair)
         {
-            Func<object, object> func = this._converters[pair.Column.ColumnIndex];
-            if (func != null)
+            Func<object, object> converter = _converters[pair.Column.ColumnIndex];
+            if (converter != null)
             {
-                return func(pair.Value);
+                return converter(pair.Value);
             }
             return pair.Value;
         }
 
-        public bool TryGetConverter(DbMetadataColumn column, out Func<object, object> converter)
+        // 获取列的默认数据库值
+        public object GetColumnDefaultDbValue(DbMetadataColumn column)
         {
-            converter = this._converters[column.ColumnIndex];
-            return (converter != null);
+            Func<object, object> converter = _converters[column.ColumnIndex];
+            if (converter != null)
+            {
+                return converter(column.DefaultValue);
+            }
+            return column.DefaultValue;
         }
     }
 }

@@ -14,6 +14,7 @@ using WYF.DataEntity.Metadata;
 using WYF.DataEntity.Metadata.Dynamicobject;
 
 
+
 namespace WYF.OrmEngine.Impl
 {
     public class ORMUtil
@@ -46,8 +47,17 @@ namespace WYF.OrmEngine.Impl
             int dot = objName.LastIndexOf('.');
             return (dot == -1) ? "" : objName.Substring(0, dot);
         }
+        public static bool IsDbIgnoreForSave(IDataEntityProperty dp)
+        {
+            string alias = dp.Alias;
+            if (alias == null || alias.Count() == 0)
+            {
+                return true;
+            }
+            return dp.IsDbIgnore;
+        }
 
-  
+
         public static DynamicObjectCollection ToDynamicObjectCollection(DataSet dataSet, DynamicObjectType dynamicObjectType)
         {
             var dynamicObjectCollection = new DynamicObjectCollection(dynamicObjectType, null);

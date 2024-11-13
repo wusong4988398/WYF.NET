@@ -1,10 +1,12 @@
-﻿using System;
+﻿using SqlSugar;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WYF.Algo;
+using static IronPython.Modules.PythonSocket;
 
 namespace WYF.DbEngine.db
 {
@@ -22,8 +24,13 @@ namespace WYF.DbEngine.db
             QueryMeta qm = QueryMeta.CreateOrFixQueryMeta(queryMeta, dataReader, DatabaseType.MS_SQL_Server);
             return WYF.Algo.Algo.Create(algoKey).CreateDataSet(dataReader, qm.RowMeta);
             //return dataSet;
-            
-           
+
+
+        }
+
+        protected SqlSugarProvider GetConnection( DBRoute dbRoute, string sql,  TraceSpan ts)
+        {
+            return SugarBase.Instance.GetConnection(dbRoute.RouteKey);
         }
 
         public T Query<T>(DBRoute dbRoute, string sql, object[] parameters, Func<IDataReader, T> action, TraceSpan ts)
@@ -31,5 +38,8 @@ namespace WYF.DbEngine.db
             QueryResult<T> ret = this.Query(dbRoute,true, sql, action,true, parameters);   
             return ret.Result;
         }
+
+        public abstract bool Execute(DBRoute dbRoute, string sql, object[] parameters, TraceSpan ts);
+        public abstract int Update(DBRoute dbRoute, string sql, object[] parameters, TraceSpan ts);
     }
 }

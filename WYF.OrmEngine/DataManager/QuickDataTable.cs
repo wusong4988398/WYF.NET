@@ -1,4 +1,5 @@
 ﻿using WYF.Bos.DataEntity;
+using WYF.DataEntity;
 using WYF.DataEntity.Metadata.database;
 
 namespace WYF.OrmEngine.dataManager

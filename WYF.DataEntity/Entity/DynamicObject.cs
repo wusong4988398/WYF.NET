@@ -27,7 +27,7 @@ namespace WYF.DataEntity.Entity
         private IDataStorage dataStorage;
         //private Object[] values;
   
-        private bool isQueryObj;
+        public bool IsQueryObj { get; private set; }
 
         public DynamicObject() { }
         /// <summary>
@@ -62,7 +62,7 @@ namespace WYF.DataEntity.Entity
         public DynamicObject(DynamicObjectType dt, bool isQueryObj): this(dt, null)
         {
             
-            this.isQueryObj = isQueryObj;
+            this.IsQueryObj = isQueryObj;
         }
         public DynamicObjectType DynamicObjectType => this.dt;
         public  IDataStorage DataStorage

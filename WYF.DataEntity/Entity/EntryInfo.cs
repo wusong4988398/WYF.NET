@@ -7,7 +7,7 @@ namespace WYF.DataEntity.Entity
     [Serializable]
     public class EntryInfo
     {
-        private int rowCount;
+        private int? rowCount;
 
         private int startRowIndex;
 
@@ -15,7 +15,7 @@ namespace WYF.DataEntity.Entity
         /// <summary>
         /// 分录总行数。如果未设置，返回空(null)
         /// </summary>
-        public int RowCount { get => rowCount; set => rowCount = value; }
+        public int? RowCount { get => rowCount; set => rowCount = value; }
         /// <summary>
         /// 分录页起始行索引
         /// </summary>

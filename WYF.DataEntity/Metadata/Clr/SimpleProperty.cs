@@ -9,6 +9,7 @@ using System.Linq;
 using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
+using WYF.Form.DataEntity;
 
 namespace WYF.DataEntity.Metadata.Clr
 {
@@ -108,6 +109,8 @@ namespace WYF.DataEntity.Metadata.Clr
             set { this.encrypt = value; }
         }
 
+        public long PrivacyType { get; set; }
+
         static ISet<Type> numberTypes = new HashSet<Type>() { };
         
     /// <summary>
@@ -206,6 +209,9 @@ namespace WYF.DataEntity.Metadata.Clr
             return true;
         }
 
-        
+        public object GetSaveValue(object dataEntity, OperateOption option, RowOperateType type)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

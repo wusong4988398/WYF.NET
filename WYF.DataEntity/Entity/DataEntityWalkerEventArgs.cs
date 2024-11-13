@@ -8,11 +8,19 @@ namespace WYF.DataEntity.Entity
     {
         public int Count { get; set; }
 
-        public List<Object> DataEntities { get; set; }
+        public List<object> DataEntities { get; set; }
 
         public IDataEntityType DataEntityType { get; set; }
 
         public PropertyStockNode PropertyStock { get; set; }
+        private IEnumerable<object> privateDataEntities;
+    
+
+        //public object[] ToArray()
+        //{
+        //    return ((List<object>)privateDataEntities).ToArray();
+        //}
+
 
         public DataEntityWalkerEventArgs(object source) : base(source)
         {

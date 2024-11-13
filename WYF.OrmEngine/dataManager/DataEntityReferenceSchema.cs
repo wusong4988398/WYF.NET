@@ -2,6 +2,7 @@
 using WYF.DataEntity.Metadata.Clr;
 using WYF.DataEntity.Metadata;
 using WYF.Bos.DataEntity;
+using WYF.DataEntity;
 
 namespace WYF.OrmEngine.dataManager
 {

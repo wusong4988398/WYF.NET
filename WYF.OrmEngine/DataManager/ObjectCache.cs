@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace WYF.OrmEngine.dataManager
 {
-    internal sealed class ObjectCache<TKey, TValue> where TKey : class where TValue : class
+    public  class ObjectCache<TKey, TValue> where TKey : class where TValue : class
     {
 
         private readonly ConditionalWeakTable<TKey, TValue> _cache;
 
-
+ 
         private ObjectCache()
         {
             this._cache = new ConditionalWeakTable<TKey, TValue>();

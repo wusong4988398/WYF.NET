@@ -16,6 +16,12 @@ using WYF.Entity;
 using System.Collections;
 using WYF.OrmEngine.dataManager;
 using WYF.DataEntity.Metadata;
+using Newtonsoft.Json;
+using System.Configuration;
+using System.Runtime;
+using WYF.DbEngine;
+using SqlSugar;
+using System.Transactions;
 
 namespace WYF.ServiceHelper
 {
@@ -293,7 +299,18 @@ namespace WYF.ServiceHelper
             return null;
         }
 
-   
+
+        public static object[] Save(IDataEntityType type, object[] dataEntities)
+        {
+            using (WTransactionScope tran2 = new WTransactionScope(TransactionScopeOption.Required))
+            {
+                object[] result2 = BusinessDataWriter.Save(type, dataEntities);
+                tran2.Complete();
+                return result2;
+            }
+        }
+
+
 
     }
 }

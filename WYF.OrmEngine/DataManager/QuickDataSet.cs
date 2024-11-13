@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using WYF.Bos.DataEntity;
+using WYF.DataEntity;
 
 namespace WYF.OrmEngine.dataManager
 {

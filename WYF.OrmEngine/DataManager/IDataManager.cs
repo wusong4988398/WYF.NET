@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using WYF.DataEntity.Metadata;
 using WYF.DataEntity.Metadata.database;
+using WYF.Form.DataEntity;
+using WYF.OrmEngine.Drivers;
 
 namespace WYF.OrmEngine.dataManager
 {
@@ -21,7 +23,7 @@ namespace WYF.OrmEngine.dataManager
 
         object[] Read(ReadWhere where);
 
-        void Save(object dataEntity);
+        void Save(object dataEntity, IOrmTransaction ormTransaction = null, OperateOption option = null);
 
 
     }

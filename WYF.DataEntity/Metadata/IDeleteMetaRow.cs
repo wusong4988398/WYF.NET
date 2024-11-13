@@ -8,7 +8,7 @@ namespace WYF.DataEntity.Metadata
 {
     public interface IDeleteMetaRow
     {
-        object Oid { get; }
+        object Oid { get; set; }
     }
 }
 

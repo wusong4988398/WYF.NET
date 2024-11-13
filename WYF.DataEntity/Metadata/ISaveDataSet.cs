@@ -4,12 +4,13 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WYF.DataEntity.Collections;
 
 namespace WYF.DataEntity.Metadata
 {
     public interface ISaveDataSet
     {
-        KeyedCollection<string, ISaveDataTable> Tables { get; }
+        KeyedCollectionBase<string, ISaveDataTable> Tables { get; }
 
     }
 }

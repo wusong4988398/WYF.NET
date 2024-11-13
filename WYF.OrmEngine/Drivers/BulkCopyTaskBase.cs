@@ -69,5 +69,7 @@ namespace WYF.OrmEngine.Drivers
                 return this._tableName;
             }
         }
+
+        
     }
 }

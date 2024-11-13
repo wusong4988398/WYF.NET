@@ -1,24 +1,33 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Data;
 using System.Linq;
+using System.Runtime.Intrinsics.Arm;
 using System.Text;
 using System.Threading.Tasks;
 using WYF.Bos.DataEntity;
+using WYF.DataEntity;
 using WYF.DataEntity.Entity;
 using WYF.DataEntity.Metadata;
 using WYF.DataEntity.Metadata.database;
 using WYF.DataEntity.Metadata.Dynamicobject;
 using WYF.DbEngine;
 using WYF.DbEngine.db;
+using WYF.Form.DataEntity;
 using WYF.OrmEngine.dataManager;
 using WYF.OrmEngine.Drivers;
+using WYF.OrmEngine.Impl;
+using WYF.OrmEngine.Query.Crud;
+
 
 namespace WYF.OrmEngine.DataEntity
 {
     public class DataManagerImplement : IDataManager
     {
+        private static  Object[] EmptyObjectArray = new Object[0];
+
         private int batchDeleteSize = 10000;
         private OperateOption _option;
         private int maxObjects = 1000000;
@@ -27,31 +36,41 @@ namespace WYF.OrmEngine.DataEntity
         private TableAliasGenner aliasGenner = new TableAliasGenner();
         private static readonly Object[] EmptyDynmaicObjects = new DynamicObject[0];
         private static readonly Object[] EmptyObjects = new Object[0];
+
+        private static  IColumnValuePair[] EmptyColumnValuePairArray;
+
         public DataEntityTypeMap DataEntityTypeMap { get; set; }
         private Dictionary<DbMetadataTable, EntryInfo> entryPageInfo = null;
-        public DbMetadataDatabase DataDatabase { get; set; }
+        //public DbMetadataDatabase DataDatabase { get; set; }
         private int? pageSize;
         private int startRowIndex;
         private DBRoute _dbRoute = null;
         private IDataEntityType _dataEntityType;
         private ObjectCache<IDataEntityType, Tuple<DataEntityTypeMap, DbMetadataDatabase>> _cache;
+        private SaveDataSet saveDataSet;
+        static DataManagerImplement()
+        {
+            EmptyColumnValuePairArray=new IColumnValuePair[0];
+        }
+        public DataManagerImplement()
+        {
+            this._cache = ObjectCache<IDataEntityType, Tuple<DataEntityTypeMap, DbMetadataDatabase>>.Create();
+            Init();
+        }
 
         public DataManagerImplement(IDataEntityType dt, DBRoute dbRoute)
         {
-            //this._cache = ObjectCache.Create();
+           
+            this._cache = ObjectCache<IDataEntityType, Tuple<DataEntityTypeMap, DbMetadataDatabase>>.Create();
             this._dbRoute = dbRoute;
             SetDataEntityType(dt);
             Init();
         }
         public DataManagerImplement(IDataEntityType dt) : this(dt, null)
         {
-
+            Console.WriteLine("2323");
         }
-        public DataManagerImplement()
-        {
-            //this._cache = ObjectCache.create();
-            Init();
-        }
+  
 
         public object[] Read(object[] ids)
         {
@@ -69,7 +88,7 @@ namespace WYF.OrmEngine.DataEntity
         public object[] Read(ReadWhere where)
         {
 
-            QuickDataSet dataSet = ReadToDataSet(this.DataDatabase, this.DataEntityTypeMap.DbTable, where);
+            QuickDataSet dataSet = ReadToDataSet(this.Database, this.DataEntityTypeMap.DbTable, where);
             object[] entities = DataSetToEntities(dataSet);
             SetEntitySnapshot(entities, dataSet);
             return entities;
@@ -139,7 +158,7 @@ namespace WYF.OrmEngine.DataEntity
 
                 catch (ArgumentException e)
                 {
-                    throw new ORMDesignException("100001",
+                    throw new Exception(
                         String.Format("表{0}中读取出的数据，出现重复的主键({1})数据:{2}", rootTableName, rootTable.Schema.PrimaryKey.Name, pkOid), e);
                 }
                 runtimeSets[rowIndex] = runtimeSet;
@@ -179,7 +198,7 @@ namespace WYF.OrmEngine.DataEntity
                         }
                         catch (ArgumentException e)
                         {
-                            throw new ORMDesignException("100001",
+                            throw new Exception(
                                  String.Format("表{0}中读取出的数据，出现重复的主键({1})数据:{2}", currentTable.Schema.Name, currentTable.Schema.PrimaryKey.Name, pkOid), e);
                         }
                 }
@@ -818,7 +837,7 @@ namespace WYF.OrmEngine.DataEntity
                 temp = new Tuple<DataEntityTypeMap, DbMetadataDatabase>(map, db);
             }
             this.DataEntityTypeMap = temp.Item1;
-            this.DataDatabase = temp.Item2;
+            this.Database = temp.Item2;
 
         }
         private void CheckDBRoute(IDataEntityType dt)
@@ -826,13 +845,815 @@ namespace WYF.OrmEngine.DataEntity
             if (this._dbRoute.RouteKey == null || this._dbRoute.RouteKey.Trim().Length == 0)
                 throw new ArgumentException($"ORM: 元数据{dt.Name}的routeKey为空!");
         }
-
-        public void Save(object paramObject)
+        private void SetEntitySnapshotSave(object[] entities, ISaveDataSet dataSet, OperateOption option = null)
         {
-            throw new NotImplementedException();
+            if (((option == null) || !option.GetVariableValue<bool>("CommitFlag", false)) && (entities.Length != 0))
+            {
+                if (entities.Length == 1)
+                {
+                    IDataEntityType dataEntityType = this.DataEntityTypeMap.DataEntityType;
+                    PkSnapshotSet pkSnapshotSet = new PkSnapshotSet(dataSet.Tables.Count);
+                    IList<PkSnapshot> snapshots = pkSnapshotSet.Snapshots;
+                    object[] objArray = null;
+                    foreach (ISaveDataTable table in dataSet.Tables)
+                    {
+                        if (table.SaveRows.Length > 0)
+                        {
+                            objArray = new object[table.SaveRows.Length];
+                            for (int i = 0; i < table.SaveRows.Length; i++)
+                            {
+                                objArray[i] = table.SaveRows[i].Oid.Value;
+                            }
+                        }
+                        else
+                        {
+                            objArray = null;
+                        }
+                        PkSnapshot item = new PkSnapshot
+                        {
+                            TableName = table.Schema.Name,
+                            Oids = objArray
+                        };
+                        snapshots.Add(item);
+                    }
+                    dataEntityType.SetPkSnapshot(entities[0], pkSnapshotSet);
+                }
+                else
+                {
+                    RuntimePkSnapshotSet set2;
+                    IDataEntityType type2 = this.DataEntityTypeMap.DataEntityType;
+                    string name = this.DataEntityTypeMap.DbTable.Name;
+                    ISaveDataTable table2 = dataSet.Tables[name];
+                    ISaveMetaRow[] saveRows = table2.SaveRows;
+                    PkSnapshot snapshot2 = null;
+                    RuntimePkSnapshotSet[] setArray = new RuntimePkSnapshotSet[saveRows.Length];
+                    int count = dataSet.Tables.Count;
+                    Dictionary<object, RuntimePkSnapshotSet> pkDict = new Dictionary<object, RuntimePkSnapshotSet>();
+                    for (int j = 0; j < saveRows.Length; j++)
+                    {
+                        set2 = new RuntimePkSnapshotSet
+                        {
+                            PkSnapshotSet = new PkSnapshotSet(0),
+                            Tables = new RuntimePkSnapshot[count]
+                        };
+                        for (int m = 0; m < count; m++)
+                        {
+                            snapshot2 = new PkSnapshot
+                            {
+                                TableName = dataSet.Tables[m].Schema.Name
+                            };
+                            set2.PkSnapshotSet.Snapshots.Add(snapshot2);
+                            set2.Tables[m] = new RuntimePkSnapshot(snapshot2);
+                        }
+                        object obj2 = saveRows[j].Oid.Value;
+                        set2.Tables[0].Oids.Add(obj2);
+                        pkDict[obj2] = set2;
+                        setArray[j] = set2;
+                    }
+                    foreach (DbMetadataTable table3 in table2.Schema.ChildTables)
+                    {
+                        this.SetEntitySnapshotSaveEx(dataSet, dataSet.Tables[table3.Name], pkDict);
+                    }
+                    for (int k = 0; k < saveRows.Length; k++)
+                    {
+                        set2 = setArray[k];
+                        for (int n = 0; n < count; n++)
+                        {
+                            set2.Tables[n].Snapshot.Oids = set2.Tables[n].Oids.ToArray();
+                        }
+                        type2.SetPkSnapshot(entities[k], setArray[k].PkSnapshotSet);
+                    }
+                }
+            }
+        }
+        private static int FindIndexSave(ISaveDataSet dataSet, ISaveDataTable currentTable)
+        {
+            for (int i = 0; i < dataSet.Tables.Count; i++)
+            {
+                if (object.ReferenceEquals(dataSet.Tables[i], currentTable))
+                {
+                    return i;
+                }
+            }
+            throw new ORMDesignException("002032030001576", string.Format("ORM引擎保存实体时,从表结构中查找表[{0}]失败，表[{0}]不存在！", currentTable.Schema.Name));
+        }
+        private void SetEntitySnapshotSaveEx(ISaveDataSet dataSet, ISaveDataTable currentTable, Dictionary<object, RuntimePkSnapshotSet> pkDict)
+        {
+            int index = FindIndexSave(dataSet, currentTable);
+            Dictionary<object, RuntimePkSnapshotSet> dictionary = new Dictionary<object, RuntimePkSnapshotSet>(currentTable.SaveRows.Length);
+            foreach (ISaveMetaRow row in currentTable.SaveRows)
+            {
+                object obj2 = row.ParentOid.Value;
+                object item = row.Oid.Value;
+                RuntimePkSnapshotSet set = pkDict[obj2];
+                set.Tables[index].Oids.Add(item);
+                dictionary[item] = set;
+            }
+            foreach (DbMetadataTable table in currentTable.Schema.ChildTables)
+            {
+                this.SetEntitySnapshotSaveEx(dataSet, dataSet.Tables[table.Name], dictionary);
+            }
         }
 
-        public ISaveDataSet GetSaveDataSet(object[] dataEntities, bool includeDefaultValue)
+        private static void ClearEntityDirty(object[] dataEntities, DataEntityTypeMap dataEntityTypeMap, OperateOption option = null)
+        {
+            if ((option == null) || !option.GetVariableValue<bool>("CommitFlag", false))
+            {
+                object obj2;
+                IDataEntityType dataEntityType = dataEntityTypeMap.DataEntityType;
+                for (int i = 0; i < dataEntities.Length; i++)
+                {
+                    if (dataEntities[i] != null)
+                    {
+                        obj2 = dataEntities[i];
+                        dataEntityType.SetFromDatabase(obj2);
+                    }
+                }
+                foreach (ComplexPropertyMap map in dataEntityTypeMap.ComplexProperties)
+                {
+                    object[] objArray = new object[dataEntities.Length];
+                    IComplexProperty dataEntityProperty = map.DataEntityProperty;
+                    for (int j = 0; j < dataEntities.Length; j++)
+                    {
+                        obj2 = dataEntities[j];
+                        if (obj2 != null)
+                        {
+                            objArray[j] = dataEntityProperty.GetValueFast(obj2);
+                        }
+                    }
+                    ClearEntityDirty(objArray, map.ComplexPropertyTypeMap, option);
+                }
+                foreach (CollectionPropertyMap map2 in dataEntityTypeMap.CollectionProperties)
+                {
+                    ForWriteList<object> list = new ForWriteList<object>();
+                    ICollectionProperty property2 = map2.DataEntityProperty;
+                    for (int k = 0; k < dataEntities.Length; k++)
+                    {
+                        obj2 = dataEntities[k];
+                        if (obj2 != null)
+                        {
+                            IEnumerable valueFast = (IEnumerable)property2.GetValueFast(obj2);
+                            if (valueFast != null)
+                            {
+                                if (valueFast is DynamicObjectCollection)
+                                {
+                                    ((DynamicObjectCollection)valueFast).DeleteRows.Clear();
+                                }
+                                list.AddRange(valueFast);
+                            }
+                        }
+                    }
+                    ClearEntityDirty(list.ToArray(), map2.CollectionItemPropertyTypeMap, option);
+                }
+            }
+        }
+        public void Save(object dataEntity, IOrmTransaction ormTransaction = null, OperateOption option = null)
+        {
+            if (dataEntity == null)
+            {
+                throw new ORMArgInvalidException("002032030001567", "ORM引擎保存实体失败，实体不能为空！");
+            }
+            this.DoItInTransaction((tran, optionPrivate) => this.SavePrivate(new object[] { dataEntity }, tran, optionPrivate), ormTransaction, option);
+        }
+
+        private void DoItInTransaction(Action<IOrmTransaction, OperateOption> action, IOrmTransaction ormTransaction, OperateOption option)
+        {
+            option = this.GetPrivateOption(option);
+            bool flag = false;
+            try
+            {
+                if (ormTransaction == null)
+                {
+                    ormTransaction = this.DbDriver.BeginTransaction(null);
+                    flag = true;
+                }
+                action(ormTransaction, option);
+                if (flag)
+                {
+                    ormTransaction.Commit();
+                    ormTransaction.Dispose();
+                }
+            }
+            catch
+            {
+                if (flag)
+                {
+                    ormTransaction.Rollback();
+                    ormTransaction.Dispose();
+                }
+                throw;
+            }
+        }
+        private OperateOption GetPrivateOption(OperateOption option)
+        {
+            if (option == null)
+            {
+                return this._option;
+            }
+            return option.Merge(this._option);
+        }
+        public void Save(object dataEntity)
+        {
+            Save([dataEntity]);
+        }
+
+        public void Save(object[] dataEntities)
+        {
+            AutoBatchExecute(dataEntities, (idsPart) =>
+            {
+                return SavePrivate(idsPart);
+            });
+        }
+
+        private object[] SavePrivate(object[] dataEntities, IOrmTransaction ormTransaction, OperateOption option)
+        {
+            SaveDataSet dataSet;
+            if (dataEntities == null)
+            {
+                throw new ORMArgInvalidException("002032030001567", "ORM引擎保存实体失败，实体不能为空！");
+            }
+            if (dataEntities.Length != 0)
+            {
+                dataSet = new SaveDataSet();
+                PkSnapshotSet pkSnapshotSet = EntitiesToSnapshot(dataEntities, this.Database, this.DataEntityTypeMap);
+                EntitiesToDataSet(AddNewSaveTable(dataEntities, null, this.DataEntityTypeMap, dataSet), dataEntities, dataSet, this.DataEntityTypeMap, false);
+                dataSet.AnalyseRows(pkSnapshotSet);
+                this.SaveDataSet(dataSet, ormTransaction, option);
+                ormTransaction.CommitAfter += delegate (object s, EventArgs e) {
+                    Action action = null;
+                    Action action2 = null;
+                    if (dataEntities.Length > 300)
+                    {
+                        Action[] actions = new Action[2];
+                        if (action == null)
+                        {
+                            action = () => ClearEntityDirty(dataEntities, this.DataEntityTypeMap, option);
+                        }
+                        actions[0] = action;
+                        if (action2 == null)
+                        {
+                            action2 = () => this.SetEntitySnapshotSave(dataEntities, dataSet, option);
+                        }
+                        actions[1] = action2;
+                        Parallel.Invoke(actions);
+                    }
+                    else
+                    {
+                        ClearEntityDirty(dataEntities, this.DataEntityTypeMap, option);
+                        this.SetEntitySnapshotSave(dataEntities, dataSet, option);
+                    }
+                };
+            }
+            return EmptyObjectArray;
+        }
+
+        public object[] SavePrivate(object[] dataEntities)
+        {
+            if (dataEntities == null)
+            {
+                throw new ArgumentException("ORM: 参数不能为空");
+            }
+            if (dataEntities.Length == 0)
+            {
+                return EmptyObjectArray;
+            }
+
+            SaveDataSet dataSet = new SaveDataSet();
+            PkSnapshotSet snapshotSet = EntitiesToSnapshot(dataEntities, Database, DataEntityTypeMap);
+            EntitiesToDataSet(AddNewSaveTable(dataEntities, null, DataEntityTypeMap, dataSet),
+                             dataEntities, dataSet, DataEntityTypeMap, false);
+            dataSet.AnalyseRows(snapshotSet);
+            SaveDataSet(dataSet);
+            this.saveDataSet = dataSet;
+            return EmptyObjectArray;
+        }
+        private void SaveDataSet(SaveDataSet dataSet, IOrmTransaction ormTransaction, OperateOption option)
+        {
+            foreach (ISaveDataTable table in dataSet.Tables)
+            {
+                if (table.SaveRows != null)
+                {
+                    for (int i = 0; i < table.SaveRows.Length; i++)
+                    {
+                        ISaveMetaRow row = table.SaveRows[i];
+                        if (row.Operate == RowOperateType.Insert)
+                        {
+                            ormTransaction.Insert(table.Schema, row.DirtyValues.ToArray(), (row.OutputValues == null) ? EmptyColumnValuePairArray : row.OutputValues.ToArray(), row.Oid, option);
+                        }
+                        else if (row.Operate == RowOperateType.Update)
+                        {
+                            ormTransaction.Update(table.Schema, row.DirtyValues.ToArray(), (row.OutputValues == null) ? EmptyColumnValuePairArray : row.OutputValues.ToArray(), row.Oid, row.Version, option);
+                        }
+                    }
+                }
+                if (table.DeleteRows != null)
+                {
+                    object[] oids = new object[table.DeleteRows.Length];
+                    for (int j = 0; j < table.DeleteRows.Length; j++)
+                    {
+                        oids[j] = table.DeleteRows[j].Oid;
+                    }
+                    ormTransaction.Delete(table.Schema, oids, null, null);
+                }
+            }
+        }
+
+        private void SaveDataSet(SaveDataSet dataSet)
+        {
+            //BeforeSaveDataSet(dataSet);
+            OrmDBTasks tasks = new OrmDBTasks(true, this._dbRoute);
+            foreach (ISaveDataTable table in dataSet.Tables)
+            {
+                if (table.SaveRows != null)
+                {
+                    for (int i = 0; i < table.SaveRows.Length; i++)
+                    {
+                        ISaveMetaRow saveRow = table.SaveRows[i];
+                        if (saveRow.Operate == RowOperateType.Insert)
+                        {
+                            tasks.Insert(
+                                table.Schema,
+                                saveRow.DirtyValues.ToArray(),
+                                saveRow.OutputValues?.ToArray() ?? EmptyColumnValuePairArray,
+                                saveRow.Oid
+                            );
+                        }
+                        else if (saveRow.Operate == RowOperateType.Update)
+                        {
+                            tasks.Update(table, saveRow);
+                        }
+                    }
+                }
+                if (table.DeleteRows != null)
+                {
+                    object[] oids = table.DeleteRows.Select(row => row.Oid).ToArray();
+                    List<SqlTask> ts = tasks.Delete(table.Schema, oids, null);
+                    //ShardingHintContext ctx = null;
+                    //IColumnValuePair parentOid = ((SaveDataTable)table).GetParentOid();
+                    //if (parentOid != null)
+                    //{
+                    //    ctx = ShardingHinter.TryHint(parentOid);
+                    //}
+                    //else
+                    //{
+                    //    ISaveDataTable rootTable = dataSet.Tables.FirstOrDefault();
+                    //    ISaveMetaRow[] rootSaveRows = rootTable?.SaveRows;
+                    //    if (rootSaveRows != null && rootSaveRows.Length > 0)
+                    //    {
+                    //        ctx = ShardingHinter.TryHint(rootTable.GetSchema().Name, rootSaveRows);
+                    //    }
+                    //}
+                    //if (ctx != null)
+                    //{
+                    //    foreach (SqlTask t in ts)
+                    //    {
+                    //        t.SetShardingHintContext(ctx);
+                    //    }
+                    //}
+                }
+                List<Tuple<object, object, int>> changeRows = table.ChangeRows;
+                if (changeRows != null && changeRows.Count > 0)
+                {
+                    BatchUpdateSeqTask t2 = tasks.UpdateSeq(table.Schema, changeRows);
+                
+                }
+            }
+            tasks.CommitDbTask();
+        }
+
+        private void EntitiesToDataSet(SaveDataTable table, object[] dataEntities, SaveDataSet dataSet, DataEntityTypeMap dataEntityTypeMap, bool includeDefaultValue)
+        {
+            foreach (ComplexPropertyMap cpxMap in dataEntityTypeMap.ComplexProperties)
+            {
+                object[] newDataEntities = new object[dataEntities.Length];
+                IComplexProperty cpx = cpxMap.DataEntityProperty;
+                for (int i = 0; i < dataEntities.Length; i++)
+                {
+                    object dataEntity = dataEntities[i];
+                    if (dataEntity != null)
+                    {
+                        newDataEntities[i] = cpx.GetValueFast(dataEntity);
+                        if (newDataEntities[i] != null && cpxMap.RefIdProperty != null)
+                        {
+                            cpxMap.RefIdProperty.SetValueFast(dataEntity, cpx.ComplexType.PrimaryKey.GetValueFast(newDataEntities[i]));
+                        }
+                    }
+                }
+                EntitiesToDataSet(AddNewSaveTable(newDataEntities, null, cpxMap.ComplexPropertyTypeMap, dataSet), newDataEntities, dataSet, cpxMap.ComplexPropertyTypeMap, includeDefaultValue);
+            }
+
+            EntitiesToDataSetForSimpleProperty(table, dataEntities, dataSet, dataEntityTypeMap, includeDefaultValue);
+
+            foreach (CollectionPropertyMap colpMap in dataEntityTypeMap.CollectionProperties)
+            {
+                List<object> newEntitiesList = new List<object>(16);
+                List<IColumnValuePair> parentOidList = new List<IColumnValuePair>(2);
+                Dictionary<object, EntryInfo> mapEntryInfo = new Dictionary<object, EntryInfo>();
+                ICollectionProperty colp = colpMap.DataEntityProperty;
+                for (int i2 = 0; i2 < dataEntities.Length; i2++)
+                {
+                    object dataEntity2 = dataEntities[i2];
+                    if (dataEntity2 != null)
+                    {
+                        IColumnValuePair oid = table.SaveRows[i2].Oid;
+                        List<object> list = colp.GetValueFast(dataEntity2) as List<object>;
+                        if (list != null)
+                        {
+                            EntryInfo entryInfo = colp.GetEntryInfo(dataEntity2);
+                            if (entryInfo != null && entryInfo.RowCount.HasValue && entryInfo.RowCount.Value > entryInfo.PageSize)
+                            {
+                                entryInfo.PageSize = list.Count;
+                                mapEntryInfo[oid.Value] = entryInfo;
+                            }
+                            newEntitiesList.AddRange(list);
+                            if (dataEntities.Length == 1)
+                            {
+                                parentOidList.Add(oid);
+                            }
+                            else
+                            {
+                                foreach (object obj in list)
+                                {
+                                    parentOidList.Add(oid);
+                                }
+                            }
+                        }
+                    }
+                }
+                SaveDataTable newTable = AddNewSaveTable(newEntitiesList.ToArray(), parentOidList.ToArray(), colpMap.CollectionItemPropertyTypeMap, dataSet);
+                if (mapEntryInfo.Count > 0)
+                {
+                    newTable.SetEntryInfo(mapEntryInfo);
+                }
+                EntitiesToDataSet(newTable, newEntitiesList.ToArray(), dataSet, colpMap.CollectionItemPropertyTypeMap, includeDefaultValue);
+            }
+        }
+        /// <summary>
+        /// 处理简单属性，将数据实体对象转换为保存数据集。
+        /// </summary>
+        /// <param name="table"></param>
+        /// <param name="dataEntities"></param>
+        /// <param name="dataSet"></param>
+        /// <param name="dataEntityTypeMap"></param>
+        /// <param name="includeDefaultValue"></param>
+        private void EntitiesToDataSetForSimpleProperty(SaveDataTable table, object[] dataEntities, SaveDataSet dataSet, DataEntityTypeMap dataEntityTypeMap, bool includeDefaultValue)
+        {
+            IDataEntityType dtType = dataEntityTypeMap.DataEntityType;
+            List<Tuple<DbMetadataColumn, ISimpleProperty>> outputList = GetOutputList(dataEntityTypeMap);
+            ISaveMetaRow[] saveRows = table.SaveRows;
+
+            for (int i = 0; i < dataEntities.Length; i++)
+            {
+                object dataEntity = dataEntities[i];
+                if (dataEntity != null)
+                {
+                    bool hasDirtyProperty = false;
+                    ForWriteList<IColumnValuePair> dirtyValues = saveRows[i].DirtyValues;
+                    bool includehasDefault = includeDefaultValue;
+                    bool isNewObj = false;
+                    DynamicObject obj = dataEntity is DynamicObject ? (DynamicObject)dataEntity : null;
+                    if (obj != null && !obj.DataEntityState.IsFromDatabase)
+                    {
+                        includehasDefault = true;
+                        isNewObj = true;
+                    }
+
+                    List<IDataEntityProperty> listProperty = dtType.GetDirtyProperties(dataEntity, includehasDefault).ToList();
+                    HashSet<string> pset = new HashSet<string>(listProperty.Select(dp => dp.Name.ToLower()));
+                    //AddModifyProps(dtType, listProperty, pset, isNewObj);
+
+                    for (int j = 0; j < listProperty.Count; j++)
+                    {
+                        IDataEntityProperty dp = listProperty[j];
+
+                        bool ignore = ORMUtil.IsDbIgnoreForSave(dp);
+                        if (ignore)
+                        {
+                            if (dp is IComplexProperty)
+                            {
+                                string refId = dp.Name.ToLower() + "_id";
+                                if (pset.Add(refId) && dtType.Properties.ContainsKey(refId))
+                                {
+                                    ignore = false;
+                                    object value = dp.GetValue(dataEntity);
+                                    if (value is DynamicObject dynamicObj)
+                                    {
+                                        value = dynamicObj.PkValue;
+                                    }
+                                    dp = dtType.Properties[refId];
+                                    dp.SetValueFast(dataEntity, value);
+                                }
+                            }
+                        }
+                        else if (dp is ISimpleProperty simpleProperty && simpleProperty.PrivacyType != 0)
+                        {
+                            ignore = true;
+
+                        }
+
+                        if (!ignore)
+                        {
+                            int ordinal = dp.Ordinal;
+                            object propertyMap = dataEntityTypeMap.GetPropertyMapByOrdinal(ordinal);
+                            if (propertyMap != null)
+                            {
+                                hasDirtyProperty = true;
+                                //if (dp is ILocaleProperty localeProperty)
+                                //{
+                                //    DbMetadataColumn dbColumn = ((SimplePropertyMap)propertyMap).DbColumn;
+                                //    object lc = ((ILocaleString)localeProperty.GetValueFast(dataEntity)).Get(ILocaleString.GLang);
+                                //    SimpleColumnValuePair dirtyValue = new SimpleColumnValuePair(dbColumn, lc);
+                                //    dirtyValues.Add(dirtyValue);
+                                //}
+                                //else 
+                                if (dp is ISimpleProperty simpleProperty)
+                                {
+                                    DbMetadataColumn dbColumn2 = ((SimplePropertyMap)propertyMap).DbColumn;
+                                    object v = simpleProperty.GetSaveValue(dataEntity, this.Option, saveRows[i].Operate);
+                                    SimpleColumnValuePair dirtyValue2 = new SimpleColumnValuePair(dbColumn2, v);
+                                    dirtyValues.Add(dirtyValue2);
+                                    //if (simpleProperty.IsEncrypt && this.saveOriginalData4Encryption)
+                                    //{
+                                    //    string originName = dbColumn2.GetName().Substring(0, dbColumn2.GetName().LastIndexOf(EntityConst.encrypt_property_field_suffix));
+                                    //    DbMetadataColumn originDbColumn = dbColumn2.Clone(originName, dbColumn2.GetEnableNull());
+                                    //    originDbColumn.SetEncrypt(false);
+                                    //    SimpleColumnValuePair originDirtyValue = new SimpleColumnValuePair(originDbColumn, v);
+                                    //    dirtyValues.Add(originDirtyValue);
+                                    //}
+                                }
+                                else if (dp is IComplexProperty complexProperty)
+                                {
+                                    object cpxEntity = dp.GetValue(dataEntity);
+                                    ComplexPropertyMap cpxMap = (ComplexPropertyMap)propertyMap;
+                                    if (!cpxMap.DataEntityProperty.IsReadOnly && cpxEntity != null)
+                                    {
+                                        cpxMap.ComplexPropertyTypeMap.DataEntityType.SetDirty(cpxEntity, true);
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+               
+
+                    if (hasDirtyProperty && outputList.Count > 0)
+                    {
+                        List<IColumnValuePair> list = new List<IColumnValuePair>(outputList.Count);
+                        saveRows[i].OutputValues = list;
+
+                        foreach (Tuple<DbMetadataColumn, ISimpleProperty> outputItem in outputList)
+                        {
+                            list.Add(new SyncColumnValuePair(outputItem.Item1, outputItem.Item2, dataEntity));
+                        }
+                    }
+                }
+            }
+        }
+
+        private List<Tuple<DbMetadataColumn, ISimpleProperty>> GetOutputList(DataEntityTypeMap dataEntityTypeMap)
+        {
+            List<Tuple<DbMetadataColumn, ISimpleProperty>> outputList = new List<Tuple<DbMetadataColumn, ISimpleProperty>>(dataEntityTypeMap.SimpleProperties.Count);
+            foreach (SimplePropertyMap dp in dataEntityTypeMap.SimpleProperties)
+            {
+                if (dp.DbColumn.AutoSync != AutoSync.Never)
+                {
+                    outputList.Add(Tuple.Create(dp.DbColumn, dp.DataEntityProperty));
+                }
+            }
+            return outputList;
+        }
+    
+
+
+private SaveDataTable AddNewSaveTable(object[] dataEntities, IColumnValuePair[] parentOids, DataEntityTypeMap dataEntityTypeMap, SaveDataSet dataSet)
+        {
+            DbMetadataTable tableSchema = dataEntityTypeMap.DbTable;
+            DbMetadataColumn pkColumn = tableSchema.PrimaryKey;
+            SimplePropertyMap versionMap = dataEntityTypeMap.VersionProperty;
+            SaveDataTable result = new SaveDataTable(tableSchema, dataEntities.Length);
+            ISimpleProperty pk = dataEntityTypeMap.DataEntityType.PrimaryKey;
+            ISaveMetaRow[] rows = result.SaveRows;
+
+            for (int i = 0; i < dataEntities.Length; i++)
+            {
+                SaveRow tempVar = new SaveRow();
+                if (pk != null)
+                {
+                    tempVar.Oid = new SyncColumnValuePair(pkColumn, pk, dataEntities[i]);
+                }
+                rows[i] = tempVar;
+            }
+
+            //if (tableSchema.IsLocale())
+            //{
+            //    IDataEntityProperty localeProp = dataEntityTypeMap.GetDataEntityType().GetProperty("localeid");
+            //    for (int i2 = 0; i2 < dataEntities.Length; i2++)
+            //    {
+            //        rows[i2].SetLocale(new SimpleColumnValuePair(tableSchema.GetLocaleColumn(), localeProp.GetValueFast(dataEntities[i2])));
+            //    }
+            //}
+
+            if (versionMap != null)
+            {
+                DbMetadataColumn versionColumn = versionMap.DbColumn;
+                ISimpleProperty versionProperty = versionMap.DataEntityProperty;
+                for (int i3 = 0; i3 < dataEntities.Length; i3++)
+                {
+                    rows[i3].Version = new SyncColumnValuePair(versionColumn, versionProperty, dataEntities[i3]);
+
+                }
+            }
+
+            if (parentOids != null && parentOids.Length > 0)
+            {
+                if (parentOids.Length == 1)
+                {
+                    for (int i4 = 0; i4 < dataEntities.Length; i4++)
+                    {
+
+                        rows[i4].ParentOid = parentOids[0];
+                    }
+                    result.SetParentOid(parentOids[0]);
+                }
+                else
+                {
+                    for (int i5 = 0; i5 < dataEntities.Length; i5++)
+                    {
+
+                        rows[i5].ParentOid = parentOids[i5];
+
+                    }
+                }
+            }
+
+            dataSet.Tables.Add(result);
+            return result;
+        }
+
+        private PkSnapshotSet EntitiesToSnapshot(object[] dataEntities, DbMetadataDatabase database, DataEntityTypeMap dataEntityTypeMap)
+        {
+            IDataEntityType dt = dataEntityTypeMap.DataEntityType;
+            if (dataEntities.Length == 1)
+            {
+                return dt.GetPkSnapshot(dataEntities[0]);
+            }
+
+            int tableCount = database.Tables.Count;
+            RuntimePkSnapshotSet tempVar = new RuntimePkSnapshotSet
+            {
+                PkSnapshotSet = new PkSnapshotSet(),
+                Tables = new RuntimePkSnapshot[tableCount]
+            };
+
+            for (int i = 0; i < tableCount; i++)
+            {
+                PkSnapshot tempVar2 = new PkSnapshot
+                {
+                    TableName = database.Tables[i].Name
+                };
+                tempVar.PkSnapshotSet.Snapshots.Add(tempVar2);
+                tempVar.Tables[i] = new RuntimePkSnapshot(tempVar2);
+            }
+
+            foreach (object dataEntity in dataEntities)
+            {
+                object pk = dt.PrimaryKey.GetValue(dataEntity);
+                PkSnapshotSet snapshotSetTemp = dt.GetPkSnapshot(dataEntity);
+
+                if (snapshotSetTemp != null)
+                {
+                    if (dt.IsQueryObj(dataEntity))
+                    {
+                        throw new Exception("传入的对象为查询对象，不支持保存操作!");
+                    }
+
+                    foreach (PkSnapshot item in snapshotSetTemp.Snapshots)
+                    {
+                        if (item.Oids != null)
+                        {
+                            int index = FindIndexOfDatabase(database, item.TableName);
+                            foreach (object id in item.Oids)
+                            {
+                                tempVar.Tables[index].Oids.Add(id);
+                            }
+
+                            DbMetadataTable tableScheme = database.Tables.First(t => t.Name == item.TableName);
+                            if (tableScheme.Seq != null)
+                            {
+                                foreach (object obj in item.Oids)
+                                {
+                                    tempVar.Tables[index].ParentIds.Add(pk);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            tempVar.Complete();
+            return tempVar.PkSnapshotSet;
+        }
+
+
+        private int FindIndexOfDatabase(DbMetadataDatabase database, string tableName)
+        {
+            DbMetadataTableCollection tables = database.Tables;
+            for (int i = 0; i < tables.Count; i++)
+            {
+                if (tables[i].Name.Equals(tableName))
+                {
+                    return i;
+                }
+            }
+            throw new Exception($"ORM引擎保存实体时,从表结构[{database.Name}]中查找表[{tableName}]失败，表[{tableName}]不存在！");
+        }
+
+        /// <summary>
+        /// 自动批处理执行。
+        /// </summary>
+        /// <param name="ids">ID数组</param>
+        /// <param name="func">执行函数</param>
+        /// <returns>执行结果数组</returns>
+        private static object[] AutoBatchExecute(object[] ids, Func<object[], object[]> func)
+        {
+            //int batchSize = DataManagerUtils.GetBatchSize();
+            int batchSize = 500;
+            int realLen = ids.Length;
+
+            // 去除尾部的null值
+            for (int i = realLen - 1; i >= 0 && ids[i] == null; i--)
+            {
+                realLen--;
+            }
+
+            if (realLen == 0)
+            {
+                return EmptyObjectArray;
+            }
+
+            if (realLen <= batchSize)
+            {
+                if (realLen != ids.Length)
+                {
+                    object[] idsArray = ids;
+                    ids = new object[realLen];
+                    Array.Copy(idsArray, 0, ids, 0, realLen);
+                }
+                return func(ids);
+            }
+
+            List<object[]> ls = null;
+            object[] batch = new object[batchSize];
+            int mod = realLen % batchSize;
+            int count = realLen / batchSize + (mod == 0 ? 0 : 1);
+
+            for (int j = 0; j < count; j++)
+            {
+                if (j == count - 1 && mod != 0)
+                {
+                    batch = new object[mod];
+                    Array.Copy(ids, j * batchSize, batch, 0, mod);
+                }
+                else
+                {
+                    Array.Copy(ids, j * batchSize, batch, 0, batchSize);
+                }
+
+                object[] values = func(batch);
+                if (values != null)
+                {
+                    if (ls == null)
+                    {
+                        ls = new List<object[]>();
+                    }
+                    ls.Add(values);
+                }
+            }
+
+            if (ls == null)
+            {
+                return null;
+            }
+
+            int c = 0;
+            foreach (object[] values in ls)
+            {
+                c += values.Length;
+            }
+
+            object[] result = new object[c];
+            int k = 0;
+            foreach (object[] values in ls)
+            {
+                Array.Copy(values, 0, result, k, values.Length);
+                k += values.Length;
+            }
+
+            return result;
+     }
+    
+
+    public ISaveDataSet GetSaveDataSet(object[] dataEntities, bool includeDefaultValue)
         {
             throw new NotImplementedException();
         }
@@ -865,10 +1686,13 @@ namespace WYF.OrmEngine.DataEntity
                 Func<IDataEntityType, Tuple<DataEntityTypeMap, DbMetadataDatabase>> valueFactory = null;
                 if (value == null)
                 {
-                    throw new ORMArgInvalidException("002032030001549", "设置数据管理器实体类型失败，实体类型DataEntityType不能为空！");
+                    throw new Exception("设置数据管理器实体类型失败，实体类型DataEntityType不能为空！");
                 }
                 this._dataEntityType = value;
-                if (this.Option.GetCacheMetadata())
+                
+                bool cacheMetadata = this.Option.GetCacheMetadata();
+
+                if (cacheMetadata)
                 {
                     if (valueFactory == null)
                     {

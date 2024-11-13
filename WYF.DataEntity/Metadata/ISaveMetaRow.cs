@@ -8,12 +8,14 @@ namespace WYF.DataEntity.Metadata
 {
     public interface ISaveMetaRow
     {
-        ForWriteList<IColumnValuePair> DirtyValues { get; }
-        IColumnValuePair Oid { get; }
-        RowOperateType Operate { get; }
+  
+        ForWriteList<IColumnValuePair> DirtyValues { get; set; }
+        IColumnValuePair Oid { get; set; }
+        RowOperateType Operate { get; set; }
         List<IColumnValuePair> OutputValues { get; set; }
         IColumnValuePair ParentOid { get; set; }
         IColumnValuePair Version { get; set; }
+
 
     }
 }

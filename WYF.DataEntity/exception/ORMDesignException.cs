@@ -1,6 +1,6 @@
 ﻿
 
-namespace WYF.Bos.DataEntity
+namespace WYF.DataEntity
 {
     [Serializable]
     public class ORMDesignException: OrmException

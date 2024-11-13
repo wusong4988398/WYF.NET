@@ -4,16 +4,20 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WYF.DbEngine;
+using WYF.DbEngine.db;
 
 namespace WYF.OrmEngine.Drivers
 {
     public abstract class SqlTask : IDatabaseTask, IDisposable
     {
+        // Fields
         private IDbCommand _cmd;
         private int _expectedAffectedCount;
         private int _tableLevel;
         internal StringBuilder SqlBuilder;
 
+        // Methods
         protected SqlTask()
         {
             this.SqlBuilder = new StringBuilder(0x200);
@@ -110,6 +114,13 @@ namespace WYF.OrmEngine.Drivers
             }
             command.ExecuteNonQuery();
         }
+
+        internal void AddParameter(string v, DbType dbType, object originalVersionValue)
+        {
+            throw new NotImplementedException();
+        }
+
+        // Properties
         public IDbCommand Command
         {
             get
@@ -117,6 +128,7 @@ namespace WYF.OrmEngine.Drivers
                 return this._cmd;
             }
         }
+
         public int ExpectedAffectedCount
         {
             get
@@ -135,7 +147,7 @@ namespace WYF.OrmEngine.Drivers
             {
                 return this._tableLevel;
             }
-            internal set
+             set
             {
                 this._tableLevel = value;
             }

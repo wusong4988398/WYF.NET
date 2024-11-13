@@ -200,6 +200,8 @@ namespace WYF.DataEntity.Metadata.Clr
             set { this.dataEntityReferenceSchema = value; } 
         }
 
+        public bool IsQueryObj(object dataentity) =>false;
+
         public object GetParent(object currentObject)
         {
             return null;

@@ -179,7 +179,9 @@ namespace WYF.DataEntity.Metadata.Dynamicobject
         }
 
 
-        public HashSet<string> FullIndexFields { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public HashSet<string> FullIndexFields { get ; set ; }=new HashSet<string> ();
+
+        public bool IsQueryObj(object dataEntity) => ((DynamicObject)dataEntity).IsQueryObj;
 
         //[SimpleProperty]
         //public  int CacheTypeId { get { return CacheType.GetValue<int>(); } set { this.CacheType= CacheType.get }
