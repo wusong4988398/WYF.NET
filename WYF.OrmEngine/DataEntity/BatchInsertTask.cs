@@ -51,11 +51,11 @@ namespace WYF.OrmEngine.DataEntity
             // 构建参数列表
             foreach (object[] row in Rows)
             {
-                SqlParameter[] parameters = new SqlParameter[cols];
+                SqlParam[] parameters = new SqlParam[cols];
                 int i = 0;
                 foreach (DbMetadataColumn column in Columns)
                 {
-                    parameters[i++] = new SqlParameter(column.Name, column.DbType, row[column.ColumnIndex]);
+                    parameters[i++] = new SqlParam(column.Name, (KDbType)column.DbType, row[column.ColumnIndex]);
                 }
                 psList.Add(parameters);
             }

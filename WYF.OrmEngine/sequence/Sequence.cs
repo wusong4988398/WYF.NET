@@ -35,7 +35,7 @@ namespace WYF.OrmEngine.sequence
         /// <returns>如果表存在，返回true；否则返回false。</returns>
         public bool HasTableExists(string tableName)
         {
-            return (bool)DB.Query(DbRoute, SqlTableQuery, new SqlParameter[] { new SqlParameter(":A", DbType.String, tableName.ToUpper()) }, rs =>
+            return (bool)DB.Query(DbRoute, SqlTableQuery, [new SqlParam(":A", KDbType.String, tableName.ToUpper())], rs =>
             {
                 if (!rs.Read())
                     return false;
@@ -115,7 +115,7 @@ namespace WYF.OrmEngine.sequence
         /// <returns>如果序列存在，返回true；否则返回false。</returns>
         public bool HasSequence(string seqName)
         {
-            return (bool)DB.Query(DbRoute, SqlSequenceObjectQuery, new SqlParameter[] { new SqlParameter(":A", DbType.String, seqName.ToUpper()) }, rs =>
+            return (bool)DB.Query(DbRoute, SqlSequenceObjectQuery, [new SqlParam(":A", KDbType.String, seqName.ToUpper())], rs =>
             {
                 if (!rs.Read())
                     return false;
@@ -177,7 +177,7 @@ namespace WYF.OrmEngine.sequence
             {
                 using (var transactionScope = new TransactionScope(TransactionScopeOption.RequiresNew, new TransactionOptions { IsolationLevel = System.Transactions.IsolationLevel.Serializable }))
                 {
-                    SqlParameter[] parameters = { new SqlParameter(":count", DbType.Int32, count) };
+                    SqlParam[] parameters = { new SqlParam(":count", KDbType.Int32, count) };
 
                     if (typeof(T) == typeof(int))
                     {

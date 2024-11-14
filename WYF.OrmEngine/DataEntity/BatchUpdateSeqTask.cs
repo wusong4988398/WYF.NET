@@ -28,10 +28,10 @@ namespace WYF.OrmEngine.DataEntity
             List<object[]> listParas = new List<object[]>(this.changeRows.Count);
             foreach (Tuple<object, object, int> row in this.changeRows)
             {
-                SqlParameter[] parameters = new SqlParameter[3];
-                parameters[0] = new SqlParameter("@" + seqCol.Name, seqCol.DbType, row.Item3);
-                parameters[1] = new SqlParameter("@" + pcol.Name, pcol.DbType, row.Item1);
-                parameters[2] = new SqlParameter("@"+ seqCol.Name, seqCol.DbType, row.Item2);
+                SqlParam[] parameters = new SqlParam[3];
+                parameters[0] = new SqlParam("@" + seqCol.Name, (KDbType)seqCol.DbType, row.Item3);
+                parameters[1] = new SqlParam("@" + pcol.Name, (KDbType)pcol.DbType, row.Item1);
+                parameters[2] = new SqlParam("@"+ seqCol.Name, (KDbType)seqCol.DbType, row.Item2);
                 listParas.Add(parameters);
             }
 

@@ -841,6 +841,10 @@ namespace WYF.DbEngine
                     else if (value is Guid)
                     {
                         param.KDbType = KDbType.Guid;
+                    }else if(value is SqlParam)
+                    {
+                        param.Value = ((SqlParam)value).Value;
+                        param.Name = ((SqlParam)value).Name;
                     }
 
                     DbParameter parameter = this.GetParameter(conn, param.Name, param.KDbType, param.Size, param.Direction, true, 0, 0, string.Empty, DataRowVersion.Default, param.Value ?? DBNull.Value);

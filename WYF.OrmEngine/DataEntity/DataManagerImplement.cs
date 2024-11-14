@@ -609,8 +609,8 @@ namespace WYF.OrmEngine.DataEntity
             StringBuilder sqlCount = new StringBuilder();
             StringBuilder sqlJoinWhere = new StringBuilder();
             SqlBuilder builder = new SqlBuilder();
-            List<SqlParameter> parameters = new List<SqlParameter>();
-            List<SqlParameter> Joinparameters = new List<SqlParameter>();
+            List<SqlParam> parameters = new List<SqlParam>();
+            List<SqlParam> Joinparameters = new List<SqlParam>();
             DbMetadataRelation parentRelation = currentTable.ParentRelation;
             DbMetadataTable childTable = currentTable;
             String parentField = null;
@@ -626,8 +626,8 @@ namespace WYF.OrmEngine.DataEntity
                         sqlCount.Append(" SELECT ").Append(parentField).Append(", Count(*)   FROM ");
                     }
                     sqlWhere.Append(GetColumnNameSql(currentTable.Name, seq.Name)).Append(" BETWEEN ? AND ? ");
-                    parameters.Add(new SqlParameter(DbType.Int32, pageInfo.StartRowIndex + 1));
-                    parameters.Add(new SqlParameter(DbType.Int32, pageInfo.StartRowIndex + pageInfo.PageSize));
+                    parameters.Add(new SqlParam(KDbType.Int32, pageInfo.StartRowIndex + 1));
+                    parameters.Add(new SqlParam(KDbType.Int32, pageInfo.StartRowIndex + pageInfo.PageSize));
                 }
             }
             StringBuilder sbFrom = new StringBuilder(sqlFrom);
@@ -651,9 +651,9 @@ namespace WYF.OrmEngine.DataEntity
                             sqlJoinWhere.Append(" AND ");
                         sqlJoinWhere.Append(GetColumnNameSql(parentTable.Name, seq.Name))
                           .Append(" BETWEEN ? AND ? ");
-                        Joinparameters.Add(new SqlParameter(DbType.Int32, pageInfo.StartRowIndex + 1));
+                        Joinparameters.Add(new SqlParam(KDbType.Int32, pageInfo.StartRowIndex + 1));
                         Joinparameters
-                          .Add(new SqlParameter(DbType.Int32, pageInfo.StartRowIndex + pageInfo.PageSize));
+                          .Add(new SqlParam(KDbType.Int32, pageInfo.StartRowIndex + pageInfo.PageSize));
                     }
                 }
                 childTable = parentRelation.ParentTable;
@@ -744,7 +744,7 @@ namespace WYF.OrmEngine.DataEntity
             String pk = GetColumnNameSql(table.Name, table.ParentRelation.ChildColumn.Name);
             if (where.IsSingleValue)
             {
-                SqlParameter pkValueParameter = new SqlParameter(":PKValue", where.ReadOids[0], (DbType)rootTable.PrimaryKey.DbType);
+                SqlParam pkValueParameter = new SqlParam("@PKValue", where.ReadOids[0], (KDbType)rootTable.PrimaryKey.DbType);
                 whereSql.Append(pk + "= ?", new Object[] { pkValueParameter });
             }
             else if (where.ReadOids != null)
@@ -762,8 +762,8 @@ namespace WYF.OrmEngine.DataEntity
             string pk = GetColumnNameSql(rootTable.Name, rootTable.PrimaryKey.Name);
             if (where.IsSingleValue)
             {
-                SqlParameter pkValueParameter = new SqlParameter(":PKValue", where.ReadOids[0],(DbType)rootTable.PrimaryKey.DbType);
-                build.Append(pk + "= ?", pkValueParameter);
+                SqlParam pkValueParameter = new SqlParam("@PKValue", where.ReadOids[0],(KDbType)rootTable.PrimaryKey.DbType);
+                build.Append(pk + "= @PKValue", pkValueParameter);
                 
             }
             else if (where.ReadOids != null)

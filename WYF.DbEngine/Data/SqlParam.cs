@@ -1,21 +1,61 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WYF.Common;
 
 namespace WYF.DbEngine
 {
     [Serializable]
     public class SqlParam : ISqlParam
     {
-
+        public const int TypeOther = 1111;
         private string _name;
         private object _OriginalValue;
         private object _value;
 
+
+        public SqlParam(object value) : this(GetType(value?.GetType()), value) 
+        {
+          
+        }
+
+        public SqlParam(int columnType, object value):this(null, (KDbType)columnType, value)
+        {
+            
+        }
+
+        public SqlParam(string name, object value)
+        {
+            this.Value = value;
+            this.Name = name;
+            if (value != null)
+            {
+                SettingDataType(value.GetType());
+            }
+        }
+
+
+  
+
+
+        public SqlParam(KDbType dbType, object value):this(null,dbType,value)
+        {
+           
+        }
+
         public SqlParam(string name, KDbType dbType, object value)
+        {
+            this.Name = name;
+            this.KDbType = dbType;
+            this._value = value;
+            this.Direction = ParameterDirection.Input;
+            this.IsCustemDbType = true;
+        }
+        public SqlParam(string name, object value, KDbType dbType)
         {
             this.Name = name;
             this.KDbType = dbType;
@@ -33,9 +73,105 @@ namespace WYF.DbEngine
             this.Direction = direction;
             this.IsCustemDbType = true;
         }
+     
+        private void SettingDataType(Type type)
+        {
+            if (type == UtilConstants.ByteArrayType)
+            {
+                this.KDbType = KDbType.Binary;
+            }
+            else if (type == UtilConstants.GuidType)
+            {
+                this.KDbType = KDbType.Guid;
+            }
+            else if (type == UtilConstants.IntType)
+            {
+                this.KDbType = KDbType.Int32;
+            }
+            else if (type == UtilConstants.ShortType)
+            {
+                this.KDbType = KDbType.Int16;
+            }
+            else if (type == UtilConstants.LongType)
+            {
+                this.KDbType = KDbType.Int64;
+            }
+            else if (type == UtilConstants.DateType)
+            {
+                this.KDbType = KDbType.DateTime;
+            }
+            else if (type == UtilConstants.DobType)
+            {
+                this.KDbType = KDbType.Double;
+            }
+            else if (type == UtilConstants.DecType)
+            {
+                this.KDbType = KDbType.Decimal;
+            }
+            else if (type == UtilConstants.ByteType)
+            {
+                this.KDbType = KDbType.Byte;
+            }
+            else if (type == UtilConstants.SByteType)
+            {
+                this.KDbType = KDbType.SByte;
+            }
+            else if (type == UtilConstants.FloatType)
+            {
+                this.KDbType = KDbType.Single;
+            }
+            else if (type == UtilConstants.BoolType)
+            {
+                this.KDbType = KDbType.Boolean;
+            }
+            else if (type == UtilConstants.StringType)
+            {
+                this.KDbType = KDbType.String;
+            }
+            else if (type == UtilConstants.DateTimeOffsetType)
+            {
+                this.KDbType = KDbType.DateTimeOffset;
+            }
+            else if (type == UtilConstants.TimeSpanType)
+            {
+                this.KDbType = KDbType.Time;
+            }
+            else if (type?.Name == "Geometry")
+            {
+                this.KDbType = KDbType.Object;
+            }
+            else if (type != null && type.IsEnum())
+            {
+                this.KDbType = KDbType.Int64;
+                if (Value != null)
+                {
+                    this.Value = Convert.ToInt64(Value);
+                }
+            }
+            else if (type == UtilConstants.UIntType)
+            {
+                this.KDbType = KDbType.UInt32;
+            }
+            else if (type == UtilConstants.ULongType)
+            {
+                this.KDbType = KDbType.UInt64;
+            }
+            else if (type == UtilConstants.UShortType)
+            {
+                this.KDbType = KDbType.UInt16;
+            }
+            else if (type == UtilConstants.ShortType)
+            {
+                this.KDbType = KDbType.Int16;
+            }
 
-   
 
+
+        }
+        private static int GetType(Type clsType)
+        {
+            return TypeOther;
+        }
         public string ConvertParamName(DatabaseType dbtype)
         {
             string name = this.Name;

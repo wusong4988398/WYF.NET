@@ -10,11 +10,11 @@ namespace WYF.DbEngine.db
     {
         private StringBuilder _sql = new StringBuilder(128);
 
-        private List<SqlParameter> _params = new List<SqlParameter>();
+        private List<SqlParam> _params = new List<SqlParam>();
 
         public SqlObject() { }
 
-        public SqlObject(string sql, SqlParameter[] paramsArray)
+        public SqlObject(string sql, SqlParam[] paramsArray)
         {
             SetSql(sql);
             SetParams(paramsArray);
@@ -39,12 +39,12 @@ namespace WYF.DbEngine.db
             }
         }
 
-        public SqlParameter[] Params
+        public SqlParam[] Params
         {
             get { return _params.ToArray(); }
         }
 
-        public void SetParams(SqlParameter[] paramsArray)
+        public void SetParams(SqlParam[] paramsArray)
         {
             _params.Clear();
             if (paramsArray != null && paramsArray.Length > 0)
@@ -65,7 +65,7 @@ namespace WYF.DbEngine.db
             return this;
         }
 
-        public SqlObject AddParam(SqlParameter param)
+        public SqlObject AddParam(SqlParam param)
         {
             _params.Add(param);
             return this;

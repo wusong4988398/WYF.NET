@@ -61,11 +61,11 @@ namespace WYF.DbEngine.db
             }
 
             List<object> pList = GetParams();
-            SqlParameter[] ps = new SqlParameter[pList.Count];
+            SqlParam[] ps = new SqlParam[pList.Count];
             int i = 0;
             foreach (object p in pList)
             {
-                ps[i++] = new SqlParameter("@" + i.ToString(), p);
+                ps[i++] = new SqlParam("@" + i.ToString(), p);
                 //{ ParameterName = "@" + i.ToString(), Value = p };
             }
 

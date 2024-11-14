@@ -33,14 +33,14 @@ namespace WYF.OrmEngine.DataEntity
             int j = 0;
             foreach (object[] row in Rows)
             {
-                SqlParameter[] parameters = new SqlParameter[Columns.Length + 1];
+                SqlParam[] parameters = new SqlParam[Columns.Length + 1];
                 int i = 0;
                 foreach (DbMetadataColumn column in Columns)
                 {
-                    parameters[i] = new SqlParameter($"@{column.Name}", column.DbType, row[column.ColumnIndex]);
+                    parameters[i] = new SqlParam($"@{column.Name}", (KDbType)column.DbType, row[column.ColumnIndex]);
                     i++;
                 }
-                parameters[i] = new SqlParameter($"@{PrimaryKey.Name}", PrimaryKey.DbType, Ids[j]);
+                parameters[i] = new SqlParam($"@{PrimaryKey.Name}", (KDbType)PrimaryKey.DbType, Ids[j]);
                 listParas.Add(parameters);
                 j++;
             }

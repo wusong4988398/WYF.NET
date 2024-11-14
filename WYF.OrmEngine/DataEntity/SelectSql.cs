@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using WYF.DbEngine;
 using WYF.DbEngine.db;
 
 namespace WYF.OrmEngine.DataEntity
@@ -11,17 +12,17 @@ namespace WYF.OrmEngine.DataEntity
     {
         public string selectSql { get; set; }
 
-        public String SelectWhere { get; set; }
+        public string SelectWhere { get; set; }
 
-        public List<SqlParameter> SelectParams { get; set; } = new List<SqlParameter>();
+        public List<SqlParam> SelectParams { get; set; } = new List<SqlParam>();
 
-        public String CountSql { get; set; }
+        public string CountSql { get; set; }
 
-        public String CountWhere { get; set; }
+        public string CountWhere { get; set; }
 
-        public String CountGroupBySqlpart;
+        public string CountGroupBySqlpart;
 
-        public List<SqlParameter> CountParams { get; set; } = new List<SqlParameter>();
+        public List<SqlParam> CountParams { get; set; } = new List<SqlParam>();
 
         public SqlBuilder SelectSqlBuild { get; set; }
 
