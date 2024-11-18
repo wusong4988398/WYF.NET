@@ -131,7 +131,7 @@ namespace WYF.OrmEngine.Drivers
         }
 
 
-        internal abstract class KSqlTask : SqlTask
+        public abstract class KSqlTask : SqlTask
         {
 
             protected Context _ctx;

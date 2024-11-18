@@ -52,8 +52,10 @@ namespace WYF.Data
             var seqReader = new SequenceReader(dbRoute);
             seqReader.AutoSetPrimaryKey(dataEntities, type);
             var updatePks = GetUpdatePks(type, dataEntities);
-            var dataManager = DataManagerUtils.GetDataManager(type);
-            dataManager.Save(dataEntities);
+            IDbDriver driver = new OLEDbDriver(new Context());
+
+            var dataManager = DataManagerUtils.GetDataManager(type, driver);
+            dataManager.Save(dataEntities,tran);
             var cacheManager = new DataEntityCacheManager(type);
             if (updatePks.Length > 0)
             {

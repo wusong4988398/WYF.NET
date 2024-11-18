@@ -10,7 +10,7 @@ namespace WYF.DataEntity.Collections
 
         public KeyedCollectionBase()
         {
-            
+            this.CreateDictionary();
         }
         protected KeyedCollectionBase(IList<TValue> list) : base(list)
         {

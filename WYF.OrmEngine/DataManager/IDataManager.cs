@@ -23,7 +23,7 @@ namespace WYF.OrmEngine.dataManager
 
         object[] Read(ReadWhere where);
 
-        void Save(object dataEntity, IOrmTransaction ormTransaction = null, OperateOption option = null);
+        void Save(object[] dataEntity, IOrmTransaction ormTransaction = null, OperateOption option = null);
 
 
     }

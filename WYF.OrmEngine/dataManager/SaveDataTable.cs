@@ -81,6 +81,8 @@ namespace WYF.OrmEngine.dataManager
                         for (int j = rightNowIndex; j < pkSnapshot.Oids.Length; j++)
                         {
                             OidRight = pkSnapshot.Oids[j];
+                            OidLeft = curRow.Oid == null ? null : curRow.Oid.Value;
+
                             if (!oidTypeChecked && OidRight != null)
                             {
                                 oidTypeChecked = true;
@@ -146,7 +148,7 @@ namespace WYF.OrmEngine.dataManager
                 int delRowCount = pkSnapshot.Oids.Length - rightNowIndex;
                 if (delRowCount > 0)
                 {
-                    this.DeleteRows=new DeleteRow[delRowCount];
+                    this.DeleteRows = new DeleteRow[delRowCount];
                     int k = 0;
                     for (int i = rightNowIndex; i < pkSnapshot.Oids.Length; i++)
                     {
@@ -176,6 +178,157 @@ namespace WYF.OrmEngine.dataManager
                     }
                 }
             }
+        }
+
+
+
+
+        //public void AnalyseRows(PkSnapshot pkSnapshot)
+        //{
+        //    ISaveMetaRow[] saveRows = this.SaveRows;
+        //    int delRowCount;
+        //    int len;
+        //    int rightNowIndex = 0;
+        //    bool isFound = false;
+        //    bool isNullSnapshot = pkSnapshot == null || pkSnapshot.Oids == null;
+        //    bool oidTypeChecked = false;
+
+        //    foreach (ISaveMetaRow row in saveRows)
+        //    {
+        //        SaveRow curRow = (SaveRow)row;
+        //        if (!isNullSnapshot)
+        //        {
+        //            object oidLeft = curRow.Oid == null ? null : curRow.Oid.Value;
+        //            isFound = false;
+        //            if (oidLeft != null)
+        //            {
+        //                int j = rightNowIndex;
+        //                while (true)
+        //                {
+        //                    if (j >= pkSnapshot.Oids.Length)
+        //                    {
+        //                        break;
+        //                    }
+        //                    object oidRight = pkSnapshot.Oids[j];
+        //                    if (!oidTypeChecked && oidRight != null)
+        //                    {
+        //                        oidTypeChecked = true;
+        //                        if (oidLeft.GetType() != oidRight.GetType())
+        //                        {
+        //                            throw new Exception($"类型不匹配：{Schema.Name} 应该对应数据库中的一列，当前类型为 {oidRight.GetType().Name}, 实际类型为 {oidLeft.GetType().Name}，类型不一致");
+        //                        }
+        //                    }
+        //                    if (oidLeft.Equals(oidRight))
+        //                    {
+        //                        object oidTemp = pkSnapshot.Oids[rightNowIndex];
+        //                        pkSnapshot.Oids[rightNowIndex] = oidRight;
+        //                        pkSnapshot.Oids[j] = oidTemp;
+        //                        if (pkSnapshot.Opids != null)
+        //                        {
+        //                            object oprId = pkSnapshot.Opids[j];
+        //                            object opidTemp = pkSnapshot.Opids[rightNowIndex];
+        //                            pkSnapshot.Opids[rightNowIndex] = oprId;
+        //                            pkSnapshot.Opids[j] = opidTemp;
+        //                        }
+        //                        rightNowIndex++;
+        //                        isFound = true;
+        //                    }
+        //                    else
+        //                    {
+        //                        j++;
+        //                    }
+        //                }
+        //            }
+        //        }
+        //        if (!isFound)
+        //        {
+        //            curRow.Operate = RowOperateType.Insert;
+
+        //            if (curRow.DirtyValues.Count == 0)
+        //            {
+        //                curRow.DirtyValues.Add(curRow.Oid);
+        //            }
+
+        //            if (this.Schema.ParentRelation != null)
+        //            {
+        //                curRow.DirtyValues.Add(new ParentOidColumnValuePair(this.Schema.ParentRelation.ChildColumn, null, null, curRow.ParentOid));
+        //                if (mapEntryInfo != null)
+        //                {
+        //                    object parentPk = curRow.ParentOid.Value;
+        //                    UpdateChangeRows(parentPk, 1);
+        //                }
+        //            }
+        //            curRow.RebuildOutputValues();
+        //        }
+        //        else if (curRow.DirtyValues.Count > 0)
+        //        {
+        //            curRow.Operate = RowOperateType.Update;
+        //            curRow.RebuildOutputValues();
+        //        }
+        //        else
+        //        {
+        //            curRow.Operate = RowOperateType.None;
+        //        }
+        //    }
+
+        //    if (!isNullSnapshot && (delRowCount = pkSnapshot.Oids.Length - rightNowIndex) > 0)
+        //    {
+        //        this.DeleteRows=new  DeleteRow[delRowCount];
+        //        int k = 0;
+        //        for (int i = rightNowIndex; i < pkSnapshot.Oids.Length; i++)
+        //        {
+        //            DeleteRow tempVar2 = new DeleteRow();
+        //            tempVar2.Oid= pkSnapshot.Oids[i];
+        //            this.DeleteRows[k] = tempVar2;
+        //            k++;
+        //        }
+        //        CheckDeleteData(this.DeleteRows, this.Schema);
+        //        if (mapEntryInfo == null)
+        //        {
+        //            return;
+        //        }
+        //        if (pkSnapshot.Opids != null)
+        //        {
+        //            for (int i2 = rightNowIndex; i2 < pkSnapshot.Opids.Length; i2++)
+        //            {
+        //                object parentPk2 = pkSnapshot.Opids[i2];
+        //                UpdateChangeRows(parentPk2, -1);
+        //            }
+        //        }
+        //        else if (parentOid != null && (len = rightNowIndex - pkSnapshot.Oids.Length) < 0)
+        //        {
+        //            UpdateChangeRows(parentOid.Value, len);
+        //        }
+        //    }
+        //}
+        private bool CheckDeleteData(IDeleteMetaRow[] rows, DbMetadataTable tableScheme)
+        {
+            if (rows.Length == 0)
+            {
+                return true;
+            }
+
+            string config = System.Environment.GetEnvironmentVariable("orm.deletecheck.enable") ?? "false";
+            if (config.Equals("false", StringComparison.OrdinalIgnoreCase))
+            {
+                return true;
+            }
+
+            foreach (IDeleteMetaRow row in rows)
+            {
+                object currentValue = row.Oid;
+                if (currentValue == null ||
+                    ((currentValue is string && ((string)currentValue).Length == 0) ||
+                     (currentValue is long && (long)currentValue == 0) ||
+                     (currentValue is int && (int)currentValue == 0) ||
+                     (currentValue is double && (double)currentValue == 0) ||
+                     (currentValue is float && (float)currentValue == 0)))
+                {
+                    throw new Exception("侦测到异常主键数据操作");
+                }
+            }
+
+            return true;
         }
 
         public List<Tuple<object, object, int>> GetChangeRows()

@@ -483,6 +483,8 @@ namespace WYF.DbEngine
             }
             else
             {
+
+
                 param.DbType = (DbType)custemDbType;
                 param.Value = value ?? DBNull.Value;
             }

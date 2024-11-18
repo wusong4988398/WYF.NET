@@ -39,8 +39,8 @@ namespace WYF.OrmEngine.Drivers.Sql
 
         protected override SqlTask CreateSqlTask()
         {
-            //return new KSqlForSqlServerTask(this._ctx);
-            return null;
+            return new KSqlForSqlServerTask(this._ctx);
+            
         }
 
         protected override Func<object, object> GetConverter(DbMetadataColumn col)

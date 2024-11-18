@@ -324,6 +324,11 @@ namespace WYF.DataEntity.Metadata.database
         private static int GetColumnDbType(BuildContext context, ISimpleProperty sp, SimplePropertyMap spMap)
         {
             int dbType = spMap.DbType;
+
+
+
+
+
             return dbType;
         }
       

@@ -79,7 +79,18 @@ namespace WYF.Cache.Local
 
         public void Remove(params string[] keys)
         {
-            throw new NotImplementedException();
+            foreach (string key in keys)
+            {
+                Remove(key);
+            }
+           // EhcacheMemoryCacheClusterNotify.NotifySync("remove", new object[] { this.region, this.type, keys });
+        }
+
+        private void Remove(String key)
+        {
+            if (this.Cache == null)
+                return;
+            this.Cache.Remove(key);
         }
 
         public void RemoveMapFields(string key, params string[] fields)

@@ -118,7 +118,9 @@ namespace WYF.DataEntity.Metadata.Dynamicobject
 
         public object GetSaveValue(object dataEntity, OperateOption option, RowOperateType type)
         {
-            throw new NotImplementedException();
+            return GetValueFast(dataEntity);
+
+            
         }
     }
 }

@@ -268,7 +268,7 @@ namespace WYF.OrmEngine.DataEntity
             {
                 if (dt is DynamicObjectType)
                 {
-                    DynamicObject[] arrayOfDynamicObject = new DynamicObject[rows.Length];
+                    entities = new DynamicObject[rows.Length];
                 }
                 else
                 {
@@ -1007,13 +1007,13 @@ namespace WYF.OrmEngine.DataEntity
                 }
             }
         }
-        public void Save(object dataEntity, IOrmTransaction ormTransaction = null, OperateOption option = null)
+        public void Save(object[] dataEntity, IOrmTransaction ormTransaction = null, OperateOption option = null)
         {
             if (dataEntity == null)
             {
                 throw new ORMArgInvalidException("002032030001567", "ORM引擎保存实体失败，实体不能为空！");
             }
-            this.DoItInTransaction((tran, optionPrivate) => this.SavePrivate(new object[] { dataEntity }, tran, optionPrivate), ormTransaction, option);
+            this.DoItInTransaction((tran, optionPrivate) => this.SavePrivate(dataEntity, tran, optionPrivate), ormTransaction, option);
         }
 
         private void DoItInTransaction(Action<IOrmTransaction, OperateOption> action, IOrmTransaction ormTransaction, OperateOption option)

@@ -801,7 +801,13 @@ namespace WYF.DbEngine
             {
                 foreach (SqlParam param in parameters)
                 {
-
+                    if ((int)param.KDbType==-9)
+                    {
+                        param.KDbType = KDbType.String;
+                    }else if ((int)param.KDbType == -5)
+                    {
+                        param.KDbType = KDbType.Int64;
+                    }
                     DbParameter parameter = this.GetParameter(conn, param.Name, param.KDbType, param.Size, param.Direction, true, 0, 0, string.Empty, DataRowVersion.Default, param.Value ?? DBNull.Value);
 
                     cmd.Parameters.Add(parameter);

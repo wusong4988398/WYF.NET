@@ -170,7 +170,7 @@ namespace WYF.OrmEngine.Impl
             return pks.ToArray();
         }
 
-        public void Save(object dataEntity, IOrmTransaction ormTransaction = null, OperateOption option = null)
+        public void Save(object[] dataEntity, IOrmTransaction ormTransaction = null, OperateOption option = null)
         {
             throw new NotImplementedException();
         }

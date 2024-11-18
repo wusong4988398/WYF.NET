@@ -357,7 +357,10 @@ namespace WYF.DataEntity.Metadata.Dynamicobject
         {
             if (dataEntity == null) throw new Exception("转换对象为动态实体失败，要转换的对象不能为空！");
                 
-            if (!(dataEntity is DynamicObject)) throw new Exception($"转换对象{dataEntity.ToString()}为动态实体失败，该对象必须是DynamicObject类型！");
+            if (!(dataEntity is DynamicObject))
+            {
+                throw new Exception($"转换对象{dataEntity.ToString()}为动态实体失败，该对象必须是DynamicObject类型！");
+            }
              
             return (DynamicObject)dataEntity;
         }
