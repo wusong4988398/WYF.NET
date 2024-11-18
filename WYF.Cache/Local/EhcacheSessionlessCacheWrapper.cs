@@ -83,7 +83,7 @@ namespace WYF.Cache.Local
             {
                 Remove(key);
             }
-           // EhcacheMemoryCacheClusterNotify.NotifySync("remove", new object[] { this.region, this.type, keys });
+           EhcacheMemoryCacheClusterNotify.NotifySync("Remove", new object[] { this.region, this.type, keys });
         }
 
         private void Remove(String key)

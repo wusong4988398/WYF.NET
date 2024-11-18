@@ -28,11 +28,13 @@ namespace WYF.Cache
         }
 
         public abstract ILocalMemoryCache GetOrCreateLocalMemoryCache(string region, string type);
+        public abstract ILocalMemoryCache GetLocalMemoryCache(string region, string type);
 
         public abstract ILocalMemoryCache GetOrCreateLocalMemoryCache(string region, string type, CacheConfigInfo cacheConfig);
 
         public abstract IDistributeSessionlessCache GetDistributeSessionlessCache();
 
         public abstract IDistributeSessionlessCache GetDistributeSessionlessCache(string region);
+
     }
 }
