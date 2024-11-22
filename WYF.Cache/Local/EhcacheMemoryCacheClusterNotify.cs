@@ -19,8 +19,8 @@ namespace WYF.Cache.Local
         {
             try
             {
-                
-                broadcastType = Type.GetType("WYF.Mq.broadcast.BroadcastService");
+                Assembly assembly = Assembly.LoadFrom("WYF.Mq.dll");
+                broadcastType = assembly.GetType("WYF.Mq.broadcast.BroadcastService",true);
                 if (broadcastType != null)
                 {
                     foreach (var method in broadcastType.GetMethods())
@@ -46,7 +46,7 @@ namespace WYF.Cache.Local
         {
             try
             {
-                if (NeedLog())
+                //if (NeedLog())
                     //logger.LogInformation($"接收广播清除消息: region={region}, type={type}");
                 needNotify.Value = false;
                 
@@ -64,7 +64,7 @@ namespace WYF.Cache.Local
         {
             try
             {
-                if (NeedLog())
+                //if (NeedLog())
                     //logger.LogInformation($"接收广播移除消息: region={region}, type={type}, keys={string.Join(", ", keys)}");
                 needNotify.Value = false;
                 var defaultCacheRegion = factory.GetLocalMemoryCache(region, type);
@@ -81,7 +81,7 @@ namespace WYF.Cache.Local
         {
             try
             {
-                if (NeedLog())
+                //if (NeedLog())
                     //logger.LogInformation($"接收广播移除字段消息: region={region}, type={type}, key={key}, fields={string.Join(", ", fields)}");
                 needNotify.Value = false;
                 var defaultCacheRegion = factory.GetLocalMemoryCache(region, type);
@@ -106,7 +106,7 @@ namespace WYF.Cache.Local
             {
                 try
                 {
-                    if (NeedLog())
+                    //if (NeedLog())
                         //logger.LogInformation($"发送广播: [{method}] {JsonConvert.SerializeObject(parameters)}");
                     broadcastMessage.Invoke(null, new object[] { typeof(EhcacheMemoryCacheClusterNotify).FullName, method, parameters });
                 }

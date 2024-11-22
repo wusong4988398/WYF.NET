@@ -9,6 +9,7 @@ using WYF.Cache;
 using WYF.Data;
 using WYF.DataEntity.Entity;
 using WYF.DbEngine;
+using WYF.Mq.init;
 using WYF.OrmEngine.Query;
 using WYF.ServiceHelper;
 using static IronPython.Modules._ast;
@@ -17,6 +18,10 @@ namespace ConsoleApp2
 {
     public class Test1
     {
+        static Test1()
+        {
+            MQInit.Init();
+        }
         public static void TestMethod1()
         {
             Stopwatch stopwatch = new Stopwatch();
@@ -82,14 +87,15 @@ namespace ConsoleApp2
         /// 查询并更新
         /// </summary>
         internal static void TestDataBase2() {
-
-            DynamicObject[] dynamicObjects = BusinessDataServiceHelper.Load("bos_user", "password", [new QFilter("id", "=", 2)]);
+            DynamicObjectCollection dynamicObjects1 = QueryServiceHelper.Query("bos_user", "password,bos_org.name", [new QFilter("id", "=", 2)]);//多表查询
+            Console.WriteLine("11");
+            DynamicObject[] dynamicObjects = BusinessDataServiceHelper.Load("bos_user", "password,fyzjorgid1", [new QFilter("id", "=", 2)]);
             if (dynamicObjects == null || dynamicObjects.Length == 0)
             {
                 throw new Exception("用户不存在！");
             }
             DynamicObject dynamicObject = dynamicObjects[0];
-            dynamicObject["password"] = 2;
+            dynamicObject["password"] = "wsl4988398";
             BusinessDataServiceHelper.Save(dynamicObject.GetDataEntityType(), [dynamicObject]);
 
         }

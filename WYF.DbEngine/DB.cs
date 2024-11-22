@@ -7,8 +7,6 @@ using System.Threading.Tasks;
 using WYF.Algo;
 using WYF.DbEngine.db;
 
-using static IronPython.Modules.PythonSocket;
-using static Microsoft.Scripting.Hosting.Shell.ConsoleHostOptions;
 
 namespace WYF.DbEngine
 {

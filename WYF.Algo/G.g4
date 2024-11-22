@@ -1,4 +1,4 @@
-﻿grammar G;
+grammar G;
 
 singleExpression 
 : namedExpressionSeq
